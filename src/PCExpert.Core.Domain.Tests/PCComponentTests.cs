@@ -3,7 +3,7 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using PCExpert.Core.Domain.Exceptions;
-using PCExpert.Core.Domain.Tests.Utils;
+using PCExpert.Core.Tests.Utils;
 
 namespace PCExpert.Core.Domain.Tests
 {
@@ -11,7 +11,6 @@ namespace PCExpert.Core.Domain.Tests
 	public class PCComponentTests
 	{
 		protected const decimal ComponentPrice = 100m;
-
 		protected PCComponent DefaultComponent;
 
 		[SetUp]
@@ -144,6 +143,26 @@ namespace PCExpert.Core.Domain.Tests
 			//Assert
 			Assert.That(() => parentComponent.WithContainedComponent(childComponent),
 				Throws.InstanceOf<DuplicateElementException>());
+		}
+
+		[Test]
+		public void AddContainedComponent_SameReferenceAsParent_ShouldThrowArgumentException()
+		{
+			Assert.That(() => DefaultComponent.WithContainedComponent(DefaultComponent),
+				Throws.InstanceOf<ArgumentException>());
+		}
+
+		[Test]
+		public void AddContainedComponent_ComponentsWithSameIdentities_ShouldThrowArgumentException()
+		{
+			//Arrange
+			var commonId = Guid.NewGuid();
+			var parentComponent = CreateComponent(1).WithId(commonId);
+			var childComponent = CreateComponent(2).WithId(commonId);
+
+			//Assert
+			Assert.That(() => parentComponent.WithContainedComponent(childComponent),
+				Throws.InstanceOf<ArgumentException>());
 		}
 	}
 

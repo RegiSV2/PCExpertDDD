@@ -4,7 +4,7 @@ namespace PCExpert.Core.Domain
 {
 	public class NullComponentInterface : ComponentInterface
 	{
-		public NullComponentInterface() : base((Guid) Guid.Empty)
+		public NullComponentInterface() : base(Guid.Empty)
 		{
 		}
 

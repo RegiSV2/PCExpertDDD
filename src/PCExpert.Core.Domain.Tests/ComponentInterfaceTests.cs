@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using PCExpert.Core.Domain.Tests.Utils;
+using PCExpert.Core.Tests.Utils;
 
 namespace PCExpert.Core.Domain.Tests
 {

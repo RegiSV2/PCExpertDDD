@@ -1,4 +1,6 @@
-﻿namespace PCExpert.Core.Domain.Tests.Utils
+﻿using PCExpert.Core.Domain;
+
+namespace PCExpert.Core.Tests.Utils
 {
 	public static class DomainObjectsCreator
 	{

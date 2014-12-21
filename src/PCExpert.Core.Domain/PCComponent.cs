@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using PCExpert.Core.Domain.Exceptions;
 using PCExpert.Core.Domain.Utils;
 
@@ -11,11 +11,31 @@ namespace PCExpert.Core.Domain
 	/// </summary>
 	public class PCComponent : Entity
 	{
+		#region Constructors
+
+		protected PCComponent(Guid id)
+			: base(id)
+		{
+		}
+
+		public PCComponent(string name)
+		{
+			Argument.NotNullAndNotEmpty(name);
+
+			Name = name;
+			PlugSlot = ComponentInterface.NullObject;
+
+			Components = new List<PCComponent>();
+			Slots = new List<ComponentInterface>();
+		}
+
+		#endregion
+
 		#region Properties
 
-		private readonly IList<PCComponent> _containedComponents = new List<PCComponent>();
+		private IList<PCComponent> Components { get; set; }
 
-		private readonly IList<ComponentInterface> _containedSlots = new List<ComponentInterface>();
+		private IList<ComponentInterface> Slots { get; set; }
 
 		public string Name { get; private set; }
 
@@ -25,30 +45,18 @@ namespace PCExpert.Core.Domain
 		public decimal AveragePrice { get; private set; }
 
 		/// <summary>
-		/// A slot, that component plugs into
+		///     A slot, that component plugs into
 		/// </summary>
 		public ComponentInterface PlugSlot { get; private set; }
 
 		public IReadOnlyCollection<PCComponent> ContainedComponents
 		{
-			get { return new ReadOnlyCollection<PCComponent>(_containedComponents); }
+			get { return new ReadOnlyCollection<PCComponent>(Components); }
 		}
 
 		public IReadOnlyCollection<ComponentInterface> ContainedSlots
 		{
-			get { return new ReadOnlyCollection<ComponentInterface>(_containedSlots); }
-		}
-
-		#endregion
-
-		#region Constructors
-
-		public PCComponent(string name)
-		{
-			Argument.NotNullAndNotEmpty(name);
-
-			Name = name;
-			PlugSlot = ComponentInterface.NullObject;
+			get { return new ReadOnlyCollection<ComponentInterface>(Slots); }
 		}
 
 		#endregion
@@ -58,22 +66,30 @@ namespace PCExpert.Core.Domain
 		public PCComponent WithContainedComponent(PCComponent childComponent)
 		{
 			Argument.NotNull(childComponent);
+			CheckIdentity(childComponent);
 
-			if (_containedComponents.Contains(childComponent))
+			if (Components.Contains(childComponent))
 				throw new DuplicateElementException("Child component has been already added");
 
-			_containedComponents.Add(childComponent);
+			Components.Add(childComponent);
 			return this;
+		}
+
+		private void CheckIdentity(PCComponent childComponent)
+		{
+			if(childComponent.Id != Guid.Empty)
+				if(childComponent.Id == Id)
+					throw new ArgumentException("Cannot add component to itself");
 		}
 
 		public PCComponent WithContainedSlot(ComponentInterface containedSlot)
 		{
 			Argument.NotNull(containedSlot);
 
-			if (_containedSlots.Contains(containedSlot))
+			if (Slots.Contains(containedSlot))
 				throw new DuplicateElementException("Slot has been already added");
 
-			_containedSlots.Add(containedSlot);
+			Slots.Add(containedSlot);
 			return this;
 		}
 
