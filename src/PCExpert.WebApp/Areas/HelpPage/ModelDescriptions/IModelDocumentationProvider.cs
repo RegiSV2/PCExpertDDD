@@ -3,10 +3,9 @@ using System.Reflection;
 
 namespace PCExpert.WebApp.Areas.HelpPage.ModelDescriptions
 {
-    public interface IModelDocumentationProvider
-    {
-        string GetDocumentation(MemberInfo member);
-
-        string GetDocumentation(Type type);
-    }
+	public interface IModelDocumentationProvider
+	{
+		string GetDocumentation(MemberInfo member);
+		string GetDocumentation(Type type);
+	}
 }

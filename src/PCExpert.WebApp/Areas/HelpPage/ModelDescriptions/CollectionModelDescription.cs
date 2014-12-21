@@ -1,7 +1,7 @@
 namespace PCExpert.WebApp.Areas.HelpPage.ModelDescriptions
 {
-    public class CollectionModelDescription : ModelDescription
-    {
-        public ModelDescription ElementDescription { get; set; }
-    }
+	public class CollectionModelDescription : ModelDescription
+	{
+		public ModelDescription ElementDescription { get; set; }
+	}
 }
