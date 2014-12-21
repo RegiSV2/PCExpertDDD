@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
 using PCExpert.Core.Domain.Exceptions;
 using PCExpert.Core.Domain.Tests.Utils;
@@ -9,26 +10,106 @@ namespace PCExpert.Core.Domain.Tests
 	[TestFixture]
 	public class PCComponentTests
 	{
-		private const decimal ComponentPrice = 100m;
+		protected const decimal ComponentPrice = 100m;
 
+		protected PCComponent DefaultComponent;
+
+		[SetUp]
+		public void EstablishContext()
+		{
+			DefaultComponent = CreateComponent(1);
+		}
+
+		protected static PCComponent CreateComponent(int componentNameValue)
+		{
+			return DomainObjectsCreator.CreateComponent(componentNameValue);
+		}
+
+		protected static ComponentInterface CreateInterface(int interfaceNameValue)
+		{
+			var interfaceMock = new Mock<ComponentInterface>(Guid.NewGuid());
+			interfaceMock.Setup(x => x.Name).Returns(NamesGenerator.ComponentInterfaceName(interfaceNameValue));
+			return interfaceMock.Object;
+		}
+	}
+
+	public class PCComponentConstructorTests : PCComponentTests
+	{
 		[Test]
 		public void Constructor_Called_CanCreatePCComponent()
 		{
+			//Arrange
 			var componentName = NamesGenerator.ComponentName();
-			var component = new PCComponent(componentName, ComponentPrice);
+			var component = new PCComponent(componentName);
 
+			//Assert
 			Assert.That(component.Name, Is.EqualTo(componentName));
-			Assert.That(component.AveragePrice, Is.EqualTo(ComponentPrice));
 		}
 
 		[Test]
-		public void ContainedComponents_NoComponentsAdded_ShouldReturnEmptyCollection()
+		[TestCase(null)]
+		[TestCase("")]
+		public void Constructor_CalledWithEmptyName_ShouldThrowArgumentNullException(string name)
 		{
-			//Arrange
-			var parentComponent = CreateComponent(1);
+			Assert.That(() => new PCComponent(name), Throws.InstanceOf<ArgumentNullException>());
+		}
+	}
+
+	public class PCComponentAveragePriceTests : PCComponentTests
+	{
+		[Test]
+		public void AveragePrice_AfterInstanceCreation_ShouldBeZero()
+		{
+			Assert.That(DefaultComponent.AveragePrice, Is.EqualTo(0));
+		}
+
+		[Test]
+		public void SetAveragePrice_Called_ShouldSetAveragePrice()
+		{
+			//Act
+			DefaultComponent.WithAveragePrice(ComponentPrice);
 
 			//Assert
-			Assert.That(parentComponent.ContainedComponents, Is.Empty);
+			Assert.That(DefaultComponent.AveragePrice, Is.EqualTo(ComponentPrice));
+		}
+
+		[Test]
+		public void SetAveragePrice_NegativeValue_ShouldThrowArgumentOutOfRangeException()
+		{
+			Assert.That(() => DefaultComponent.WithAveragePrice(-15m), Throws.InstanceOf<ArgumentOutOfRangeException>());
+		}
+	}
+
+	public class PCComponentNameTests : PCComponentTests
+	{
+		[Test]
+		public void SetName_Called_ShouldSetNewName()
+		{
+			//Arrange
+			var newComponentName = NamesGenerator.ComponentName(2);
+
+			//Act
+			DefaultComponent.WithName(newComponentName);
+
+			//Assert
+			Assert.That(DefaultComponent.Name, Is.EqualTo(newComponentName));
+		}
+
+		[Test]
+		[TestCase(null)]
+		[TestCase("")]
+		public void SetName_EmptyString_ShouldThrowArgumentNullException(string name)
+		{
+			Assert.That(() => DefaultComponent.WithName(name), Throws.InstanceOf<ArgumentNullException>());
+		}
+	}
+
+	public class PCComponentContainedComponentsTests : PCComponentTests
+	{
+		[Test]
+		public void ContainedComponents_NoComponentsAdded_ShouldReturnEmptyCollection()
+		{
+			Assert.That(DefaultComponent.ContainedComponents, Is.Empty);
 		}
 
 		[Test]
@@ -39,7 +120,7 @@ namespace PCExpert.Core.Domain.Tests
 			var childComponent = CreateComponent(2);
 
 			//Act
-			parentComponent.WithContainsComponent(childComponent);
+			parentComponent.WithContainedComponent(childComponent);
 
 			//Assert
 			Assert.That(parentComponent.ContainedComponents.Count, Is.EqualTo(1));
@@ -49,11 +130,7 @@ namespace PCExpert.Core.Domain.Tests
 		[Test]
 		public void AddContainedComponent_NullComponent_ShouldThrowArgumentNullException()
 		{
-			//Arrange
-			var parentComponent = CreateComponent(1);
-
-			//Assert
-			Assert.That(() => parentComponent.WithContainsComponent(null), Throws.InstanceOf<ArgumentNullException>());
+			Assert.That(() => DefaultComponent.WithContainedComponent(null), Throws.InstanceOf<ArgumentNullException>());
 		}
 
 		[Test]
@@ -62,16 +139,76 @@ namespace PCExpert.Core.Domain.Tests
 			//Arrange
 			var parentComponent = CreateComponent(1);
 			var childComponent = CreateComponent(2);
-			parentComponent.WithContainsComponent(childComponent);
+			parentComponent.WithContainedComponent(childComponent);
 
 			//Assert
-			Assert.That(() => parentComponent.WithContainsComponent(childComponent),
+			Assert.That(() => parentComponent.WithContainedComponent(childComponent),
 				Throws.InstanceOf<DuplicateElementException>());
 		}
+	}
 
-		private static PCComponent CreateComponent(int componentNameValue)
+	public class PCComponentInterfaceConnectionsTests : PCComponentTests
+	{
+		[Test]
+		public void PlugSlot_NoPlugSlotSet_ShouldReturnNull()
 		{
-			return new PCComponent(NamesGenerator.ComponentName(componentNameValue), ComponentPrice);
+			//Assert
+			Assert.That(DefaultComponent.PlugSlot.SameIdentityAs(ComponentInterface.NullObject));
+		}
+
+		[Test]
+		public void SetPlugSlot_NullArgument_ShouldThrowArgumentNullException()
+		{
+			//Assert
+			Assert.That(() => DefaultComponent.WithPlugSlot(null), Throws.InstanceOf<ArgumentNullException>());
+		}
+
+		[Test]
+		public void SetPlugSlot_NotNullArgument_ShouldSetCorrectValue()
+		{
+			//Arrange
+			var componentInterface = CreateInterface(1);
+
+			//Act
+			DefaultComponent.WithPlugSlot(componentInterface);
+
+			//Assert
+			Assert.That(DefaultComponent.PlugSlot, Is.EqualTo(componentInterface));
+		}
+
+		[Test]
+		public void ContainedSlots_NoSlotsAdded_ShouldReturnEmptyCollection()
+		{
+			Assert.That(DefaultComponent.ContainedSlots.Count, Is.EqualTo(0));
+		}
+
+		[Test]
+		public void AddContainedSlot_NullSlot_ShouldThrowArgumentNullException()
+		{
+			Assert.That(() => DefaultComponent.WithContainedSlot(null), Throws.InstanceOf<ArgumentNullException>());
+		}
+
+		[Test]
+		public void AddContainedSlot_NotNullSlot_ShouldAddSlotToContainedSLots()
+		{
+			//Arrange
+			var slotToAdd = CreateInterface(1);
+			DefaultComponent.WithContainedSlot(slotToAdd);
+
+			//Assert
+			Assert.That(DefaultComponent.ContainedSlots.Count, Is.EqualTo(1));
+			Assert.That(DefaultComponent.ContainedSlots.Contains(slotToAdd));
+		}
+
+		[Test]
+		public void AddContainedSlot_InterfaceAlreadyAdded_ShouldThrowDuplicateElementException()
+		{
+			//Arrange
+			var slotToAdd = CreateInterface(1);
+			DefaultComponent.WithContainedSlot(slotToAdd);
+
+			//Assert
+			Assert.That(() => DefaultComponent.WithContainedSlot(slotToAdd), Throws.InstanceOf<DuplicateElementException>());
 		}
 	}
 }

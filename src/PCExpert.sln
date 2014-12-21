@@ -11,6 +11,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCExpert.Core.Domain", "PCE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCExpert.Core.Domain.Tests", "PCExpert.Core.Domain.Tests\PCExpert.Core.Domain.Tests.csproj", "{F8D2CC61-DB32-4CBC-8829-1D21BBC87CEE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{FDD175EC-4F44-48B4-A237-700B271033B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCExpert.Core.DataAccess", "PCExpert.Core.DataAccess\PCExpert.Core.DataAccess.csproj", "{B9F0AC6A-D55B-46F0-AEFD-EDB71CE4C0F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCExpert.Core.DataAccess.Tests", "PCExpert.Core.DataAccess.Tests\PCExpert.Core.DataAccess.Tests.csproj", "{0594CF46-BA67-49FF-8638-C6D9AF6AA24E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,11 +35,21 @@ Global
 		{F8D2CC61-DB32-4CBC-8829-1D21BBC87CEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8D2CC61-DB32-4CBC-8829-1D21BBC87CEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8D2CC61-DB32-4CBC-8829-1D21BBC87CEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9F0AC6A-D55B-46F0-AEFD-EDB71CE4C0F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9F0AC6A-D55B-46F0-AEFD-EDB71CE4C0F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9F0AC6A-D55B-46F0-AEFD-EDB71CE4C0F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9F0AC6A-D55B-46F0-AEFD-EDB71CE4C0F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0594CF46-BA67-49FF-8638-C6D9AF6AA24E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0594CF46-BA67-49FF-8638-C6D9AF6AA24E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0594CF46-BA67-49FF-8638-C6D9AF6AA24E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0594CF46-BA67-49FF-8638-C6D9AF6AA24E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F8D2CC61-DB32-4CBC-8829-1D21BBC87CEE} = {5235EA3F-1742-46DE-A5E4-844EBE5C1F63}
+		{B9F0AC6A-D55B-46F0-AEFD-EDB71CE4C0F6} = {FDD175EC-4F44-48B4-A237-700B271033B3}
+		{0594CF46-BA67-49FF-8638-C6D9AF6AA24E} = {5235EA3F-1742-46DE-A5E4-844EBE5C1F63}
 	EndGlobalSection
 EndGlobal
