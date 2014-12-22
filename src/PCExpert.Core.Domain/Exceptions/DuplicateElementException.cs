@@ -3,12 +3,8 @@ using System.Runtime.Serialization;
 
 namespace PCExpert.Core.Domain.Exceptions
 {
-	public class DuplicateElementException : Exception, ISerializable
+	public class DuplicateElementException : ApplicationException, ISerializable
 	{
-		public DuplicateElementException()
-		{
-		}
-
 		public DuplicateElementException(string message)
 			: base(message)
 		{
