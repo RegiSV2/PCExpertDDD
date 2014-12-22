@@ -18,8 +18,7 @@ namespace PCExpert.Core.Domain
 
 		#region Constructors
 
-		protected ComponentInterface(Guid id)
-			: base(id)
+		protected ComponentInterface()
 		{
 		}
 

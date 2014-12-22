@@ -26,7 +26,8 @@ namespace PCExpert.Core.Domain.Tests
 
 		protected static ComponentInterface CreateInterface(int interfaceNameValue)
 		{
-			var interfaceMock = new Mock<ComponentInterface>(Guid.NewGuid());
+			var interfaceMock = new Mock<ComponentInterface>();
+			interfaceMock.SetupGet(x => x.Id).Returns(Guid.NewGuid());
 			interfaceMock.Setup(x => x.Name).Returns(NamesGenerator.ComponentInterfaceName(interfaceNameValue));
 			return interfaceMock.Object;
 		}

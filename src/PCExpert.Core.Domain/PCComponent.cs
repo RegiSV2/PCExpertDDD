@@ -13,8 +13,7 @@ namespace PCExpert.Core.Domain
 	{
 		#region Constructors
 
-		protected PCComponent(Guid id)
-			: base(id)
+		protected PCComponent()
 		{
 		}
 
@@ -77,9 +76,9 @@ namespace PCExpert.Core.Domain
 
 		private void CheckIdentity(PCComponent childComponent)
 		{
-			if(childComponent.Id != Guid.Empty)
-				if(childComponent.Id == Id)
-					throw new ArgumentException("Cannot add component to itself");
+			if (this == childComponent ||
+				(IsPersisted && SameIdentityAs(childComponent)))
+				throw new ArgumentException("Cannot add component to itself");
 		}
 
 		public PCComponent WithContainedSlot(ComponentInterface containedSlot)

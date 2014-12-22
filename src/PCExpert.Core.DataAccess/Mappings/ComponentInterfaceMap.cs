@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -7,20 +8,11 @@ using PCExpert.Core.Domain;
 
 namespace PCExpert.Core.DataAccess.Mappings
 {
-	public class ComponentInterfaceMap : EntityMappingBase<ComponentInterface>
-	{
-		protected override void Map(EntityTypeConfiguration<ComponentInterface> mapping)
-		{
-			base.Map(mapping);
-			mapping.HasRequired(x => x.Name);
-		}
-	}
-
 	public class ComponentInterfaceConfiguration : EntityTypeConfiguration<ComponentInterface>
 	{
 		public ComponentInterfaceConfiguration()
 		{
-			HasKey(x => x.Id);
+			Property(x => x.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 		}
 	}
 
@@ -37,7 +29,7 @@ namespace PCExpert.Core.DataAccess.Mappings
 
 		public PCComponentConfiguration()
 		{
-			HasKey(x => x.Id);
+			Property(x => x.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 			HasMany(PrivateProperty<ICollection<PCComponent>>("Components"))
 				.WithMany().Map(m =>
 				{
@@ -45,16 +37,14 @@ namespace PCExpert.Core.DataAccess.Mappings
 					m.MapRightKey("ChildComponent_id");
 					m.ToTable("ParentToChildComponents");
 				});
-			HasMany(PrivateProperty<ICollection<ComponentInterface>>("Slots"));
-			HasRequired(x => x.PlugSlot);
-		}
-	}
-
-	public class PCComponentMap : EntityMappingBase<PCComponent>
-	{
-		protected override void Map(EntityTypeConfiguration<PCComponent> mapping)
-		{
-			base.Map(mapping);
+			HasMany(PrivateProperty<ICollection<ComponentInterface>>("Slots"))
+				.WithMany().Map(m =>
+				{
+					m.MapLeftKey("Component_id");
+					m.MapRightKey("ContainedSlot_id");
+					m.ToTable("ComponentToSlots");
+				});
+			HasOptional(x => x.PlugSlot);
 		}
 	}
 }

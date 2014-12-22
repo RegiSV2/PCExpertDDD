@@ -46,11 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MappingBase.cs" />
-    <Compile Include="EntityMappingsList.cs" />
-    <Compile Include="IMapping.cs" />
     <Compile Include="Mappings\ComponentInterfaceMap.cs" />
-    <Compile Include="Mappings\EntityMappingBase.cs" />
     <Compile Include="PCExpertContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
