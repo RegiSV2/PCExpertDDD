@@ -50,6 +50,7 @@
     <Compile Include="EntityTests.cs" />
     <Compile Include="NullComponentInterfaceTests.cs" />
     <Compile Include="PCComponentTests.cs" />
+    <Compile Include="PCConfigurationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

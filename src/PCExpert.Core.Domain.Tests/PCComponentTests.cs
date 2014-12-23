@@ -11,6 +11,9 @@ namespace PCExpert.Core.Domain.Tests
 	public class PCComponentTests
 	{
 		protected const decimal ComponentPrice = 100m;
+
+		protected const ComponentType ValidComponentType = ComponentType.HardDiskDrive;
+
 		protected PCComponent DefaultComponent;
 
 		[SetUp]
@@ -21,7 +24,7 @@ namespace PCExpert.Core.Domain.Tests
 
 		protected static PCComponent CreateComponent(int componentNameValue)
 		{
-			return DomainObjectsCreator.CreateComponent(componentNameValue);
+			return DomainObjectsCreator.CreateComponent(componentNameValue, ComponentType.SoundCard);
 		}
 
 		protected static ComponentInterface CreateInterface(int interfaceNameValue)
@@ -40,7 +43,7 @@ namespace PCExpert.Core.Domain.Tests
 		{
 			//Arrange
 			var componentName = NamesGenerator.ComponentName();
-			var component = new PCComponent(componentName);
+			var component = new PCComponent(componentName, ValidComponentType);
 
 			//Assert
 			Assert.That(component.Name, Is.EqualTo(componentName));
@@ -51,7 +54,16 @@ namespace PCExpert.Core.Domain.Tests
 		[TestCase("")]
 		public void Constructor_CalledWithEmptyName_ShouldThrowArgumentNullException(string name)
 		{
-			Assert.That(() => new PCComponent(name), Throws.InstanceOf<ArgumentNullException>());
+			Assert.That(() => new PCComponent(name, ValidComponentType), Throws.InstanceOf<ArgumentNullException>());
+		}
+
+		[Test]
+		public void Constructor_CalledWithInvalidType_ShouldThrowArgumentException()
+		{
+			Assert.That(() => new PCComponent(
+				NamesGenerator.ComponentName(),
+				(ComponentType) 234567),
+				Throws.ArgumentException);
 		}
 	}
 
@@ -229,6 +241,31 @@ namespace PCExpert.Core.Domain.Tests
 
 			//Assert
 			Assert.That(() => DefaultComponent.WithContainedSlot(slotToAdd), Throws.InstanceOf<DuplicateElementException>());
+		}
+	}
+
+	public class PCComponentComponentTypeTests : PCComponentTests
+	{
+		[Test]
+		public void WithType_ValidComponentType_ShouldSetTypeProperty()
+		{
+			//Arrange
+			const ComponentType newType = ComponentType.Motherboard;
+			Assert.That(DefaultComponent.Type, Is.Not.EqualTo(newType));
+			DefaultComponent.WithType(newType);
+
+			//Assert
+			Assert.That(DefaultComponent.Type, Is.EqualTo(newType));
+		}
+
+		[Test]
+		public void WithType_InvalidComponentType_ShouldThrowArgumentException()
+		{
+			//Arrange
+			const ComponentType newType = (ComponentType) 2345678;
+
+			//Assert
+			Assert.That(() => DefaultComponent.WithType(newType), Throws.ArgumentException);
 		}
 	}
 }

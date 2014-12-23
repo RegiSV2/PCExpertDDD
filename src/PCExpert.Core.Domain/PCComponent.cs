@@ -17,15 +17,18 @@ namespace PCExpert.Core.Domain
 		{
 		}
 
-		public PCComponent(string name)
+		public PCComponent(string name, ComponentType type)
 		{
 			Argument.NotNullAndNotEmpty(name);
+			Argument.ValidEnumItem(type);
 
 			Name = name;
 			PlugSlot = ComponentInterface.NullObject;
 
 			Components = new List<PCComponent>();
 			Slots = new List<ComponentInterface>();
+
+			Type = type;
 		}
 
 		#endregion
@@ -47,6 +50,8 @@ namespace PCExpert.Core.Domain
 		///     A slot, that component plugs into
 		/// </summary>
 		public ComponentInterface PlugSlot { get; private set; }
+
+		public ComponentType Type { get; private set; }
 
 		public IReadOnlyCollection<PCComponent> ContainedComponents
 		{
@@ -113,6 +118,15 @@ namespace PCExpert.Core.Domain
 			Argument.NotNullAndNotEmpty(newName);
 
 			Name = newName;
+			return this;
+		}
+
+		public PCComponent WithType(ComponentType type)
+		{
+			Argument.ValidEnumItem(type);
+
+			Type = type;
+
 			return this;
 		}
 
