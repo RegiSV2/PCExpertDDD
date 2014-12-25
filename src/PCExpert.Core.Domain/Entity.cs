@@ -8,7 +8,8 @@ namespace PCExpert.Core.Domain
 
 		public bool SameIdentityAs(Entity otherEntity)
 		{
-			return otherEntity != null && otherEntity.Id == Id;
+			return otherEntity != null &&
+			       (this == otherEntity || (IsPersisted && otherEntity.Id == Id));
 		}
 
 		public bool IsPersisted

@@ -1,4 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using PCExpert.Core.Domain.Exceptions;
+using PCExpert.Core.Domain.Utils;
 
 namespace PCExpert.Core.Domain
 {
@@ -8,7 +12,7 @@ namespace PCExpert.Core.Domain
 
 		public PCConfiguration()
 		{
-			Components = new List<PCComponent>();
+			ContainedComponents = new List<PCComponent>();
 		}
 
 		#endregion
@@ -17,10 +21,15 @@ namespace PCExpert.Core.Domain
 
 		public string Name { get; private set; }
 
+		private IList<PCComponent> ContainedComponents { get; set; }
+
 		/// <summary>
 		/// Components, included in this configuration
 		/// </summary>
-		public IList<PCComponent> Components { get; private set; }
+		public IReadOnlyCollection<PCComponent> Components
+		{
+			get { return new ReadOnlyCollection<PCComponent>(ContainedComponents); }
+		}
 
 		#endregion
 
@@ -31,7 +40,31 @@ namespace PCExpert.Core.Domain
 		/// </summary>
 		public decimal CalculatePrice()
 		{
-			return 0;
+			return ContainedComponents.Sum(x => x.AveragePrice);
+		}
+
+		/// <summary>
+		/// Sets new name for configuration
+		/// </summary>
+		public PCConfiguration WithName(string name)
+		{
+			Name = name;
+
+			return this;
+		}
+
+		/// <summary>
+		/// Adds component to configuration
+		/// </summary>
+		public PCConfiguration WithComponent(PCComponent component)
+		{
+			Argument.NotNull(component);
+			if(ContainedComponents.Any(x => x.SameIdentityAs(component)))
+				throw new DuplicateElementException("Component already added");
+
+			ContainedComponents.Add(component);
+
+			return this;
 		}
 
 		#endregion

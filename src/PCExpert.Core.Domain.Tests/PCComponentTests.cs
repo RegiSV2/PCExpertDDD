@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Principal;
 using Moq;
 using NUnit.Framework;
 using PCExpert.Core.Domain.Exceptions;
@@ -27,12 +28,12 @@ namespace PCExpert.Core.Domain.Tests
 			return DomainObjectsCreator.CreateComponent(componentNameValue, ComponentType.SoundCard);
 		}
 
-		protected static ComponentInterface CreateInterface(int interfaceNameValue)
+		protected static Mock<ComponentInterface> CreateInterface(int interfaceNameValue)
 		{
 			var interfaceMock = new Mock<ComponentInterface>();
 			interfaceMock.SetupGet(x => x.Id).Returns(Guid.NewGuid());
 			interfaceMock.Setup(x => x.Name).Returns(NamesGenerator.ComponentInterfaceName(interfaceNameValue));
-			return interfaceMock.Object;
+			return interfaceMock;
 		}
 	}
 
@@ -125,7 +126,7 @@ namespace PCExpert.Core.Domain.Tests
 		}
 
 		[Test]
-		public void AddContainedComponent_NotNullComponent_ComponentShouldBeAddedToContainedComponents()
+		public void WithContainedComponent_NotNullComponent_ComponentShouldBeAddedToContainedComponents()
 		{
 			//Arrange
 			var parentComponent = CreateComponent(1);
@@ -140,13 +141,13 @@ namespace PCExpert.Core.Domain.Tests
 		}
 
 		[Test]
-		public void AddContainedComponent_NullComponent_ShouldThrowArgumentNullException()
+		public void WithContainedComponent_NullComponent_ShouldThrowArgumentNullException()
 		{
 			Assert.That(() => DefaultComponent.WithContainedComponent(null), Throws.InstanceOf<ArgumentNullException>());
 		}
 
 		[Test]
-		public void AddContainedComponent_ComponentAlreadyAdded_ShouldThrowDuplicateElementException()
+		public void WithContainedComponent_ComponentAlreadyAdded_ShouldThrowDuplicateElementException()
 		{
 			//Arrange
 			var parentComponent = CreateComponent(1);
@@ -159,14 +160,14 @@ namespace PCExpert.Core.Domain.Tests
 		}
 
 		[Test]
-		public void AddContainedComponent_SameReferenceAsParent_ShouldThrowArgumentException()
+		public void WithContainedComponent_SameReferenceAsParent_ShouldThrowArgumentException()
 		{
 			Assert.That(() => DefaultComponent.WithContainedComponent(DefaultComponent),
 				Throws.InstanceOf<ArgumentException>());
 		}
 
 		[Test]
-		public void AddContainedComponent_ComponentsWithSameIdentities_ShouldThrowArgumentException()
+		public void WithContainedComponent_ComponentsWithSameIdentities_ShouldThrowArgumentException()
 		{
 			//Arrange
 			var commonId = Guid.NewGuid();
@@ -176,6 +177,20 @@ namespace PCExpert.Core.Domain.Tests
 			//Assert
 			Assert.That(() => parentComponent.WithContainedComponent(childComponent),
 				Throws.InstanceOf<ArgumentException>());
+		}
+
+		[Test]
+		public void WithContainedComponent_ComponentWithSameIdentityAdded_ShouldThrowArgumentException()
+		{
+			//Arrange
+			var commonId = Guid.NewGuid();
+			var firstComponent = CreateComponent(1).WithId(commonId);
+			var secondComponent = CreateComponent(2).WithId(commonId);
+			DefaultComponent.WithContainedComponent(firstComponent);
+
+			//Assert
+			Assert.That(() => DefaultComponent.WithContainedComponent(secondComponent),
+				Throws.InstanceOf<DuplicateElementException>());
 		}
 	}
 
@@ -189,23 +204,23 @@ namespace PCExpert.Core.Domain.Tests
 		}
 
 		[Test]
-		public void SetPlugSlot_NullArgument_ShouldThrowArgumentNullException()
+		public void WithPlugSlot_NullArgument_ShouldThrowArgumentNullException()
 		{
 			//Assert
 			Assert.That(() => DefaultComponent.WithPlugSlot(null), Throws.InstanceOf<ArgumentNullException>());
 		}
 
 		[Test]
-		public void SetPlugSlot_NotNullArgument_ShouldSetCorrectValue()
+		public void WithPlugSlot_NotNullArgument_ShouldSetCorrectValue()
 		{
 			//Arrange
 			var componentInterface = CreateInterface(1);
 
 			//Act
-			DefaultComponent.WithPlugSlot(componentInterface);
+			DefaultComponent.WithPlugSlot(componentInterface.Object);
 
 			//Assert
-			Assert.That(DefaultComponent.PlugSlot, Is.EqualTo(componentInterface));
+			Assert.That(DefaultComponent.PlugSlot, Is.EqualTo(componentInterface.Object));
 		}
 
 		[Test]
@@ -215,32 +230,46 @@ namespace PCExpert.Core.Domain.Tests
 		}
 
 		[Test]
-		public void AddContainedSlot_NullSlot_ShouldThrowArgumentNullException()
+		public void WithContainedSlot_NullSlot_ShouldThrowArgumentNullException()
 		{
 			Assert.That(() => DefaultComponent.WithContainedSlot(null), Throws.InstanceOf<ArgumentNullException>());
 		}
 
 		[Test]
-		public void AddContainedSlot_NotNullSlot_ShouldAddSlotToContainedSLots()
+		public void WithContainedSlot_NotNullSlot_ShouldAddSlotToContainedSLots()
 		{
 			//Arrange
 			var slotToAdd = CreateInterface(1);
-			DefaultComponent.WithContainedSlot(slotToAdd);
+			DefaultComponent.WithContainedSlot(slotToAdd.Object);
 
 			//Assert
 			Assert.That(DefaultComponent.ContainedSlots.Count, Is.EqualTo(1));
-			Assert.That(DefaultComponent.ContainedSlots.Contains(slotToAdd));
+			Assert.That(DefaultComponent.ContainedSlots.Contains(slotToAdd.Object));
 		}
 
 		[Test]
-		public void AddContainedSlot_InterfaceAlreadyAdded_ShouldThrowDuplicateElementException()
+		public void WithContainedSlot_InterfaceAlreadyAdded_ShouldThrowDuplicateElementException()
 		{
 			//Arrange
 			var slotToAdd = CreateInterface(1);
-			DefaultComponent.WithContainedSlot(slotToAdd);
+			DefaultComponent.WithContainedSlot(slotToAdd.Object);
 
 			//Assert
-			Assert.That(() => DefaultComponent.WithContainedSlot(slotToAdd), Throws.InstanceOf<DuplicateElementException>());
+			Assert.That(() => DefaultComponent.WithContainedSlot(slotToAdd.Object), Throws.InstanceOf<DuplicateElementException>());
+		}
+
+		[Test]
+		public void WithContainedSlot_DifferentSlotWithSameIdentityAdded_ShouldThrowDuplicateElementException()
+		{
+			//Arrange
+			var commonId = Guid.NewGuid();
+			var firstSlot = CreateInterface(1).WithId(commonId).Object;
+			var secondSlot = CreateInterface(2).WithId(commonId).Object;
+			DefaultComponent.WithContainedSlot(firstSlot);
+
+			//Assert
+			Assert.That(() => DefaultComponent.WithContainedSlot(secondSlot),
+				Throws.InstanceOf<DuplicateElementException>());
 		}
 	}
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using PCExpert.Core.Domain.Exceptions;
 using PCExpert.Core.Domain.Utils;
 
@@ -70,27 +71,21 @@ namespace PCExpert.Core.Domain
 		public PCComponent WithContainedComponent(PCComponent childComponent)
 		{
 			Argument.NotNull(childComponent);
-			CheckIdentity(childComponent);
 
-			if (Components.Contains(childComponent))
+			if (SameIdentityAs(childComponent))
+				throw new ArgumentException("Cannot add component to itself");
+			if (Components.Any(x => x.SameIdentityAs(childComponent)))
 				throw new DuplicateElementException("Child component has been already added");
 
 			Components.Add(childComponent);
 			return this;
 		}
 
-		private void CheckIdentity(PCComponent childComponent)
-		{
-			if (this == childComponent ||
-				(IsPersisted && SameIdentityAs(childComponent)))
-				throw new ArgumentException("Cannot add component to itself");
-		}
-
 		public PCComponent WithContainedSlot(ComponentInterface containedSlot)
 		{
 			Argument.NotNull(containedSlot);
 
-			if (Slots.Contains(containedSlot))
+			if (Slots.Any(x => x.SameIdentityAs(containedSlot)))
 				throw new DuplicateElementException("Slot has been already added");
 
 			Slots.Add(containedSlot);

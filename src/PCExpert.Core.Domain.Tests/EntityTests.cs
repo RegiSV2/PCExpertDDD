@@ -41,6 +41,17 @@ namespace PCExpert.Core.Domain.Tests
 		}
 
 		[Test]
+		public void SameIdentityAs_NotPersistedButDifferentEntities_ShouldReturnFalse()
+		{
+			//Arrange
+			var entityMock1 = CreateMockEntity(Guid.Empty);
+			var entityMock2 = CreateMockEntity(Guid.Empty);
+
+			//Assert
+			Assert.That(entityMock1.SameIdentityAs(entityMock2), Is.EqualTo(false));
+		}
+
+		[Test]
 		public void IsPersisted_IdIsEmpty_ShouldReturnFalse()
 		{
 			//Arrange

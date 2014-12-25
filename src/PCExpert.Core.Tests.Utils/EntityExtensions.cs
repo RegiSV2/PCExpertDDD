@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Net.Mime;
 using System.Reflection;
+using Moq;
 using PCExpert.Core.Domain;
 
 namespace PCExpert.Core.Tests.Utils
@@ -14,6 +16,13 @@ namespace PCExpert.Core.Tests.Utils
 				BindingFlags.NonPublic | BindingFlags.Public);
 			idProperty.SetValue(entity, id);
 
+			return entity;
+		}
+
+		public static Mock<TEntity> WithId<TEntity>(this Mock<TEntity> entity, Guid id)
+			where TEntity : Entity
+		{
+			entity.SetupGet(x => x.Id).Returns(id);
 			return entity;
 		}
 	}
