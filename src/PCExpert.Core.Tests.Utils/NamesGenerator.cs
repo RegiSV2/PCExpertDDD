@@ -1,9 +1,12 @@
-﻿namespace PCExpert.Core.Tests.Utils
+﻿using Moq;
+
+namespace PCExpert.Core.Tests.Utils
 {
 	public static class NamesGenerator
 	{
 		private const string ComponentNameBase = "Test Component Name";
 		private const string ComponentInterfaceNameBase = "Test ComponentInterface Name";
+		private const string ConfigurationNameBase = "Test Configuration Name";
 
 		public static string ComponentName()
 		{
@@ -23,6 +26,16 @@
 		public static string ComponentInterfaceName(int nameNumber)
 		{
 			return ComponentInterfaceNameBase + " " + nameNumber;
+		}
+
+		public static string ConfigurationName()
+		{
+			return ConfigurationNameBase;
+		}
+
+		public static string ConfigurationName(int nameNumber)
+		{
+			return ConfigurationNameBase + " " + nameNumber;
 		}
 	}
 }

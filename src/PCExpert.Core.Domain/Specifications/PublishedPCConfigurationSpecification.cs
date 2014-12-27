@@ -27,7 +27,8 @@ namespace PCExpert.Core.Domain.Specifications
 
 		public PublishedPCConfigurationSpecification()
 		{
-			_nameSpecification = new ConfigurationNameNotEmptySpecification();
+			_nameSpecification = new ConfigurationNameNotEmptySpecification()
+			                     & new ConfigurationNameMaxLengthSpecification(NameMaxLength);
 		}
 
 		public override bool IsSatisfiedBy(PCConfiguration configuration)

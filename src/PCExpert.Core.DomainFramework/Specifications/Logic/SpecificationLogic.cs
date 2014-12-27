@@ -8,7 +8,7 @@ namespace PCExpert.Core.DomainFramework.Specifications.Logic
 	public static class SpecificationLogic
 	{
 		public static Specification<TEntity> And<TEntity>(params Specification<TEntity>[] specifications)
-			where TEntity : Entity
+			where TEntity : class
 		{
 			Argument.NotNull(specifications);
 
@@ -17,7 +17,7 @@ namespace PCExpert.Core.DomainFramework.Specifications.Logic
 
 		public static PersistenceAndSpecification<TEntity> And<TEntity>(
 			params PersistenceAwareSpecification<TEntity>[] specifications)
-			where TEntity : Entity
+			where TEntity : class
 		{
 			Argument.NotNull(specifications);
 

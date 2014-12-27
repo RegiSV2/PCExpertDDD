@@ -8,7 +8,7 @@ namespace PCExpert.Core.DomainFramework.Specifications.Logic
 	/// </summary>
 	/// <typeparam name="TEntity"></typeparam>
 	public class AndSpecification<TEntity> : Specification<TEntity>
-		where TEntity : Entity
+		where TEntity : class
 	{
 		private readonly Specification<TEntity>[] _conjuctedSpecifications;
 

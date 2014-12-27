@@ -9,7 +9,7 @@ namespace PCExpert.Core.DomainFramework.Specifications.Logic
 	///     And specification
 	/// </summary>
 	public class PersistenceAndSpecification<TEntity> : PersistenceAwareSpecification<TEntity>
-		where TEntity : Entity
+		where TEntity : class
 	{
 		private readonly Expression<Func<TEntity, bool>> _cominedExpression;
 

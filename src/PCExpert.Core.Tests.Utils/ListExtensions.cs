@@ -29,6 +29,6 @@ namespace PCExpert.Core.Tests.Utils
 				if (!except.Contains(result))
 					return result;
 			}
-		}
+		} 
 	}
 }

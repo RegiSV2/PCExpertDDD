@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
+using PCExpert.Core.DomainFramework.Specifications.Logic;
 
 namespace PCExpert.Core.DomainFramework.Specifications
 {
@@ -22,5 +23,12 @@ namespace PCExpert.Core.DomainFramework.Specifications
 		}
 
 		public abstract Expression<Func<TEntity, bool>> GetConditionExpression();
+
+		public static PersistenceAwareSpecification<TEntity> operator&(
+			PersistenceAwareSpecification<TEntity> spec1,
+			PersistenceAwareSpecification<TEntity> spec2)
+		{
+			return SpecificationLogic.And(spec1, spec2);
+		}
 	}
 }
