@@ -1,32 +1,9 @@
 using NUnit.Framework;
 using PCExpert.Core.DomainFramework.Specifications;
+using PCExpert.Core.DomainFramework.Specifications.Logic;
 
-namespace PCExpert.Core.DomainFramework.Tests.Specifications
+namespace PCExpert.Core.DomainFramework.Tests.Specifications.Logic
 {
-	[TestFixture]
-	public class LogicSpecificationsTests
-	{
-		protected TestEntity Entity;
-
-		[SetUp]
-		public void EstablishContext()
-		{
-			Entity = new TestEntity(1, 2);
-		}
-
-		protected class TestEntity : Entity
-		{
-			public TestEntity(int a, int b)
-			{
-				A = a;
-				B = b;
-			}
-
-			public int A { get; set; }
-			public int B { get; set; }
-		}
-	}
-
 	public class PersistenceAndSpecificationTests : LogicSpecificationsTests
 	{
 		[Test]
@@ -48,7 +25,7 @@ namespace PCExpert.Core.DomainFramework.Tests.Specifications
 			Assert.That(!andSpecification.IsSatisfiedBy(Entity));
 		}
 
-		private ISpecification<TestEntity> CreateSpecification(int specA, int specB)
+		private Specification<TestEntity> CreateSpecification(int specA, int specB)
 		{
 			return new PersistenceAndSpecification<TestEntity>(
 				new TestPersistenceAwareSpec<TestEntity>(x => x.A == specA),

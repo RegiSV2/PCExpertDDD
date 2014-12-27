@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 
 namespace PCExpert.Core.DomainFramework.Specifications
@@ -7,12 +8,13 @@ namespace PCExpert.Core.DomainFramework.Specifications
 	///     Supertype for persistence-aware specifications
 	/// </summary>
 	/// <remarks>Not thread-safe</remarks>
-	public abstract class PersistenceAwareSpecification<TEntity> : IPersistenceAwareSpecification<TEntity>
+	[ContractClass(typeof(PersistenceAwareSpecificationContracts<>))]
+	public abstract class PersistenceAwareSpecification<TEntity> : Specification<TEntity>
 		where TEntity : class
 	{
 		private Func<TEntity, bool> _compiledFunc;
 
-		public bool IsSatisfiedBy(TEntity entity)
+		public override bool IsSatisfiedBy(TEntity entity)
 		{
 			if (_compiledFunc == null)
 				_compiledFunc = GetConditionExpression().Compile();

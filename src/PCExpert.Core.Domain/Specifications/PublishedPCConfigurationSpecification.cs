@@ -4,10 +4,10 @@ using PCExpert.Core.DomainFramework.Specifications;
 
 namespace PCExpert.Core.Domain.Specifications
 {
-	public class PublishedPCConfigurationSpecification : ISpecification<PCConfiguration>
+	public class PublishedPCConfigurationSpecification : Specification<PCConfiguration>
 	{
 		public const int NameMaxLength = 256;
-		private readonly ISpecification<PCConfiguration> _nameSpecification;
+		private readonly Specification<PCConfiguration> _nameSpecification;
 
 		private readonly ComponentType[] _requiredComponentTypes =
 		{
@@ -30,7 +30,7 @@ namespace PCExpert.Core.Domain.Specifications
 			_nameSpecification = new ConfigurationNameNotEmptySpecification();
 		}
 
-		public bool IsSatisfiedBy(PCConfiguration configuration)
+		public override bool IsSatisfiedBy(PCConfiguration configuration)
 		{
 			if (!_nameSpecification.IsSatisfiedBy(configuration))
 				return false;

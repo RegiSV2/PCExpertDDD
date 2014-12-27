@@ -3,7 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using PCExpert.Core.DomainFramework.Utils;
 
-namespace PCExpert.Core.DomainFramework.Specifications
+namespace PCExpert.Core.DomainFramework.Specifications.Logic
 {
 	/// <summary>
 	///     And specification
@@ -13,8 +13,10 @@ namespace PCExpert.Core.DomainFramework.Specifications
 	{
 		private readonly Expression<Func<TEntity, bool>> _cominedExpression;
 
-		public PersistenceAndSpecification(params IPersistenceAwareSpecification<TEntity>[] specifications)
+		public PersistenceAndSpecification(params PersistenceAwareSpecification<TEntity>[] specifications)
 		{
+			Argument.NotNull(specifications);
+
 			_cominedExpression = specifications
 				.Select(x => x.GetConditionExpression())
 				.Aggregate((combined, expr) => combined.And(expr));

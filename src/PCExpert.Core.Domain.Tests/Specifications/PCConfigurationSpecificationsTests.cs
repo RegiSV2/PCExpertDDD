@@ -5,7 +5,7 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 {
 	[TestFixture]
 	public class PCConfigurationSpecificationsTests<TSpec>
-		where TSpec : ISpecification<PCConfiguration>
+		where TSpec : Specification<PCConfiguration>
 	{
 		protected PCConfiguration Configuration;
 		protected TSpec Specification;

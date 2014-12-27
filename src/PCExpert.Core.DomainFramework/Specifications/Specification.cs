@@ -4,13 +4,13 @@
 	///     Represents some business rule
 	/// </summary>
 	/// <typeparam name="TEntity">Type, the specification is defined for</typeparam>
-	public interface ISpecification<in TEntity>
+	public abstract class Specification<TEntity>
 		where TEntity : class
 	{
 		/// <summary>
 		///     Checks if the entity satisfies the specification
 		/// </summary>
 		/// <returns>True, if the entity satisfies the specification</returns>
-		bool IsSatisfiedBy(TEntity entity);
+		public abstract bool IsSatisfiedBy(TEntity entity);
 	}
 }
