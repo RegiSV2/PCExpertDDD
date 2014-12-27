@@ -12,13 +12,6 @@ namespace PCExpert.Core.DataAccess.Tests
 	[TestFixture, Category("IntegrationTests")]
 	public class MappingTests
 	{
-		private class PCExpertModel
-		{
-			public List<PCComponent> Components { get; set; }
-			public List<ComponentInterface> Interfaces { get; set; }
-			public List<PCConfiguration> Configurations { get; set; }
-		}
-
 		[Test]
 		public void DbOperationsTest()
 		{
@@ -32,6 +25,27 @@ namespace PCExpert.Core.DataAccess.Tests
 
 				AssertModelsAreEqual(savedModel, loadedModel);
 			}
+		}
+
+		#region Loading
+
+		private PCExpertModel LoadModel(PCExpertContext dbContext)
+		{
+			return new PCExpertModel
+			{
+				Interfaces = dbContext.ComponentInterfaces.ToList(),
+				Components = dbContext.PCComponents.ToList(),
+				Configurations = dbContext.PCConfigurations.ToList()
+			};
+		}
+
+		#endregion
+
+		private class PCExpertModel
+		{
+			public List<PCComponent> Components { get; set; }
+			public List<ComponentInterface> Interfaces { get; set; }
+			public List<PCConfiguration> Configurations { get; set; }
 		}
 
 		#region Model creation
@@ -72,7 +86,7 @@ namespace PCExpert.Core.DataAccess.Tests
 			{
 				var newComponent = new PCComponent(NamesGenerator.ComponentName(i), ComponentType.PowerSupply);
 				newComponent
-					.WithAveragePrice(100 * (i + 1))
+					.WithAveragePrice(100*(i + 1))
 					.WithPlugSlot(slotsToInsert.RandomElement())
 					.WithContainedSlot(slotsToInsert.RandomElement())
 					.WithContainedSlot(slotsToInsert.RandomElementExcept(newComponent.ContainedSlots.ToList()));
@@ -105,20 +119,6 @@ namespace PCExpert.Core.DataAccess.Tests
 			}
 
 			return configurations;
-		}
-
-		#endregion
-
-		#region Loading
-
-		private PCExpertModel LoadModel(PCExpertContext dbContext)
-		{
-			return new PCExpertModel
-			{
-				Interfaces = dbContext.ComponentInterfaces.ToList(),
-				Components = dbContext.PCComponents.ToList(),
-				Configurations = dbContext.PCConfigurations.ToList()
-			};
 		}
 
 		#endregion
@@ -180,10 +180,10 @@ namespace PCExpert.Core.DataAccess.Tests
 		{
 			Assert.That(loadedConfig, Is.Not.Null);
 			Assert.That(savedConfig.Name, Is.EqualTo(loadedConfig.Name));
-			
 		}
 
-		private static void AssertCollectionsEqual<TEntity>(IReadOnlyCollection<TEntity> savedEntities, IReadOnlyCollection<TEntity> loadedEntities)
+		private static void AssertCollectionsEqual<TEntity>(IReadOnlyCollection<TEntity> savedEntities,
+			IReadOnlyCollection<TEntity> loadedEntities)
 			where TEntity : Entity
 		{
 			Assert.That(savedEntities.Count == loadedEntities.Count);

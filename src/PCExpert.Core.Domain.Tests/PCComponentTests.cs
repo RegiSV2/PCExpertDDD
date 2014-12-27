@@ -245,29 +245,19 @@ namespace PCExpert.Core.Domain.Tests
 		}
 
 		[Test]
-		public void WithContainedSlot_InterfaceAlreadyAdded_ShouldThrowDuplicateElementException()
-		{
-			//Arrange
-			var slotToAdd = CreateInterface(1);
-			DefaultComponent.WithContainedSlot(slotToAdd.Object);
-
-			//Assert
-			Assert.That(() => DefaultComponent.WithContainedSlot(slotToAdd.Object),
-				Throws.InstanceOf<DuplicateElementException>());
-		}
-
-		[Test]
 		public void WithContainedSlot_DifferentSlotWithSameIdentityAdded_ShouldThrowDuplicateElementException()
 		{
 			//Arrange
 			var commonId = Guid.NewGuid();
 			var firstSlot = CreateInterface(1).WithId(commonId).Object;
-			var secondSlot = CreateInterface(2).WithId(commonId).Object;
 			DefaultComponent.WithContainedSlot(firstSlot);
 
+			//Act
+			var secondSlot = CreateInterface(2).WithId(commonId).Object;
+			DefaultComponent.WithContainedSlot(secondSlot);
+
 			//Assert
-			Assert.That(() => DefaultComponent.WithContainedSlot(secondSlot),
-				Throws.InstanceOf<DuplicateElementException>());
+			Assert.That(DefaultComponent.ContainedSlots.Count(x => x.SameIdentityAs(firstSlot)) == 2);
 		}
 	}
 

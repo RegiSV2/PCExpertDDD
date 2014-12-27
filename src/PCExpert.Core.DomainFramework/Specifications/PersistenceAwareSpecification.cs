@@ -9,7 +9,7 @@ namespace PCExpert.Core.DomainFramework.Specifications
 	///     Supertype for persistence-aware specifications
 	/// </summary>
 	/// <remarks>Not thread-safe</remarks>
-	[ContractClass(typeof(PersistenceAwareSpecificationContracts<>))]
+	[ContractClass(typeof (PersistenceAwareSpecificationContracts<>))]
 	public abstract class PersistenceAwareSpecification<TEntity> : Specification<TEntity>
 		where TEntity : class
 	{
@@ -24,7 +24,7 @@ namespace PCExpert.Core.DomainFramework.Specifications
 
 		public abstract Expression<Func<TEntity, bool>> GetConditionExpression();
 
-		public static PersistenceAwareSpecification<TEntity> operator&(
+		public static PersistenceAwareSpecification<TEntity> operator &(
 			PersistenceAwareSpecification<TEntity> spec1,
 			PersistenceAwareSpecification<TEntity> spec2)
 		{

@@ -86,9 +86,6 @@ namespace PCExpert.Core.Domain
 		{
 			Argument.NotNull(containedSlot);
 
-			if (Slots.Any(x => x.SameIdentityAs(containedSlot)))
-				throw new DuplicateElementException("Slot has been already added");
-
 			Slots.Add(containedSlot);
 			return this;
 		}

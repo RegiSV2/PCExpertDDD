@@ -1,6 +1,4 @@
-﻿using Moq;
-
-namespace PCExpert.Core.Tests.Utils
+﻿namespace PCExpert.Core.Tests.Utils
 {
 	public static class NamesGenerator
 	{

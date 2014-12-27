@@ -20,7 +20,7 @@ namespace PCExpert.Core.DataAccess
 
 		public DbSet<PCComponent> PCComponents { get; set; }
 		public DbSet<ComponentInterface> ComponentInterfaces { get; set; }
-		public DbSet<PCConfiguration> PCConfigurations { get; set; } 
+		public DbSet<PCConfiguration> PCConfigurations { get; set; }
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{

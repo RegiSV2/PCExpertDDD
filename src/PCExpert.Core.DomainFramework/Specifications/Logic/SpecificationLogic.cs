@@ -3,7 +3,7 @@
 namespace PCExpert.Core.DomainFramework.Specifications.Logic
 {
 	/// <summary>
-	/// Extensions for specification logic
+	///     Extensions for specification logic
 	/// </summary>
 	public static class SpecificationLogic
 	{

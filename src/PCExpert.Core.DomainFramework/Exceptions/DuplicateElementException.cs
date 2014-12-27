@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace PCExpert.Core.DomainFramework.Exceptions
 {
 	/// <summary>
-	/// Thrown when trying to add element to collection that has already been added
+	///     Thrown when trying to add element to collection that has already been added
 	/// </summary>
 	public class DuplicateElementException : ApplicationException, ISerializable
 	{

@@ -4,8 +4,8 @@ using System.Linq.Expressions;
 
 namespace PCExpert.Core.DomainFramework.Specifications
 {
-	[ContractClassFor(typeof(PersistenceAwareSpecification<>))]
-	abstract class PersistenceAwareSpecificationContracts<TEntity> : PersistenceAwareSpecification<TEntity>
+	[ContractClassFor(typeof (PersistenceAwareSpecification<>))]
+	internal abstract class PersistenceAwareSpecificationContracts<TEntity> : PersistenceAwareSpecification<TEntity>
 		where TEntity : class
 	{
 		public override Expression<Func<TEntity, bool>> GetConditionExpression()

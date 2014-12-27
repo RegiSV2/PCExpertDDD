@@ -12,7 +12,7 @@ namespace PCExpert.Core.DomainFramework.Tests.Specifications.Logic
 			//Assert
 			var specification1 = new TestPersistenceAwareSpec<TestEntity>(x => x.A == 1);
 			var specification2 = new TestPersistenceAwareSpec<TestEntity>(x => x.B == 2);
-			
+
 			//Act
 			var combinedSpec = SpecificationLogic.And(specification1, specification2);
 

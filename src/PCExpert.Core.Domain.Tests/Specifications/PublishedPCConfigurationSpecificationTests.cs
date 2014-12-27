@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using PCExpert.Core.Domain.Specifications;
+using PCExpert.Core.Tests.Utils;
 
 namespace PCExpert.Core.Domain.Tests.Specifications
 {
@@ -110,10 +112,7 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 		public void IsSatisfied_AnyOfRequiredWithDuplicatesComponentsAddedTwice_ShouldPass()
 		{
 			//Arrange
-			_configuration = new PCConfiguration();
-			AddValidName();
-			AddRequiredComponents();
-			AddRequiredWithAllowedDuplicatesComponents();
+			AddAllRequiredComponentsAndValidName();
 			AddRequiredWithAllowedDuplicatesComponents();
 
 			//Assert
@@ -124,10 +123,7 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 		public void IsSatisfied_AllRequiredComponentsAddedAndValidName_ShouldPass()
 		{
 			//Arrange
-			_configuration = new PCConfiguration();
-			AddValidName();
-			AddRequiredComponents();
-			AddRequiredWithAllowedDuplicatesComponents();
+			AddAllRequiredComponentsAndValidName();
 
 			//Assert
 			Assert.That(_specification.IsSatisfiedBy(_configuration));
@@ -137,7 +133,6 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 		public void IsSatisfied_SomeRequiredComponentsAreContainedInOtherAddedComponents_ShouldPass()
 		{
 			//Arrange
-			_configuration = new PCConfiguration();
 			AddValidName();
 			AddRequiredComponents();
 			var parentComponent = _configuration.Components.First();
@@ -152,7 +147,118 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 			Assert.That(_specification.IsSatisfiedBy(_configuration));
 		}
 
+		[Test]
+		public void IsSatisfied_SomeRootComponentsHavePlugSlotsThatOtherComponentsDoNotProvide_ShouldFail()
+		{
+			//Arrange
+			AddAllRequiredComponentsAndValidName();
+
+			var plugSlots = CreateInterfaces();
+
+			_configuration.Components.First().WithPlugSlot(plugSlots[0]);
+			_configuration.Components.ElementAt(2).WithPlugSlot(plugSlots[1]);
+			_configuration.Components.ElementAt(3).WithPlugSlot(plugSlots[2]);
+			_configuration.Components.ElementAt(4)
+				.WithContainedSlot(plugSlots[0])
+				.WithContainedSlot(plugSlots[1]);
+
+			//Assert
+			Assert.That(!_specification.IsSatisfiedBy(_configuration));
+		}
+
+		[Test]
+		public void IsSatisfied_RootComponentCanBePluggedOnlyToItself_ShouldFail()
+		{
+			//Arrange
+			AddAllRequiredComponentsAndValidName();
+
+			var plugSlot = DomainObjectsCreator.CreateInterface(1);
+			_configuration.Components.First().WithPlugSlot(plugSlot)
+				.WithContainedComponent(
+					CreateValidComponent(ComponentType.SolidStateDrice)
+						.WithContainedSlot(plugSlot));
+
+			//Assert
+			Assert.That(!_specification.IsSatisfiedBy(_configuration));
+		}
+
+		[Test]
+		public void IsSatisfied_PlugSlotsCountIsLargerThanContainedSlotsOfTheSameType_ShouldFail()
+		{
+			//Arrange
+			AddAllRequiredComponentsAndValidName();
+
+			var plugSlots = CreateInterfaces();
+
+			_configuration.Components.First().WithPlugSlot(plugSlots[0]).WithContainedSlot(plugSlots[1]);
+			_configuration.Components.ElementAt(2).WithPlugSlot(plugSlots[1]).WithContainedSlot(plugSlots[2]);
+			_configuration.Components.ElementAt(3).WithPlugSlot(plugSlots[2])
+				.WithContainedComponent(CreateValidComponent(ComponentType.SolidStateDrice)
+					.WithContainedSlot(plugSlots[0]));
+
+			//Assert
+			Assert.That(!_specification.IsSatisfiedBy(_configuration));
+		}
+
+		[Test]
+		public void IsSatisfied_OnlyCyclicPluggingIsPossible_ShouldFail()
+		{
+			//Arrange
+			AddAllRequiredComponentsAndValidName();
+
+			var plugSlot = DomainObjectsCreator.CreateInterface(1);
+
+			_configuration.Components.First().WithPlugSlot(plugSlot);
+			_configuration.Components.ElementAt(2).WithPlugSlot(plugSlot);
+			_configuration.Components.ElementAt(3).WithPlugSlot(plugSlot);
+			_configuration.Components.ElementAt(4)
+				.WithContainedComponent(CreateValidComponent(ComponentType.CentralProcessingUnit)
+					.WithContainedSlot(plugSlot)
+					.WithContainedSlot(plugSlot));
+
+			//Assert
+			Assert.That(!_specification.IsSatisfiedBy(_configuration));
+		}
+
+		[Test]
+		public void IsSatisfied_AllRootComponentsCanBePluggedToOtherComponents_ShouldPass()
+		{
+			//Arrange
+			AddAllRequiredComponentsAndValidName();
+
+			var plugSlots = CreateInterfaces();
+			_configuration.Components.First().WithPlugSlot(plugSlots[0]);
+			_configuration.Components.ElementAt(2).WithPlugSlot(plugSlots[1])
+				.WithContainedSlot(plugSlots[1])
+				.WithContainedSlot(plugSlots[2]);
+			_configuration.Components.ElementAt(3).WithPlugSlot(plugSlots[2]);
+			_configuration.Components.ElementAt(4)
+				.WithContainedComponent(CreateValidComponent(ComponentType.CentralProcessingUnit)
+					.WithContainedSlot(plugSlots[0])
+					.WithContainedSlot(plugSlots[1]));
+
+			//Assert
+			Assert.That(_specification.IsSatisfiedBy(_configuration));
+		}
+
 		#region Private methods
+
+		private void AddAllRequiredComponentsAndValidName()
+		{
+			AddValidName();
+			AddRequiredComponents();
+			AddRequiredWithAllowedDuplicatesComponents();
+		}
+
+		private IList<ComponentInterface> CreateInterfaces()
+		{
+			return new[]
+			{
+				DomainObjectsCreator.CreateInterface(1),
+				DomainObjectsCreator.CreateInterface(2),
+				DomainObjectsCreator.CreateInterface(3)
+			};
+		}
 
 		private PCComponent CreateValidComponent(ComponentType type)
 		{

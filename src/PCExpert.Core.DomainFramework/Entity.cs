@@ -16,5 +16,10 @@ namespace PCExpert.Core.DomainFramework
 			return otherEntity != null &&
 			       (this == otherEntity || (IsPersisted && otherEntity.Id == Id));
 		}
+
+		public override int GetHashCode()
+		{
+			return Id.GetHashCode();
+		}
 	}
 }

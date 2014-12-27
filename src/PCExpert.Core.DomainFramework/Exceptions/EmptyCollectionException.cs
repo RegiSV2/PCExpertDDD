@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace PCExpert.Core.DomainFramework.Exceptions
 {
 	/// <summary>
-	/// Thrown when empty collection is passed to context that doesn't allow empty collection
+	///     Thrown when empty collection is passed to context that doesn't allow empty collection
 	/// </summary>
 	public class EmptyCollectionException : ApplicationException, ISerializable
 	{

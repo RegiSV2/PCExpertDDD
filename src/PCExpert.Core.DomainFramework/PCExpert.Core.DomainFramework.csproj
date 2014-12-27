@@ -84,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entity.cs" />
+    <Compile Include="EntityEqualityComparer.cs" />
     <Compile Include="Exceptions\DuplicateElementException.cs" />
     <Compile Include="Exceptions\EmptyCollectionException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
