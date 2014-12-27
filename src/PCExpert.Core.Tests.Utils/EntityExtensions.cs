@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Net.Mime;
 using System.Reflection;
 using Moq;
-using PCExpert.Core.Domain;
+using PCExpert.Core.DomainFramework;
 
 namespace PCExpert.Core.Tests.Utils
 {

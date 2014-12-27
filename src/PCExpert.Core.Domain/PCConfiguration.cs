@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using PCExpert.Core.Domain.Exceptions;
-using PCExpert.Core.Domain.Utils;
+using PCExpert.Core.DomainFramework;
+using PCExpert.Core.DomainFramework.Exceptions;
+using PCExpert.Core.DomainFramework.Utils;
 
 namespace PCExpert.Core.Domain
 {
@@ -24,7 +25,7 @@ namespace PCExpert.Core.Domain
 		private IList<PCComponent> ContainedComponents { get; set; }
 
 		/// <summary>
-		/// Components, included in this configuration
+		///     Components, included in this configuration
 		/// </summary>
 		public IReadOnlyCollection<PCComponent> Components
 		{
@@ -36,7 +37,7 @@ namespace PCExpert.Core.Domain
 		#region Methods
 
 		/// <summary>
-		/// Calculates sum price of all included components
+		///     Calculates sum price of all included components
 		/// </summary>
 		public decimal CalculatePrice()
 		{
@@ -44,7 +45,7 @@ namespace PCExpert.Core.Domain
 		}
 
 		/// <summary>
-		/// Sets new name for configuration
+		///     Sets new name for configuration
 		/// </summary>
 		public PCConfiguration WithName(string name)
 		{
@@ -54,12 +55,12 @@ namespace PCExpert.Core.Domain
 		}
 
 		/// <summary>
-		/// Adds component to configuration
+		///     Adds component to configuration
 		/// </summary>
 		public PCConfiguration WithComponent(PCComponent component)
 		{
 			Argument.NotNull(component);
-			if(ContainedComponents.Any(x => x.SameIdentityAs(component)))
+			if (ContainedComponents.Any(x => x.SameIdentityAs(component)))
 				throw new DuplicateElementException("Component already added");
 
 			ContainedComponents.Add(component);

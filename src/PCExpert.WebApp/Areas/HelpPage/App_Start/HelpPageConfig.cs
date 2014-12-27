@@ -5,12 +5,13 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using PCExpert.WebApp.Areas.HelpPage.SampleGeneration;
 
 #if Handle_PageResultOfT
 using System.Web.Http.OData;
 #endif
 
-namespace PCExpert.WebApp.Areas.HelpPage
+namespace PCExpert.WebApp.Areas.HelpPage.App_Start
 {
 	/// <summary>
 	///     Use this class to customize the Help Page.

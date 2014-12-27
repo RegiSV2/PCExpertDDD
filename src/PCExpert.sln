@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCExpert.Core.DataAccess.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCExpert.Core.Tests.Utils", "PCExpert.Core.Tests.Utils\PCExpert.Core.Tests.Utils.csproj", "{A388985E-E1AB-42B9-BB91-EB526C4C777B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCExpert.Core.DomainFramework.Tests", "PCExpert.Core.DomainFramework.Tests\PCExpert.Core.DomainFramework.Tests.csproj", "{A5766376-69C7-4B89-A403-4151466108BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCExpert.Core.DomainFramework", "PCExpert.Core.DomainFramework\PCExpert.Core.DomainFramework.csproj", "{E3F85B03-73D8-460D-B380-38036836B295}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +53,14 @@ Global
 		{A388985E-E1AB-42B9-BB91-EB526C4C777B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A388985E-E1AB-42B9-BB91-EB526C4C777B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A388985E-E1AB-42B9-BB91-EB526C4C777B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5766376-69C7-4B89-A403-4151466108BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5766376-69C7-4B89-A403-4151466108BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5766376-69C7-4B89-A403-4151466108BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5766376-69C7-4B89-A403-4151466108BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3F85B03-73D8-460D-B380-38036836B295}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3F85B03-73D8-460D-B380-38036836B295}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3F85B03-73D8-460D-B380-38036836B295}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3F85B03-73D8-460D-B380-38036836B295}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,5 +70,6 @@ Global
 		{B9F0AC6A-D55B-46F0-AEFD-EDB71CE4C0F6} = {FDD175EC-4F44-48B4-A237-700B271033B3}
 		{0594CF46-BA67-49FF-8638-C6D9AF6AA24E} = {5235EA3F-1742-46DE-A5E4-844EBE5C1F63}
 		{A388985E-E1AB-42B9-BB91-EB526C4C777B} = {5235EA3F-1742-46DE-A5E4-844EBE5C1F63}
+		{A5766376-69C7-4B89-A403-4151466108BF} = {5235EA3F-1742-46DE-A5E4-844EBE5C1F63}
 	EndGlobalSection
 EndGlobal

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PCExpert.Core.Domain
+﻿namespace PCExpert.Core.Domain
 {
 	public class NullComponentInterface : ComponentInterface
 	{

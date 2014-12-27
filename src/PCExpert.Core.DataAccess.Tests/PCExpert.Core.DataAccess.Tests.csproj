@@ -65,6 +65,10 @@
       <Project>{B9F0AC6A-D55B-46F0-AEFD-EDB71CE4C0F6}</Project>
       <Name>PCExpert.Core.DataAccess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PCExpert.Core.DomainFramework\PCExpert.Core.DomainFramework.csproj">
+      <Project>{E3F85B03-73D8-460D-B380-38036836B295}</Project>
+      <Name>PCExpert.Core.DomainFramework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PCExpert.Core.Domain\PCExpert.Core.Domain.csproj">
       <Project>{8CB3EFF3-9938-4443-9287-184A7E0364A8}</Project>
       <Name>PCExpert.Core.Domain</Name>

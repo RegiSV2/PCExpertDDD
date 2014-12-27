@@ -1,5 +1,6 @@
 using System.Web.Http;
 using System.Web.Mvc;
+using PCExpert.WebApp.Areas.HelpPage.App_Start;
 
 namespace PCExpert.WebApp.Areas.HelpPage
 {

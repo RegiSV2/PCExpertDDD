@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace PCExpert.Core.Domain.Exceptions
+namespace PCExpert.Core.DomainFramework.Exceptions
 {
 	public class DuplicateElementException : ApplicationException, ISerializable
 	{

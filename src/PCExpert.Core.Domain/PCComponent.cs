@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using PCExpert.Core.Domain.Exceptions;
-using PCExpert.Core.Domain.Utils;
+using PCExpert.Core.DomainFramework;
+using PCExpert.Core.DomainFramework.Exceptions;
+using PCExpert.Core.DomainFramework.Utils;
 
 namespace PCExpert.Core.Domain
 {

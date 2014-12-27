@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("PCExpert.Core.Tests.Utils")]
+[assembly: AssemblyTitle("PCExpert.Core.DomainFramework.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PCExpert.Core.Tests.Utils")]
+[assembly: AssemblyProduct("PCExpert.Core.DomainFramework.Tests")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
-[assembly: Guid("039c4b7a-35c0-46b0-bd90-30859b4a2e1b")]
+[assembly: Guid("08f82c2c-dbe3-4814-a964-fb4a964b8eff")]
 
 // Version information for an assembly consists of the following four values:
 //

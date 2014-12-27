@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
-using PCExpert.Core.Domain.Exceptions;
+using PCExpert.Core.DomainFramework.Exceptions;
 using PCExpert.Core.Tests.Utils;
 
 namespace PCExpert.Core.Domain.Tests
@@ -73,7 +73,7 @@ namespace PCExpert.Core.Domain.Tests
 			//Arrange
 			var firstComponent = DomainObjectsCreator.CreateComponent(0, ComponentType.PowerSupply);
 			var secondComponent = DomainObjectsCreator.CreateComponent(1, ComponentType.Motherboard);
-			
+
 			//Act
 			DefaultConfiguration
 				.WithComponent(firstComponent)

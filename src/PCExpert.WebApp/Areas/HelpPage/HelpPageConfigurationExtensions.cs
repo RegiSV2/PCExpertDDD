@@ -11,6 +11,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using PCExpert.WebApp.Areas.HelpPage.ModelDescriptions;
 using PCExpert.WebApp.Areas.HelpPage.Models;
+using PCExpert.WebApp.Areas.HelpPage.SampleGeneration;
 
 namespace PCExpert.WebApp.Areas.HelpPage
 {

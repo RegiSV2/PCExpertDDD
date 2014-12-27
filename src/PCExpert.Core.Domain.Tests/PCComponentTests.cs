@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Principal;
 using Moq;
 using NUnit.Framework;
-using PCExpert.Core.Domain.Exceptions;
+using PCExpert.Core.DomainFramework.Exceptions;
 using PCExpert.Core.Tests.Utils;
 
 namespace PCExpert.Core.Domain.Tests
@@ -12,9 +11,7 @@ namespace PCExpert.Core.Domain.Tests
 	public class PCComponentTests
 	{
 		protected const decimal ComponentPrice = 100m;
-
 		protected const ComponentType ValidComponentType = ComponentType.HardDiskDrive;
-
 		protected PCComponent DefaultComponent;
 
 		[SetUp]
@@ -255,7 +252,8 @@ namespace PCExpert.Core.Domain.Tests
 			DefaultComponent.WithContainedSlot(slotToAdd.Object);
 
 			//Assert
-			Assert.That(() => DefaultComponent.WithContainedSlot(slotToAdd.Object), Throws.InstanceOf<DuplicateElementException>());
+			Assert.That(() => DefaultComponent.WithContainedSlot(slotToAdd.Object),
+				Throws.InstanceOf<DuplicateElementException>());
 		}
 
 		[Test]
