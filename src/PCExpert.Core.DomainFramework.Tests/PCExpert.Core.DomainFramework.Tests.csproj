@@ -47,14 +47,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EntityTests.cs" />
+    <Compile Include="PersistenceWorkplaceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Specifications\Logic\AndSpecificationTests.cs" />
     <Compile Include="Specifications\Logic\SpecificationLogicExtensionsTests.cs" />
     <Compile Include="Specifications\Logic\LogicSpecificationsTests.cs" />
     <Compile Include="Specifications\Logic\PersistenceAndSpecificationTests.cs" />
     <Compile Include="Specifications\PersistenceAwareSpecificationBaseTests.cs" />
-    <Compile Include="Specifications\TestPersistenceAwareSpec.cs" />
-    <Compile Include="Specifications\TestSpec.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

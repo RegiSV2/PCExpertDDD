@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EFWorkplace.cs" />
     <Compile Include="Mappings\ComponentInterfaceConfiguration.cs" />
     <Compile Include="Mappings\ComponentInterfaceMap.cs" />
     <Compile Include="Mappings\EntityTypeConfigurationExtensions.cs" />

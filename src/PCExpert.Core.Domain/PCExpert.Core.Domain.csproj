@@ -85,6 +85,8 @@
   <ItemGroup>
     <Compile Include="ComponentInterface.cs" />
     <Compile Include="ComponentType.cs" />
+    <Compile Include="Repositories\ComponentInterfaceRepository.cs" />
+    <Compile Include="Repositories\IComponentInterfaceRepository.cs" />
     <Compile Include="Mechanisms\PCComponentDagBuilderNodeManager.cs" />
     <Compile Include="NullComponentInterface.cs" />
     <Compile Include="PCComponent.cs" />

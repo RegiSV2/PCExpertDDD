@@ -7,7 +7,7 @@ using PCExpert.Core.Tests.Utils;
 namespace PCExpert.Core.Domain.Tests.Specifications
 {
 	[TestFixture]
-	public class PublishedPCConfigurationSpecificationTests 
+	public class PublishedPCConfigurationSpecificationTests
 		: PCConfigurationSpecificationsTests<PublishedPCConfigurationSpecification>
 	{
 		private PublishedPCConfigurationSpecification _specification;

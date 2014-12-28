@@ -1,8 +1,9 @@
 using System;
 using System.Linq.Expressions;
+using PCExpert.Core.DomainFramework;
 using PCExpert.Core.DomainFramework.Specifications;
 
-namespace PCExpert.Core.DomainFramework.Tests.Specifications
+namespace PCExpert.Core.Tests.Utils
 {
 	public class TestPersistenceAwareSpec<TTestEntity> : PersistenceAwareSpecification<TTestEntity>
 		where TTestEntity : Entity

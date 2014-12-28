@@ -1,7 +1,8 @@
 using System;
+using PCExpert.Core.DomainFramework;
 using PCExpert.Core.DomainFramework.Specifications;
 
-namespace PCExpert.Core.DomainFramework.Tests.Specifications
+namespace PCExpert.Core.Tests.Utils
 {
 	public class TestSpec<TTestEntity> : Specification<TTestEntity>
 		where TTestEntity : Entity

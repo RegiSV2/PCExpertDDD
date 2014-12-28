@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using PCExpert.Core.DomainFramework.Specifications;
 using PCExpert.Core.DomainFramework.Specifications.Logic;
+using PCExpert.Core.Tests.Utils;
 
 namespace PCExpert.Core.DomainFramework.Tests.Specifications.Logic
 {

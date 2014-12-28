@@ -83,6 +83,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccess\PersistenceWorkplace.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="EntityEqualityComparer.cs" />
     <Compile Include="Exceptions\DuplicateElementException.cs" />

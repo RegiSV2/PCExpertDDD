@@ -1,6 +1,4 @@
-﻿using System;
-using PCExpert.Core.DomainFramework;
-using PCExpert.Core.DomainFramework.Specifications;
+﻿using PCExpert.Core.DomainFramework.Specifications;
 
 namespace PCExpert.Core.Domain.Specifications
 {
@@ -22,9 +20,9 @@ namespace PCExpert.Core.Domain.Specifications
 		public PublishedPCConfigurationSpecification()
 		{
 			_combinedSpecification = new ConfigurationNameNotEmptySpecification()
-									 & new ConfigurationNameMaxLengthSpecification(NameMaxLength)
-									 & new PCConfigurationHasCorrectSetOfRequiredComponents()
-									 & new AllRootComponentsOfConfigurationCanBePluggedToOtherComponents();
+			                         & new ConfigurationNameMaxLengthSpecification(NameMaxLength)
+			                         & new PCConfigurationHasCorrectSetOfRequiredComponents()
+			                         & new AllRootComponentsOfConfigurationCanBePluggedToOtherComponents();
 		}
 
 		public override bool IsSatisfiedBy(PCConfiguration configuration)

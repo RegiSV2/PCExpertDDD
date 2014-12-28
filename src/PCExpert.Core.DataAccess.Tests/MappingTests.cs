@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
+using PCExpert.Core.DataAccess.Tests.Utils;
 using PCExpert.Core.Domain;
 using PCExpert.Core.DomainFramework;
 using PCExpert.Core.Tests.Utils;
@@ -15,13 +15,13 @@ namespace PCExpert.Core.DataAccess.Tests
 		[Test]
 		public void DbOperationsTest()
 		{
-			using (var dbContext = new PCExpertContext("testConString",
-				new DropCreateDatabaseAlways<PCExpertContext>()))
+			using (var dbContext = TestContextCreator.Create())
 			{
-				var savedModel = InsertModel(dbContext);
+				var workplace = new EfWorkplace(dbContext);
+				var savedModel = InsertModel(workplace);
 				dbContext.SaveChanges();
 
-				var loadedModel = LoadModel(dbContext);
+				var loadedModel = LoadModel(workplace);
 
 				AssertModelsAreEqual(savedModel, loadedModel);
 			}
@@ -29,13 +29,13 @@ namespace PCExpert.Core.DataAccess.Tests
 
 		#region Loading
 
-		private PCExpertModel LoadModel(PCExpertContext dbContext)
+		private PCExpertModel LoadModel(EfWorkplace workplace)
 		{
 			return new PCExpertModel
 			{
-				Interfaces = dbContext.ComponentInterfaces.ToList(),
-				Components = dbContext.PCComponents.ToList(),
-				Configurations = dbContext.PCConfigurations.ToList()
+				Interfaces = workplace.Query<ComponentInterface>().ToList(),
+				Components = workplace.Query<PCComponent>().ToList(),
+				Configurations = workplace.Query<PCConfiguration>().ToList()
 			};
 		}
 
@@ -50,15 +50,15 @@ namespace PCExpert.Core.DataAccess.Tests
 
 		#region Model creation
 
-		private PCExpertModel InsertModel(PCExpertContext dbContext)
+		private PCExpertModel InsertModel(EfWorkplace workplace)
 		{
 			var slotsToInsert = CreateSlots();
 			var componentsToInsert = CreateComponents(slotsToInsert);
 			var configurations = CreateConfigurations(componentsToInsert);
 
-			dbContext.ComponentInterfaces.AddRange(slotsToInsert);
-			dbContext.PCComponents.AddRange(componentsToInsert);
-			dbContext.PCConfigurations.AddRange(configurations);
+			workplace.Insert<ComponentInterface>(slotsToInsert);
+			workplace.Insert<PCComponent>(componentsToInsert);
+			workplace.Insert<PCConfiguration>(configurations);
 
 			return new PCExpertModel
 			{

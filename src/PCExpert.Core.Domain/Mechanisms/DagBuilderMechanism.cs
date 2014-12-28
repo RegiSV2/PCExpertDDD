@@ -1,22 +1,18 @@
 using System.Collections.Generic;
 using System.Linq;
-using PCExpert.Core.DomainFramework;
 
-namespace PCExpert.Core.Domain.Specifications
+namespace PCExpert.Core.Domain.Mechanisms
 {
 	/// <summary>
-	/// Checks if directed acyclic graph can be build on the specified directed graph
+	///     Checks if directed acyclic graph can be build on the specified directed graph
 	/// </summary>
 	public class DagBuilderMechanism<TNode>
 		where TNode : class
 	{
-		private readonly Stack<LinkedListNode<TNode>> _visitedNodes;
-
-		private readonly Stack<Stack<LinkedListNode<TNode>>> _candidatesToVisit;
-
-		private readonly LinkedList<TNode> _notVisitedNodes;
-
 		private readonly IDagBuilderNodeManager<TNode> _builderNodeManager;
+		private readonly Stack<Stack<LinkedListNode<TNode>>> _candidatesToVisit;
+		private readonly LinkedList<TNode> _notVisitedNodes;
+		private readonly Stack<LinkedListNode<TNode>> _visitedNodes;
 
 		public DagBuilderMechanism(IDagBuilderNodeManager<TNode> builderNodeManager, LinkedList<TNode> notVisitedNodes)
 		{

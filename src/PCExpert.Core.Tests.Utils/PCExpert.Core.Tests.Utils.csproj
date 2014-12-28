@@ -47,6 +47,9 @@
     <Compile Include="ListExtensions.cs" />
     <Compile Include="NamesGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestPersistenceAwareSpec.cs" />
+    <Compile Include="TestPersistenceWorkplace.cs" />
+    <Compile Include="TestSpec.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PCExpert.Core.DomainFramework\PCExpert.Core.DomainFramework.csproj">

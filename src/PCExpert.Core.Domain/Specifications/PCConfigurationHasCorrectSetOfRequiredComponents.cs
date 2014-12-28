@@ -5,7 +5,7 @@ using PCExpert.Core.DomainFramework.Specifications;
 namespace PCExpert.Core.Domain.Specifications
 {
 	/// <summary>
-	/// All required component types should be contained and
+	///     All required component types should be contained and
 	///     component types that must be unique across the configuration should occur no more than once
 	/// </summary>
 	internal sealed class PCConfigurationHasCorrectSetOfRequiredComponents : Specification<PCConfiguration>
