@@ -186,13 +186,15 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 			//Arrange
 			AddAllRequiredComponentsAndValidName();
 
-			var plugSlots = CreateInterfaces();
+			var plugSlot = DomainObjectsCreator.CreateInterface(1);
 
-			ConfigComponentAt(0).WithPlugSlot(plugSlots[0]).WithContainedSlot(plugSlots[1]);
-			ConfigComponentAt(2).WithPlugSlot(plugSlots[1]).WithContainedSlot(plugSlots[2]);
-			ConfigComponentAt(3).WithPlugSlot(plugSlots[2])
-				.WithContainedComponent(CreateValidComponent(ComponentType.SolidStateDrice)
-					.WithContainedSlot(plugSlots[0]));
+			ConfigComponentAt(0).WithPlugSlot(plugSlot);
+			ConfigComponentAt(2).WithPlugSlot(plugSlot);
+			ConfigComponentAt(3).WithPlugSlot(plugSlot);
+			ConfigComponentAt(4).WithContainedComponent(
+				CreateValidComponent(ComponentType.CentralProcessingUnit)
+					.WithContainedSlot(plugSlot)
+					.WithContainedSlot(plugSlot));
 
 			//Assert
 			Assert.That(!_specification.IsSatisfiedBy(Configuration));
@@ -204,15 +206,13 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 			//Arrange
 			AddAllRequiredComponentsAndValidName();
 
-			var plugSlot = DomainObjectsCreator.CreateInterface(1);
+			var plugSlots = CreateInterfaces();
 
-			ConfigComponentAt(0).WithPlugSlot(plugSlot);
-			ConfigComponentAt(2).WithPlugSlot(plugSlot);
-			ConfigComponentAt(3).WithPlugSlot(plugSlot);
-			ConfigComponentAt(4).WithContainedComponent(
-				CreateValidComponent(ComponentType.CentralProcessingUnit)
-					.WithContainedSlot(plugSlot)
-					.WithContainedSlot(plugSlot));
+			ConfigComponentAt(0).WithPlugSlot(plugSlots[0]).WithContainedSlot(plugSlots[1]);
+			ConfigComponentAt(2).WithPlugSlot(plugSlots[1]).WithContainedSlot(plugSlots[2]);
+			ConfigComponentAt(3).WithPlugSlot(plugSlots[2])
+				.WithContainedComponent(CreateValidComponent(ComponentType.SolidStateDrice)
+					.WithContainedSlot(plugSlots[0]));
 
 			//Assert
 			Assert.That(!_specification.IsSatisfiedBy(Configuration));

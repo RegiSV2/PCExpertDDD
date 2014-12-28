@@ -85,12 +85,17 @@
   <ItemGroup>
     <Compile Include="ComponentInterface.cs" />
     <Compile Include="ComponentType.cs" />
+    <Compile Include="Mechanisms\PCComponentDagBuilderNodeManager.cs" />
     <Compile Include="NullComponentInterface.cs" />
     <Compile Include="PCComponent.cs" />
     <Compile Include="PCConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Specifications\AllRootComponentsOfConfigurationCanBePluggedToOtherComponents.cs" />
     <Compile Include="Specifications\ConfigurationNameMaxLengthSpecification.cs" />
     <Compile Include="Specifications\ConfigurationNameNotEmptySpecification.cs" />
+    <Compile Include="Mechanisms\DagBuilderMechanism.cs" />
+    <Compile Include="Mechanisms\IDagBuilderNodeManager.cs" />
+    <Compile Include="Specifications\PCConfigurationHasCorrectSetOfRequiredComponents.cs" />
     <Compile Include="Specifications\PublishedPCConfigurationSpecification.cs" />
   </ItemGroup>
   <ItemGroup>
