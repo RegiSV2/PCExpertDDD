@@ -25,10 +25,10 @@ namespace PCExpert.Core.Domain
 			Argument.ValidEnumItem(type);
 
 			Name = name;
-			PlugSlot = ComponentInterface.NullObject;
 
 			Components = new List<PCComponent>();
-			Slots = new List<ComponentInterface>();
+			ContainedInterfaces = new List<ComponentInterface>();
+			PlugInterfaces = new List<ComponentInterface>();
 
 			Type = type;
 		}
@@ -39,7 +39,9 @@ namespace PCExpert.Core.Domain
 
 		private IList<PCComponent> Components { get; set; }
 
-		private IList<ComponentInterface> Slots { get; set; }
+		private IList<ComponentInterface> ContainedInterfaces { get; set; }
+
+		private IList<ComponentInterface> PlugInterfaces { get; set; }
 
 		public string Name { get; private set; }
 
@@ -47,11 +49,6 @@ namespace PCExpert.Core.Domain
 		///     Average market price
 		/// </summary>
 		public decimal AveragePrice { get; private set; }
-
-		/// <summary>
-		///     A slot, that component plugs into
-		/// </summary>
-		public ComponentInterface PlugSlot { get; private set; }
 
 		public ComponentType Type { get; private set; }
 
@@ -62,7 +59,15 @@ namespace PCExpert.Core.Domain
 
 		public IReadOnlyCollection<ComponentInterface> ContainedSlots
 		{
-			get { return new ReadOnlyCollection<ComponentInterface>(Slots); }
+			get { return new ReadOnlyCollection<ComponentInterface>(ContainedInterfaces); }
+		}
+
+		/// <summary>
+		///     Collection of slots, that the component needs to plug to
+		/// </summary>
+		public IReadOnlyCollection<ComponentInterface> PlugSlots
+		{
+			get { return new ReadOnlyCollection<ComponentInterface>(PlugInterfaces); }
 		}
 
 		#endregion
@@ -86,7 +91,7 @@ namespace PCExpert.Core.Domain
 		{
 			Argument.NotNull(containedSlot);
 
-			Slots.Add(containedSlot);
+			ContainedInterfaces.Add(containedSlot);
 			return this;
 		}
 
@@ -94,7 +99,7 @@ namespace PCExpert.Core.Domain
 		{
 			Argument.NotNull(plugInterface);
 
-			PlugSlot = plugInterface;
+			PlugInterfaces.Add(plugInterface);
 			return this;
 		}
 

@@ -194,10 +194,10 @@ namespace PCExpert.Core.Domain.Tests
 	public class PCComponentInterfaceConnectionsTests : PCComponentTests
 	{
 		[Test]
-		public void PlugSlot_NoPlugSlotSet_ShouldReturnNull()
+		public void PlugSlots_NoPlugSlotsSet_ShouldReturnEmptyCollection()
 		{
 			//Assert
-			Assert.That(DefaultComponent.PlugSlot.SameIdentityAs(ComponentInterface.NullObject));
+			Assert.That(DefaultComponent.PlugSlots.Count, Is.EqualTo(0));
 		}
 
 		[Test]
@@ -208,16 +208,30 @@ namespace PCExpert.Core.Domain.Tests
 		}
 
 		[Test]
-		public void WithPlugSlot_NotNullArgument_ShouldSetCorrectValue()
+		public void WithPlugSlot_NotNullArgument_ShouldAddNewSlot()
 		{
 			//Arrange
-			var componentInterface = CreateInterface(1);
+			var componentInterface = CreateInterface(1).Object;
 
 			//Act
-			DefaultComponent.WithPlugSlot(componentInterface.Object);
+			DefaultComponent.WithPlugSlot(componentInterface);
 
 			//Assert
-			Assert.That(DefaultComponent.PlugSlot, Is.EqualTo(componentInterface.Object));
+			Assert.That(DefaultComponent.PlugSlots.Contains(componentInterface));
+		}
+
+		[Test]
+		public void WithPlugSlot_SlotAlreadyAdded_ShouldAddDuplicateSlot()
+		{
+			//Arrange
+			var componentInterface = CreateInterface(1).Object;
+			DefaultComponent.WithPlugSlot(componentInterface);
+
+			//Act
+			DefaultComponent.WithPlugSlot(componentInterface);
+
+			//Assert
+			Assert.That(DefaultComponent.PlugSlots.Count(x => x.SameIdentityAs(componentInterface)) == 2);
 		}
 
 		[Test]

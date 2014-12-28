@@ -103,7 +103,7 @@ namespace PCExpert.Core.Domain.Specifications
 					new EntityEqualityComparer<ComponentInterface>());
 
 				var availableInterfacesEnum = entity.Components
-					.Where(x => x.PlugSlot == ComponentInterface.NullObject)
+					.Where(x => !x.PlugSlots.Any())
 					.SelectMany(GetComponentInterfaces);
 
 				PutInterfacesInDictionary(availableInterfaces, availableInterfacesEnum);
@@ -114,40 +114,71 @@ namespace PCExpert.Core.Domain.Specifications
 			private static LinkedList<PCComponent> GetNotRootComponents(PCConfiguration entity)
 			{
 				var notVisitedComponents = new LinkedList<PCComponent>(entity.Components
-					.Where(x => x.PlugSlot != ComponentInterface.NullObject));
+					.Where(x => x.PlugSlots.Any()));
 				return notVisitedComponents;
 			}
 
-			private bool CanPlugComponentsToInterfaces(LinkedList<PCComponent> notVisitedComponents,
-				Dictionary<ComponentInterface, int> availableInterfaces)
-			{
+			private bool CanPlugComponentsToInterfaces(LinkedList<PCComponent> notVisitedComponents, Dictionary<ComponentInterface, int> availableInterfaces)
+			{var visitedComponents = new Stack<LinkedListNode<PCComponent>>();
+				var candidatesToPlug = new Stack<Stack<LinkedListNode<PCComponent>>>();
+				candidatesToPlug.Push(PeekPluggableComponents(notVisitedComponents, visitedComponents, availableInterfaces));
 				while (notVisitedComponents.Any())
 				{
-					var pluggableComponent = PopPluggableComponent(notVisitedComponents, availableInterfaces);
-					if (pluggableComponent == null)
-						return false;
+					var currentLevelCandidates = candidatesToPlug.Peek();
+					if (currentLevelCandidates.Any())
+					{
+						var componentToPlug = currentLevelCandidates.Pop();
+						notVisitedComponents.Remove(componentToPlug);
 
-					PopInterfaceFromDictionary(availableInterfaces, pluggableComponent.PlugSlot);
-					PutInterfacesInDictionary(availableInterfaces, GetComponentInterfaces(pluggableComponent));
+						visitedComponents.Push(componentToPlug);
+						PopInterfacesFromDictionary(availableInterfaces, componentToPlug.Value.PlugSlots);
+						PutInterfacesInDictionary(availableInterfaces, GetComponentInterfaces(componentToPlug.Value));
+
+						candidatesToPlug.Push(PeekPluggableComponents(notVisitedComponents, visitedComponents, availableInterfaces));
+					}
+					else
+					{
+						candidatesToPlug.Pop();
+						if (visitedComponents.Any())
+						{
+							var failedToVisitComponent = visitedComponents.Pop();
+							PopInterfacesFromDictionary(availableInterfaces, GetComponentInterfaces(failedToVisitComponent.Value));
+							PutInterfacesInDictionary(availableInterfaces, failedToVisitComponent.Value.PlugSlots);
+
+							notVisitedComponents.AddFirst(failedToVisitComponent);
+						}
+						else
+						{
+							return false;
+						}
+					}
 				}
 				return true;
 			}
 
-			private PCComponent PopPluggableComponent(LinkedList<PCComponent> notVisitedComponents,
+			private Stack<LinkedListNode<PCComponent>> PeekPluggableComponents(LinkedList<PCComponent> notVisitedComponents,
+				Stack<LinkedListNode<PCComponent>> componentsToIgnore, 
 				Dictionary<ComponentInterface, int> availableInterfaces)
 			{
+				var result = new Stack<LinkedListNode<PCComponent>>();
+				
 				var candidateNode = notVisitedComponents.First;
-
 				while (candidateNode != null)
 				{
-					if (availableInterfaces.ContainsKey(candidateNode.Value.PlugSlot))
+					if (!ComponentMustBeIgnored(componentsToIgnore, candidateNode)
+						&& DictionaryContainsInterfaces(availableInterfaces, candidateNode.Value.PlugSlots))
 					{
-						notVisitedComponents.Remove(candidateNode);
-						return candidateNode.Value;
+						result.Push(candidateNode);
 					}
 					candidateNode = candidateNode.Next;
 				}
-				return null;
+
+				return result;
+			}
+
+			private static bool ComponentMustBeIgnored(Stack<LinkedListNode<PCComponent>> componentsToIgnore, LinkedListNode<PCComponent> candidateNode)
+			{
+				return componentsToIgnore.Any(x => x.Value.SameIdentityAs(candidateNode.Value));
 			}
 
 			private static IEnumerable<ComponentInterface> GetComponentInterfaces(PCComponent component)
@@ -169,12 +200,22 @@ namespace PCExpert.Core.Domain.Specifications
 				}
 			}
 
-			private static void PopInterfaceFromDictionary(Dictionary<ComponentInterface, int> availableInterfaces,
-				ComponentInterface compInt)
+			private static void PopInterfacesFromDictionary(Dictionary<ComponentInterface, int> availableInterfaces,
+				IEnumerable<ComponentInterface> compInterfaces)
 			{
-				availableInterfaces[compInt] -= 1;
-				if (availableInterfaces[compInt] == 0)
-					availableInterfaces.Remove(compInt);
+				foreach (var compInt in compInterfaces)
+				{
+					availableInterfaces[compInt] -= 1;
+					if (availableInterfaces[compInt] == 0)
+						availableInterfaces.Remove(compInt);
+				}
+			}
+
+			private bool DictionaryContainsInterfaces(Dictionary<ComponentInterface, int> availableInterfaces, IEnumerable<ComponentInterface> interfaces)
+			{
+				return interfaces.GroupBy(x => x, new EntityEqualityComparer<ComponentInterface>())
+					.All(x => availableInterfaces.ContainsKey(x.Key)
+					          && availableInterfaces[x.Key] >= x.Count());
 			}
 		}
 

@@ -147,7 +147,8 @@ namespace PCExpert.Core.DataAccess.Tests
 			Assert.That(loadedComp, Is.Not.Null);
 			Assert.That(loadedComp.AveragePrice, Is.EqualTo(savedComp.AveragePrice));
 			Assert.That(loadedComp.Name, Is.EqualTo(savedComp.Name));
-			Assert.That(loadedComp.PlugSlot.SameIdentityAs(savedComp.PlugSlot));
+			AssertCollectionsEqual(savedComp.ContainedSlots, loadedComp.ContainedSlots);
+			AssertCollectionsEqual(savedComp.PlugSlots, loadedComp.PlugSlots);
 			AssertCollectionsEqual(savedComp.ContainedComponents, loadedComp.ContainedComponents);
 		}
 

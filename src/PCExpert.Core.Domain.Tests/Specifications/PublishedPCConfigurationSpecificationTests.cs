@@ -7,9 +7,9 @@ using PCExpert.Core.Tests.Utils;
 namespace PCExpert.Core.Domain.Tests.Specifications
 {
 	[TestFixture]
-	public class PublishedPCConfigurationSpecificationTests
+	public class PublishedPCConfigurationSpecificationTests 
+		: PCConfigurationSpecificationsTests<PublishedPCConfigurationSpecification>
 	{
-		private PCConfiguration _configuration;
 		private PublishedPCConfigurationSpecification _specification;
 
 		private readonly ComponentType[] _exactlyOneComponentTypes =
@@ -27,10 +27,10 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 		};
 
 		[SetUp]
-		public void EstablishContext()
+		public override void EstablishContext()
 		{
+			base.EstablishContext();
 			_specification = new PublishedPCConfigurationSpecification();
-			_configuration = new PCConfiguration();
 		}
 
 		[Test]
@@ -39,24 +39,24 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 		public void IsSatisfied_PCConfigurationWithEmptyName_ShouldNotPass(string name)
 		{
 			//Arrange
-			_configuration.WithName(name);
+			Configuration.WithName(name);
 			AddRequiredComponents();
 			AddRequiredWithAllowedDuplicatesComponents();
 
 			//Assert
-			Assert.That(!_specification.IsSatisfiedBy(_configuration));
+			Assert.That(!_specification.IsSatisfiedBy(Configuration));
 		}
 
 		[Test]
 		public void IsSatisfied_PCConfigurationWithTooLargeName_ShouldNotPass()
 		{
 			//Arrange
-			_configuration.WithName("".PadLeft(PublishedPCConfigurationSpecification.NameMaxLength + 1, '*'));
+			Configuration.WithName("".PadLeft(PublishedPCConfigurationSpecification.NameMaxLength + 1, '*'));
 			AddRequiredComponents();
 			AddRequiredWithAllowedDuplicatesComponents();
 
 			//Assert
-			Assert.That(!_specification.IsSatisfiedBy(_configuration));
+			Assert.That(!_specification.IsSatisfiedBy(Configuration));
 		}
 
 		[Test]
@@ -65,13 +65,13 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 			foreach (var componentType in _exactlyOneComponentTypes)
 			{
 				//Arrange
-				_configuration = new PCConfiguration();
+				Configuration = new PCConfiguration();
 				AddValidName();
 				AddRequiredWithAllowedDuplicatesComponents();
 				AddRequiredComponentsExcept(componentType);
 
 				//Assert
-				Assert.That(!_specification.IsSatisfiedBy(_configuration));
+				Assert.That(!_specification.IsSatisfiedBy(Configuration));
 			}
 		}
 
@@ -81,14 +81,12 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 			foreach (var componentType in _exactlyOneComponentTypes)
 			{
 				//Arrange
-				_configuration = new PCConfiguration();
-				AddValidName();
-				AddRequiredComponents();
-				AddRequiredWithAllowedDuplicatesComponents();
-				_configuration.WithComponent(CreateValidComponent(componentType));
+				Configuration = new PCConfiguration();
+				AddAllRequiredComponentsAndValidName();
+				Configuration.WithComponent(CreateValidComponent(componentType));
 
 				//Assert
-				Assert.That(!_specification.IsSatisfiedBy(_configuration));
+				Assert.That(!_specification.IsSatisfiedBy(Configuration));
 			}
 		}
 
@@ -98,13 +96,13 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 			foreach (var componentType in _requiredAndCanHaveMoreThanOneComponentTypes)
 			{
 				//Arrange
-				_configuration = new PCConfiguration();
+				Configuration = new PCConfiguration();
 				AddValidName();
 				AddRequiredComponents();
 				AddRequiredWithAllowedDuplicatesComponentsExcept(componentType);
 
 				//Assert
-				Assert.That(!_specification.IsSatisfiedBy(_configuration));
+				Assert.That(!_specification.IsSatisfiedBy(Configuration));
 			}
 		}
 
@@ -116,7 +114,7 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 			AddRequiredWithAllowedDuplicatesComponents();
 
 			//Assert
-			Assert.That(_specification.IsSatisfiedBy(_configuration));
+			Assert.That(_specification.IsSatisfiedBy(Configuration));
 		}
 
 		[Test]
@@ -126,7 +124,7 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 			AddAllRequiredComponentsAndValidName();
 
 			//Assert
-			Assert.That(_specification.IsSatisfiedBy(_configuration));
+			Assert.That(_specification.IsSatisfiedBy(Configuration));
 		}
 
 		[Test]
@@ -135,7 +133,7 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 			//Arrange
 			AddValidName();
 			AddRequiredComponents();
-			var parentComponent = _configuration.Components.First();
+			var parentComponent = ConfigComponentAt(0);
 			foreach (var type in _requiredAndCanHaveMoreThanOneComponentTypes)
 			{
 				var component = CreateValidComponent(type);
@@ -144,7 +142,7 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 			}
 
 			//Assert
-			Assert.That(_specification.IsSatisfiedBy(_configuration));
+			Assert.That(_specification.IsSatisfiedBy(Configuration));
 		}
 
 		[Test]
@@ -155,15 +153,15 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 
 			var plugSlots = CreateInterfaces();
 
-			_configuration.Components.First().WithPlugSlot(plugSlots[0]);
-			_configuration.Components.ElementAt(2).WithPlugSlot(plugSlots[1]);
-			_configuration.Components.ElementAt(3).WithPlugSlot(plugSlots[2]);
-			_configuration.Components.ElementAt(4)
+			ConfigComponentAt(0).WithPlugSlot(plugSlots[0]);
+			ConfigComponentAt(2).WithPlugSlot(plugSlots[1]);
+			ConfigComponentAt(3).WithPlugSlot(plugSlots[2]);
+			ConfigComponentAt(4)
 				.WithContainedSlot(plugSlots[0])
 				.WithContainedSlot(plugSlots[1]);
 
 			//Assert
-			Assert.That(!_specification.IsSatisfiedBy(_configuration));
+			Assert.That(!_specification.IsSatisfiedBy(Configuration));
 		}
 
 		[Test]
@@ -173,13 +171,13 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 			AddAllRequiredComponentsAndValidName();
 
 			var plugSlot = DomainObjectsCreator.CreateInterface(1);
-			_configuration.Components.First().WithPlugSlot(plugSlot)
+			ConfigComponentAt(0).WithPlugSlot(plugSlot)
 				.WithContainedComponent(
 					CreateValidComponent(ComponentType.SolidStateDrice)
 						.WithContainedSlot(plugSlot));
 
 			//Assert
-			Assert.That(!_specification.IsSatisfiedBy(_configuration));
+			Assert.That(!_specification.IsSatisfiedBy(Configuration));
 		}
 
 		[Test]
@@ -190,14 +188,14 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 
 			var plugSlots = CreateInterfaces();
 
-			_configuration.Components.First().WithPlugSlot(plugSlots[0]).WithContainedSlot(plugSlots[1]);
-			_configuration.Components.ElementAt(2).WithPlugSlot(plugSlots[1]).WithContainedSlot(plugSlots[2]);
-			_configuration.Components.ElementAt(3).WithPlugSlot(plugSlots[2])
+			ConfigComponentAt(0).WithPlugSlot(plugSlots[0]).WithContainedSlot(plugSlots[1]);
+			ConfigComponentAt(2).WithPlugSlot(plugSlots[1]).WithContainedSlot(plugSlots[2]);
+			ConfigComponentAt(3).WithPlugSlot(plugSlots[2])
 				.WithContainedComponent(CreateValidComponent(ComponentType.SolidStateDrice)
 					.WithContainedSlot(plugSlots[0]));
 
 			//Assert
-			Assert.That(!_specification.IsSatisfiedBy(_configuration));
+			Assert.That(!_specification.IsSatisfiedBy(Configuration));
 		}
 
 		[Test]
@@ -208,16 +206,16 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 
 			var plugSlot = DomainObjectsCreator.CreateInterface(1);
 
-			_configuration.Components.First().WithPlugSlot(plugSlot);
-			_configuration.Components.ElementAt(2).WithPlugSlot(plugSlot);
-			_configuration.Components.ElementAt(3).WithPlugSlot(plugSlot);
-			_configuration.Components.ElementAt(4)
-				.WithContainedComponent(CreateValidComponent(ComponentType.CentralProcessingUnit)
+			ConfigComponentAt(0).WithPlugSlot(plugSlot);
+			ConfigComponentAt(2).WithPlugSlot(plugSlot);
+			ConfigComponentAt(3).WithPlugSlot(plugSlot);
+			ConfigComponentAt(4).WithContainedComponent(
+				CreateValidComponent(ComponentType.CentralProcessingUnit)
 					.WithContainedSlot(plugSlot)
 					.WithContainedSlot(plugSlot));
 
 			//Assert
-			Assert.That(!_specification.IsSatisfiedBy(_configuration));
+			Assert.That(!_specification.IsSatisfiedBy(Configuration));
 		}
 
 		[Test]
@@ -227,18 +225,18 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 			AddAllRequiredComponentsAndValidName();
 
 			var plugSlots = CreateInterfaces();
-			_configuration.Components.First().WithPlugSlot(plugSlots[0]);
-			_configuration.Components.ElementAt(2).WithPlugSlot(plugSlots[1])
+			ConfigComponentAt(0).WithPlugSlot(plugSlots[0]).WithPlugSlot(plugSlots[1]);
+			ConfigComponentAt(2).WithPlugSlot(plugSlots[1])
 				.WithContainedSlot(plugSlots[1])
 				.WithContainedSlot(plugSlots[2]);
-			_configuration.Components.ElementAt(3).WithPlugSlot(plugSlots[2]);
-			_configuration.Components.ElementAt(4)
+			ConfigComponentAt(3).WithPlugSlot(plugSlots[2]);
+			ConfigComponentAt(4)
 				.WithContainedComponent(CreateValidComponent(ComponentType.CentralProcessingUnit)
 					.WithContainedSlot(plugSlots[0])
 					.WithContainedSlot(plugSlots[1]));
 
 			//Assert
-			Assert.That(_specification.IsSatisfiedBy(_configuration));
+			Assert.That(_specification.IsSatisfiedBy(Configuration));
 		}
 
 		#region Private methods
@@ -260,6 +258,11 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 			};
 		}
 
+		private PCComponent ConfigComponentAt(int index)
+		{
+			return Configuration.Components.ElementAt(index);
+		}
+
 		private PCComponent CreateValidComponent(ComponentType type)
 		{
 			return new PCComponent("some name", type);
@@ -267,7 +270,7 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 
 		private void AddValidName()
 		{
-			_configuration.WithName("some name");
+			Configuration.WithName("some name");
 		}
 
 		private void AddRequiredComponents()
@@ -297,7 +300,7 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 				typesToAdd = typesToAdd.Where(x => x != exceptComponentType.Value);
 
 			foreach (var type in typesToAdd)
-				_configuration.WithComponent(CreateValidComponent(type));
+				Configuration.WithComponent(CreateValidComponent(type));
 		}
 
 		#endregion

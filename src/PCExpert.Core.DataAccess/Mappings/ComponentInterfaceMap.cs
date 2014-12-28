@@ -17,14 +17,20 @@ namespace PCExpert.Core.DataAccess.Mappings
 					m.MapRightKey("ChildComponent_id");
 					m.ToTable("ParentToChildComponents");
 				});
-			HasMany(this.PrivateProperty<PCComponent, ICollection<ComponentInterface>>("Slots"))
+			HasMany(this.PrivateProperty<PCComponent, ICollection<ComponentInterface>>("ContainedInterfaces"))
 				.WithMany().Map(m =>
 				{
 					m.MapLeftKey("Component_id");
 					m.MapRightKey("ContainedSlot_id");
-					m.ToTable("ComponentToSlots");
+					m.ToTable("ComponentToContainedSlots");
 				});
-			HasOptional(x => x.PlugSlot);
+			HasMany(this.PrivateProperty<PCComponent, ICollection<ComponentInterface>>("PlugInterfaces"))
+				.WithMany().Map(m =>
+				{
+					m.MapLeftKey("Component_id");
+					m.MapRightKey("ContainedSlot_id");
+					m.ToTable("ComponentToPlugSlots");
+				});
 		}
 	}
 }
