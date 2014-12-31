@@ -83,6 +83,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComponentCharacteristic.cs" />
     <Compile Include="ComponentInterface.cs" />
     <Compile Include="ComponentType.cs" />
     <Compile Include="PCConfigurationStatus.cs" />

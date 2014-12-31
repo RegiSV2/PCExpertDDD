@@ -31,7 +31,7 @@ namespace PCExpert.Core.Domain.Tests.Repositories
 		public void Query_ValidComponentType_ShouldQueryComponentsOfSpecifiedTypes()
 		{
 			//Arrange
-			var requestType = ComponentType.Motherboard;
+			const ComponentType requestType = ComponentType.Motherboard;
 			var components = new List<PCComponent>
 			{
 				DomainObjectsCreator.CreateComponent(0, requestType),
