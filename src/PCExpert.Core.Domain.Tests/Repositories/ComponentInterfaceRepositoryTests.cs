@@ -12,39 +12,37 @@ namespace PCExpert.Core.Domain.Tests.Repositories
 {
 	[TestFixture]
 	public class ComponentInterfaceRepositoryTests
+		: RepositoryTests<IComponentInterfaceRepository, ComponentInterface>
 	{
-		private IComponentInterfaceRepository _repository;
+		protected override IComponentInterfaceRepository CreateRepositoryWithWorkplace(PersistenceWorkplace workplace)
+		{
+			return new ComponentInterfaceRepository(workplace);
+		}
+
+		protected override void Save(IComponentInterfaceRepository repository, ComponentInterface entity)
+		{
+			repository.Save(entity);
+		}
 
 		[Test]
-		public void Save_AnyValue_ShouldDelegateToPersistenceWorkplace()
+		public override void Save_AnyValue_ShouldDelegateToPersistenceWorkplace()
 		{
-			//Arrange
-			var workplace = new TestPersistenceWorkplace();
-			_repository = new ComponentInterfaceRepository(workplace);
-			var componentToInsert = new Mock<ComponentInterface>();
-
-			//Act
-			_repository.Save(componentToInsert.Object);
-
-			//Assert
-			Assert.That(workplace.IsUpdateCalled);
-			;
+			base.Save_AnyValue_ShouldDelegateToPersistenceWorkplace();
 		}
 
 		[Test]
 		public void Query_WithSpecification_ShouldReturnFilteredQueryFromWorkplace()
 		{
 			//Arrange
-			var workplace = new Mock<PersistenceWorkplace>();
 			var list = new List<ComponentInterface>
 			{
 				new Mock<ComponentInterface>().WithId(Guid.NewGuid()).Object,
 				new Mock<ComponentInterface>().Object,
 				new Mock<ComponentInterface>().Object
 			};
-			workplace.Setup(x => x.Query<ComponentInterface>())
+			MockWorkplace.Setup(x => x.Query<ComponentInterface>())
 				.Returns(list.AsQueryable());
-			_repository = new ComponentInterfaceRepository(workplace.Object);
+			_repository = CreateRepositoryWithWorkplace(MockWorkplace.Object);
 			Expression<Func<ComponentInterface, bool>> specExpression = x => x.Id != Guid.Empty;
 
 			//Act

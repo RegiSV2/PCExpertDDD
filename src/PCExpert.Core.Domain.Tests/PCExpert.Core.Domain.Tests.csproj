@@ -52,6 +52,8 @@
     <Compile Include="PCConfigurationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ComponentInterfaceRepositoryTests.cs" />
+    <Compile Include="Repositories\PCComponentRepositoryTests.cs" />
+    <Compile Include="Repositories\RepositoryTests.cs" />
     <Compile Include="Specifications\ConfigurationNameMaxLengthSpecificationTests.cs" />
     <Compile Include="Specifications\ConfigurationNameNotEmptySpecificationTests.cs" />
     <Compile Include="Specifications\PCConfigurationSpecificationsTests.cs" />

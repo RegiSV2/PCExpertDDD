@@ -115,4 +115,31 @@ namespace PCExpert.Core.Domain.Tests
 			Assert.That(DefaultConfiguration.CalculatePrice(), Is.EqualTo(650.5m));
 		}
 	}
+
+	public class PCConfigurationStatusTests : PCConfigurationTests
+	{
+		[Test]
+		public void Status_AfterCreation_ShouldBeEqualToPersonal()
+		{
+			Assert.That(DefaultConfiguration.Status, Is.EqualTo(PCConfigurationStatus.Personal));
+		}
+
+		[Test]
+		public void MoveToStatus_ValidStatus_ShouldChangeStatus()
+		{
+			//Act
+			Assert.That(DefaultConfiguration.Status, Is.Not.EqualTo(PCConfigurationStatus.Published));
+			DefaultConfiguration.MoveToStatus(PCConfigurationStatus.Published);
+
+			//Assert
+			Assert.That(DefaultConfiguration.Status, Is.EqualTo(PCConfigurationStatus.Published));
+		}
+
+		[Test]
+		public void MoveToStatus_InvalidStatus_ShouldThrowArgumentException()
+		{
+			Assert.That(() => DefaultConfiguration.MoveToStatus((PCConfigurationStatus) 1234),
+				Throws.InstanceOf<ArgumentException>());
+		}
+	}
 }

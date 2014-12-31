@@ -14,6 +14,7 @@ namespace PCExpert.Core.Domain
 		public PCConfiguration()
 		{
 			ContainedComponents = new List<PCComponent>();
+			Status = PCConfigurationStatus.Personal;
 		}
 
 		#endregion
@@ -21,6 +22,8 @@ namespace PCExpert.Core.Domain
 		#region Properties
 
 		public string Name { get; private set; }
+
+		public PCConfigurationStatus Status { get; private set; }
 
 		private IList<PCComponent> ContainedComponents { get; set; }
 
@@ -66,6 +69,16 @@ namespace PCExpert.Core.Domain
 			ContainedComponents.Add(component);
 
 			return this;
+		}
+
+		/// <summary>
+		/// Changes status of the configuration
+		/// </summary>
+		public void MoveToStatus(PCConfigurationStatus newStatus)
+		{
+			Argument.ValidEnumItem(newStatus);
+
+			Status = newStatus;
 		}
 
 		#endregion
