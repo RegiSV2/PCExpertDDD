@@ -29,6 +29,11 @@ namespace PCExpert.Core.Domain
 			Components = new List<PCComponent>();
 			ContainedInterfaces = new List<ComponentInterface>();
 			PlugInterfaces = new List<ComponentInterface>();
+			CharacteristicVals = new List<CharacteristicValue>();
+			_characteristics = new Lazy<IDictionary<ComponentCharacteristic, CharacteristicValue>>(
+				InitCharacteristicsDictionary);
+			_readOnlyCharacteristics = new Lazy<IReadOnlyDictionary<ComponentCharacteristic, CharacteristicValue>>(
+				InitCharacteristicsReadOnlyDictionary);
 
 			Type = type;
 		}
@@ -42,6 +47,12 @@ namespace PCExpert.Core.Domain
 		private IList<ComponentInterface> ContainedInterfaces { get; set; }
 
 		private IList<ComponentInterface> PlugInterfaces { get; set; }
+
+		private IList<CharacteristicValue> CharacteristicVals { get; set; }
+
+		private readonly Lazy<IDictionary<ComponentCharacteristic, CharacteristicValue>> _characteristics;
+
+		private readonly Lazy<IReadOnlyDictionary<ComponentCharacteristic, CharacteristicValue>> _readOnlyCharacteristics;
 
 		public string Name { get; private set; }
 
@@ -68,6 +79,16 @@ namespace PCExpert.Core.Domain
 		public IReadOnlyCollection<ComponentInterface> PlugSlots
 		{
 			get { return new ReadOnlyCollection<ComponentInterface>(PlugInterfaces); }
+		}
+
+		public IReadOnlyCollection<CharacteristicValue> CharacteristicValues
+		{
+			get { return new ReadOnlyCollection<CharacteristicValue>(CharacteristicVals); }
+		}
+
+		public IReadOnlyDictionary<ComponentCharacteristic, CharacteristicValue> Characteristics
+		{
+			get { return _readOnlyCharacteristics.Value; }
 		}
 
 		#endregion
@@ -126,6 +147,32 @@ namespace PCExpert.Core.Domain
 			Type = type;
 
 			return this;
+		}
+
+		public PCComponent WithCharacteristicValue(CharacteristicValue characteristicValue)
+		{
+			Argument.NotNull(characteristicValue);
+
+			CharacteristicVals.Add(characteristicValue);
+			_characteristics.Value.Add(characteristicValue.Characteristic, characteristicValue);
+
+			return this;
+		}
+
+		#endregion
+
+		#region Private Methods
+
+		private IReadOnlyDictionary<ComponentCharacteristic, CharacteristicValue> InitCharacteristicsReadOnlyDictionary()
+		{
+			return new ReadOnlyDictionary<ComponentCharacteristic, CharacteristicValue>(_characteristics.Value);
+		}
+
+		private IDictionary<ComponentCharacteristic, CharacteristicValue> InitCharacteristicsDictionary()
+		{
+			return CharacteristicVals.ToDictionary(
+				x => x.Characteristic, x => x,
+				new EntityEqualityComparer<ComponentCharacteristic>());
 		}
 
 		#endregion

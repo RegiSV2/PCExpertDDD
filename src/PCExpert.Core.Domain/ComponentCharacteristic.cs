@@ -3,9 +3,12 @@ using PCExpert.Core.DomainFramework.Utils;
 
 namespace PCExpert.Core.Domain
 {
-	public class ComponentCharacteristic : Entity
+	public abstract class ComponentCharacteristic : Entity
 	{
 		#region Constructors
+
+		protected ComponentCharacteristic()
+		{ }
 
 		public ComponentCharacteristic(string name, ComponentType type)
 		{
@@ -24,7 +27,24 @@ namespace PCExpert.Core.Domain
 
 		public ComponentType ComponentType { get; private set; }
 
+		/// <summary>
+		/// A pattern that should be used for formatting CharacteristicValue to user-friendly view
+		/// </summary>
+		public string FormattingPattern { get; private set; }
+
 		#endregion
 
+		#region Public Methods
+
+		public ComponentCharacteristic WithPattern(string pattern)
+		{
+			Argument.NotNullAndNotEmpty(pattern);
+
+			FormattingPattern = pattern;
+
+			return this;
+		}
+
+		#endregion
 	}
 }

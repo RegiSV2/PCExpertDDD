@@ -35,7 +35,8 @@ namespace PCExpert.Core.DataAccess.Tests
 			{
 				Interfaces = workplace.Query<ComponentInterface>().ToList(),
 				Components = workplace.Query<PCComponent>().ToList(),
-				Configurations = workplace.Query<PCConfiguration>().ToList()
+				Configurations = workplace.Query<PCConfiguration>().ToList(),
+				Characteristics = workplace.Query<ComponentCharacteristic>().ToList()
 			};
 		}
 
@@ -46,16 +47,19 @@ namespace PCExpert.Core.DataAccess.Tests
 			public List<PCComponent> Components { get; set; }
 			public List<ComponentInterface> Interfaces { get; set; }
 			public List<PCConfiguration> Configurations { get; set; }
+			public List<ComponentCharacteristic> Characteristics { get; set; }
 		}
 
 		#region Model creation
 
 		private PCExpertModel InsertModel(EfWorkplace workplace)
 		{
+			var characteristics = CreateCharacteristics();
 			var slotsToInsert = CreateSlots();
 			var componentsToInsert = CreateComponents(slotsToInsert);
 			var configurations = CreateConfigurations(componentsToInsert);
 
+			workplace.Insert<ComponentCharacteristic>(characteristics);
 			workplace.Insert<ComponentInterface>(slotsToInsert);
 			workplace.Insert<PCComponent>(componentsToInsert);
 			workplace.Insert<PCConfiguration>(configurations);
@@ -64,8 +68,35 @@ namespace PCExpert.Core.DataAccess.Tests
 			{
 				Components = componentsToInsert,
 				Interfaces = slotsToInsert,
-				Configurations = configurations
+				Configurations = configurations,
+				Characteristics = characteristics
 			};
+		}
+
+		private List<ComponentCharacteristic> CreateCharacteristics()
+		{
+			var characteristics = new List<ComponentCharacteristic>();
+
+			for (var i = 0; i < 9; i ++)
+			{
+				switch (i%2)
+				{
+					case 0:
+						characteristics.Add(new BoolCharacteristic(
+							NamesGenerator.CharacteristicName(i),
+							ComponentType.PowerSupply)
+							.WithPattern("bool pattern"));
+						break;
+					case 1:
+						characteristics.Add(new IntCharacteristic(
+							NamesGenerator.CharacteristicName(i),
+							ComponentType.PowerSupply)
+							.WithPattern("int pattern"));
+						break;
+				}
+			}
+
+			return characteristics;
 		}
 
 		private static void CreateRandomLinks(List<PCComponent> componentsToInsert)
@@ -127,9 +158,28 @@ namespace PCExpert.Core.DataAccess.Tests
 
 		private void AssertModelsAreEqual(PCExpertModel savedModel, PCExpertModel loadedModel)
 		{
+			CompareCharacteristics(savedModel.Characteristics, loadedModel.Characteristics);
 			CompareInterfaces(savedModel.Interfaces, loadedModel.Interfaces);
 			CompareComponents(savedModel.Components, loadedModel.Components);
 			CompareConfigurations(savedModel.Configurations, loadedModel.Configurations);
+		}
+
+		private void CompareCharacteristics(List<ComponentCharacteristic> savedChs, List<ComponentCharacteristic> loadedChs)
+		{
+			foreach (var savedCh in savedChs)
+			{
+				var loadedCh = loadedChs.FirstOrDefault(x => x.SameIdentityAs(savedCh));
+
+				AssertCharacteristicsEqual(savedCh, loadedCh);
+			}
+		}
+
+		private void AssertCharacteristicsEqual(ComponentCharacteristic savedCh, ComponentCharacteristic loadedCh)
+		{
+			Assert.That(loadedCh, Is.Not.Null);
+			Assert.That(savedCh.ComponentType, Is.EqualTo(loadedCh.ComponentType));
+			Assert.That(savedCh.FormattingPattern, Is.EqualTo(loadedCh.FormattingPattern));
+			Assert.That(savedCh.Name, Is.EqualTo(loadedCh.Name));
 		}
 
 		private void CompareComponents(List<PCComponent> savedComps, List<PCComponent> loadedComps)

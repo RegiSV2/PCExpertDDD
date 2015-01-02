@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
 using PCExpert.Core.DataAccess.Mappings;
 using PCExpert.Core.Domain;
 
@@ -21,13 +22,15 @@ namespace PCExpert.Core.DataAccess
 		public DbSet<PCComponent> PCComponents { get; set; }
 		public DbSet<ComponentInterface> ComponentInterfaces { get; set; }
 		public DbSet<PCConfiguration> PCConfigurations { get; set; }
+		public DbSet<ComponentCharacteristic> Characteristics { get; set; } 
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			modelBuilder.Configurations
 				.Add(new ComponentInterfaceConfiguration())
 				.Add(new PCComponentConfiguration())
-				.Add(new PCConfigurationConfiguration());
+				.Add(new PCConfigurationConfiguration())
+				.Add(new ComponentCharacteristicConfiguration());
 		}
 	}
 }

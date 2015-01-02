@@ -46,8 +46,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoolCharacteristicTests.cs" />
+    <Compile Include="BoolCharacteristicValueValueTests.cs" />
+    <Compile Include="CharacteristicValueTests.cs" />
     <Compile Include="ComponentCharacteristicTests.cs" />
     <Compile Include="ComponentInterfaceTests.cs" />
+    <Compile Include="ConcreteCharacteristicValueTests.cs" />
+    <Compile Include="IntCharacteristicTests.cs" />
+    <Compile Include="IntCharacteristicValueTests.cs" />
     <Compile Include="NullComponentInterfaceTests.cs" />
     <Compile Include="PCComponentTests.cs" />
     <Compile Include="PCConfigurationTests.cs" />

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Moq;
 using NUnit.Framework;
 using PCExpert.Core.DomainFramework.Exceptions;
@@ -297,6 +299,80 @@ namespace PCExpert.Core.Domain.Tests
 
 			//Assert
 			Assert.That(() => DefaultComponent.WithType(newType), Throws.ArgumentException);
+		}
+	}
+
+	public class PCComponentCharacteristicsTests : PCComponentTests
+	{
+		[Test]
+		public void CharacteristicValues_AfterCreation_ShouldBeEmpty()
+		{
+			Assert.That(DefaultComponent.CharacteristicValues.Count == 0);
+		}
+
+		[Test]
+		public void Characteristics_AfterCreation_ShouldBeEmpty()
+		{
+			Assert.That(DefaultComponent.Characteristics.Count == 0);
+		}
+
+		[Test]
+		public void WithCharacteristicValue_NullCharacteristic_ShouldThrowArgumentNullException()
+		{
+			Assert.That(() => DefaultComponent.WithCharacteristicValue(null),
+				Throws.InstanceOf<ArgumentNullException>());
+		}
+
+		[Test]
+		public void WithCharacteristicValue_ValueForThisCharacteristicNotSpecifiedYet_ShouldAddValueToCharacteristicValues()
+		{
+			//Arrange
+			var characteristicValue = CreateMockCharacteristicValue();
+			DefaultComponent.WithCharacteristicValue(characteristicValue);
+
+			//Assert
+			Assert.That(DefaultComponent.CharacteristicValues.Contains(characteristicValue));
+		}
+
+		[Test]
+		public void WithCharacteristicValue_ValueForCharacteristicNotSpecifiedYet_ShouldAddValueToCharacteristics()
+		{
+			//Arrange
+			var characteristicValue = CreateMockCharacteristicValue();
+			DefaultComponent.WithCharacteristicValue(characteristicValue);
+
+			//Assert
+			Assert.That(DefaultComponent.Characteristics.Values.Contains(characteristicValue));
+			Assert.That(DefaultComponent.Characteristics.ContainsKey(characteristicValue.Characteristic));
+		}
+
+		[Test]
+		public void Characteristics_CharacteristicValuesArePredefined_ShouldContainAllCharacteristics()
+		{
+			//Arrange
+			var valuesList = new List<CharacteristicValue>();
+			for(var i =0; i< 5; i++)
+				valuesList.Add(CreateMockCharacteristicValue());
+
+			DefaultComponent.GetType().GetProperty("CharacteristicVals",
+				BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty | BindingFlags.SetProperty)
+				.SetValue(DefaultComponent, valuesList);
+
+			//Assert
+			Assert.That(DefaultComponent.Characteristics.Count == valuesList.Count);
+			foreach (var value in valuesList)
+			{
+				Assert.That(DefaultComponent.Characteristics.ContainsKey(value.Characteristic));
+				Assert.That(DefaultComponent.Characteristics[value.Characteristic] == value);
+			}
+				
+		}
+
+		private static CharacteristicValue CreateMockCharacteristicValue()
+		{
+			var characteristic = new Mock<ComponentCharacteristic>().WithId(Guid.NewGuid());
+			var characteristicValue = new Mock<CharacteristicValue>(characteristic.Object).Object;
+			return characteristicValue;
 		}
 	}
 }

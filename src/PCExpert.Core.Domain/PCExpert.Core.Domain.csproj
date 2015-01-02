@@ -83,9 +83,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoolCharacteristic.cs" />
+    <Compile Include="BoolCharacteristicValue.cs" />
+    <Compile Include="CharacteristicValue.cs" />
     <Compile Include="ComponentCharacteristic.cs" />
     <Compile Include="ComponentInterface.cs" />
     <Compile Include="ComponentType.cs" />
+    <Compile Include="IntCharacteristic.cs" />
+    <Compile Include="IntCharacteristicValue.cs" />
     <Compile Include="PCConfigurationStatus.cs" />
     <Compile Include="Repositories\ComponentInterfaceRepository.cs" />
     <Compile Include="Repositories\IComponentInterfaceRepository.cs" />
