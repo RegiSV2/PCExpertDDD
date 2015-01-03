@@ -6,7 +6,7 @@ namespace PCExpert.Core.DataAccess.Mappings
 {
 	public class ComponentCharacteristicConfiguration : EntityTypeConfiguration<ComponentCharacteristic>
 	{
-		const string DiscriminatorColumn = "type";
+		private const string DiscriminatorColumn = "type";
 
 		public ComponentCharacteristicConfiguration()
 		{

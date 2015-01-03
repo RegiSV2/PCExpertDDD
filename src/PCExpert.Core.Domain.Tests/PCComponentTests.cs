@@ -45,7 +45,6 @@ namespace PCExpert.Core.Domain.Tests
 			var componentName = NamesGenerator.ComponentName();
 			var component = new PCComponent(componentName, ValidComponentType);
 
-			//Assert
 			Assert.That(component.Name, Is.EqualTo(componentName));
 		}
 
@@ -81,7 +80,6 @@ namespace PCExpert.Core.Domain.Tests
 			//Act
 			DefaultComponent.WithAveragePrice(ComponentPrice);
 
-			//Assert
 			Assert.That(DefaultComponent.AveragePrice, Is.EqualTo(ComponentPrice));
 		}
 
@@ -153,7 +151,6 @@ namespace PCExpert.Core.Domain.Tests
 			var childComponent = CreateComponent(2);
 			parentComponent.WithContainedComponent(childComponent);
 
-			//Assert
 			Assert.That(() => parentComponent.WithContainedComponent(childComponent),
 				Throws.InstanceOf<DuplicateElementException>());
 		}
@@ -173,7 +170,6 @@ namespace PCExpert.Core.Domain.Tests
 			var parentComponent = CreateComponent(1).WithId(commonId);
 			var childComponent = CreateComponent(2).WithId(commonId);
 
-			//Assert
 			Assert.That(() => parentComponent.WithContainedComponent(childComponent),
 				Throws.InstanceOf<ArgumentException>());
 		}
@@ -187,7 +183,6 @@ namespace PCExpert.Core.Domain.Tests
 			var secondComponent = CreateComponent(2).WithId(commonId);
 			DefaultComponent.WithContainedComponent(firstComponent);
 
-			//Assert
 			Assert.That(() => DefaultComponent.WithContainedComponent(secondComponent),
 				Throws.InstanceOf<DuplicateElementException>());
 		}
@@ -198,14 +193,12 @@ namespace PCExpert.Core.Domain.Tests
 		[Test]
 		public void PlugSlots_NoPlugSlotsSet_ShouldReturnEmptyCollection()
 		{
-			//Assert
 			Assert.That(DefaultComponent.PlugSlots.Count, Is.EqualTo(0));
 		}
 
 		[Test]
 		public void WithPlugSlot_NullArgument_ShouldThrowArgumentNullException()
 		{
-			//Assert
 			Assert.That(() => DefaultComponent.WithPlugSlot(null), Throws.InstanceOf<ArgumentNullException>());
 		}
 
@@ -255,7 +248,6 @@ namespace PCExpert.Core.Domain.Tests
 			var slotToAdd = CreateInterface(1);
 			DefaultComponent.WithContainedSlot(slotToAdd.Object);
 
-			//Assert
 			Assert.That(DefaultComponent.ContainedSlots.Count, Is.EqualTo(1));
 			Assert.That(DefaultComponent.ContainedSlots.Contains(slotToAdd.Object));
 		}
@@ -297,7 +289,6 @@ namespace PCExpert.Core.Domain.Tests
 			//Arrange
 			const ComponentType newType = (ComponentType) 2345678;
 
-			//Assert
 			Assert.That(() => DefaultComponent.WithType(newType), Throws.ArgumentException);
 		}
 	}
@@ -327,10 +318,9 @@ namespace PCExpert.Core.Domain.Tests
 		public void WithCharacteristicValue_ValueForThisCharacteristicNotSpecifiedYet_ShouldAddValueToCharacteristicValues()
 		{
 			//Arrange
-			var characteristicValue = CreateMockCharacteristicValue();
+			var characteristicValue = CreateCharacteristicValue();
 			DefaultComponent.WithCharacteristicValue(characteristicValue);
 
-			//Assert
 			Assert.That(DefaultComponent.CharacteristicValues.Contains(characteristicValue));
 		}
 
@@ -338,12 +328,21 @@ namespace PCExpert.Core.Domain.Tests
 		public void WithCharacteristicValue_ValueForCharacteristicNotSpecifiedYet_ShouldAddValueToCharacteristics()
 		{
 			//Arrange
-			var characteristicValue = CreateMockCharacteristicValue();
+			var characteristicValue = CreateCharacteristicValue();
 			DefaultComponent.WithCharacteristicValue(characteristicValue);
 
-			//Assert
 			Assert.That(DefaultComponent.Characteristics.Values.Contains(characteristicValue));
 			Assert.That(DefaultComponent.Characteristics.ContainsKey(characteristicValue.Characteristic));
+		}
+
+		[Test]
+		public void WithCharacteristicValue_ValueForCharacteristicNotSpecifiedYet_ShouldAttachCharacteristicToComponent()
+		{
+			//Arrange
+			var characteristicValue = CreateCharacteristicValue();
+			DefaultComponent.WithCharacteristicValue(characteristicValue);
+
+			Assert.That(characteristicValue.Component.SameIdentityAs(DefaultComponent));
 		}
 
 		[Test]
@@ -352,7 +351,7 @@ namespace PCExpert.Core.Domain.Tests
 			//Arrange
 			var valuesList = new List<CharacteristicValue>();
 			for(var i =0; i< 5; i++)
-				valuesList.Add(CreateMockCharacteristicValue());
+				valuesList.Add(CreateCharacteristicValue());
 
 			DefaultComponent.GetType().GetProperty("CharacteristicVals",
 				BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty | BindingFlags.SetProperty)
@@ -368,7 +367,7 @@ namespace PCExpert.Core.Domain.Tests
 				
 		}
 
-		private static CharacteristicValue CreateMockCharacteristicValue()
+		private static CharacteristicValue CreateCharacteristicValue()
 		{
 			var characteristic = new Mock<ComponentCharacteristic>().WithId(Guid.NewGuid());
 			var characteristicValue = new Mock<CharacteristicValue>(characteristic.Object).Object;

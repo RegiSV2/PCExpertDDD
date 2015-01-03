@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
@@ -12,6 +13,8 @@ namespace PCExpert.Core.DataAccess.Tests
 	[TestFixture, Category("IntegrationTests")]
 	public class MappingTests
 	{
+		private Random _random = new Random();
+
 		[Test]
 		public void DbOperationsTest()
 		{
@@ -54,9 +57,9 @@ namespace PCExpert.Core.DataAccess.Tests
 
 		private PCExpertModel InsertModel(EfWorkplace workplace)
 		{
-			var characteristics = CreateCharacteristics();
 			var slotsToInsert = CreateSlots();
-			var componentsToInsert = CreateComponents(slotsToInsert);
+			var characteristics = CreateCharacteristics();
+			var componentsToInsert = CreateComponents(slotsToInsert, characteristics);
 			var configurations = CreateConfigurations(componentsToInsert);
 
 			workplace.Insert<ComponentCharacteristic>(characteristics);
@@ -110,7 +113,7 @@ namespace PCExpert.Core.DataAccess.Tests
 			}
 		}
 
-		private static List<PCComponent> CreateComponents(List<ComponentInterface> slotsToInsert)
+		private List<PCComponent> CreateComponents(List<ComponentInterface> slotsToInsert, List<ComponentCharacteristic> characteristics)
 		{
 			var componentsToInsert = new List<PCComponent>();
 			for (var i = 0; i < 5; i++)
@@ -122,9 +125,22 @@ namespace PCExpert.Core.DataAccess.Tests
 					.WithContainedSlot(slotsToInsert.RandomElement())
 					.WithContainedSlot(slotsToInsert.RandomElementExcept(newComponent.ContainedSlots.ToList()));
 				componentsToInsert.Add(newComponent);
+				AddCharacteristicsToComponent(characteristics, newComponent);
 			}
 			CreateRandomLinks(componentsToInsert);
 			return componentsToInsert;
+		}
+
+		private void AddCharacteristicsToComponent(List<ComponentCharacteristic> characteristics, PCComponent newComponent)
+		{
+			for (var j = 0; j < 3; j++)
+			{
+				var characteristic = characteristics.RandomElementExcept(newComponent.Characteristics.Keys.ToList());
+				if (characteristic is BoolCharacteristic)
+					newComponent.WithCharacteristicValue((characteristic as BoolCharacteristic).CreateValue(RandomBool()));
+				else if (characteristic is IntCharacteristic)
+					newComponent.WithCharacteristicValue((characteristic as IntCharacteristic).CreateValue(_random.Next()));
+			}
 		}
 
 		private static List<ComponentInterface> CreateSlots()
@@ -150,6 +166,11 @@ namespace PCExpert.Core.DataAccess.Tests
 			}
 
 			return configurations;
+		}
+
+		private bool RandomBool()
+		{
+			return _random.Next(2) != 0;
 		}
 
 		#endregion
@@ -200,6 +221,19 @@ namespace PCExpert.Core.DataAccess.Tests
 			AssertCollectionsEqual(savedComp.ContainedSlots, loadedComp.ContainedSlots);
 			AssertCollectionsEqual(savedComp.PlugSlots, loadedComp.PlugSlots);
 			AssertCollectionsEqual(savedComp.ContainedComponents, loadedComp.ContainedComponents);
+			AssertCollectionsEqual(savedComp.CharacteristicValues, loadedComp.CharacteristicValues,
+				CompareCharacteristicValues);
+		}
+
+		private static bool CompareCharacteristicValues(CharacteristicValue valueA, CharacteristicValue valueB)
+		{
+			if (!valueA.Characteristic.SameIdentityAs(valueB.Characteristic))
+				return false;
+			if (valueA is BoolCharacteristicValue && valueB is BoolCharacteristicValue)
+				return ((BoolCharacteristicValue)valueA).Value == ((BoolCharacteristicValue) valueB).Value;
+			if (valueA is IntCharacteristicValue && valueB is IntCharacteristicValue)
+				return ((IntCharacteristicValue) valueA).Value == ((IntCharacteristicValue) valueB).Value;
+			return false;
 		}
 
 		private void CompareInterfaces(List<ComponentInterface> savedInts, List<ComponentInterface> loadedInts)
@@ -237,9 +271,15 @@ namespace PCExpert.Core.DataAccess.Tests
 			IReadOnlyCollection<TEntity> loadedEntities)
 			where TEntity : Entity
 		{
-			Assert.That(savedEntities.Count == loadedEntities.Count);
-			foreach (var loadedEntity in loadedEntities)
-				Assert.That(savedEntities.Count(x => x.SameIdentityAs(loadedEntity)) == 1);
+			AssertCollectionsEqual(savedEntities, loadedEntities, (x, y) => x.SameIdentityAs(y));
+		}
+
+		private static void AssertCollectionsEqual<T>(IReadOnlyCollection<T> savedItems,
+			IReadOnlyCollection<T> loadedItems, Func<T, T, bool> compare)
+		{
+			Assert.That(savedItems.Count == loadedItems.Count);
+			foreach (var loadedEntity in loadedItems)
+				Assert.That(savedItems.Count(x => compare(x, loadedEntity)) == 1);
 		}
 
 		#endregion

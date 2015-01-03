@@ -31,6 +31,9 @@ namespace PCExpert.Core.DataAccess.Mappings
 					m.MapRightKey("ContainedSlot_id");
 					m.ToTable("ComponentToPlugSlots");
 				});
+			HasMany(this.PrivateProperty<PCComponent, ICollection<CharacteristicValue>>("CharacteristicVals"))
+				.WithRequired(x => x.Component)
+				.WillCascadeOnDelete();
 		}
 	}
 }

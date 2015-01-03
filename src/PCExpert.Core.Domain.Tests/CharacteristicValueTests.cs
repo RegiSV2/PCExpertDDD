@@ -2,6 +2,7 @@
 using System.Globalization;
 using Moq;
 using NUnit.Framework;
+using PCExpert.Core.Tests.Utils;
 
 namespace PCExpert.Core.Domain.Tests
 {
@@ -9,6 +10,8 @@ namespace PCExpert.Core.Domain.Tests
 	public class CharacteristicValueTests
 	{
 		private ComponentCharacteristic _characteristic;
+
+		private FakeCharacteristicValue _characteristicValue;
 
 		private class FakeCharacteristicValue : CharacteristicValue
 		{
@@ -29,16 +32,14 @@ namespace PCExpert.Core.Domain.Tests
 		public void EstablishContext()
 		{
 			_characteristic = new Mock<ComponentCharacteristic>().Object;
+			_characteristicValue = CreateCharacteristicWithSpecifiedDefaults();
 		}
 
 		[Test]
 		public void Constructor_ValidArguments_ShouldCreateWithSpecifiedValue()
 		{
-			//Arrange
-			var charValue = CreateCharacteristicWithSpecifiedDefaults();
-
-			//Assert
-			Assert.That(charValue.Characteristic, Is.EqualTo(_characteristic));
+			Assert.That(_characteristicValue.Characteristic, Is.EqualTo(_characteristic));
+			Assert.That(_characteristicValue.Component, Is.Null);
 		}
 
 		[Test]
@@ -51,19 +52,59 @@ namespace PCExpert.Core.Domain.Tests
 		[Test]
 		public void Format_NullCulture_ShouldThrowArgumentNullException()
 		{
-			var value = CreateCharacteristicWithSpecifiedDefaults();
-			Assert.That(() => value.Format(null), Throws.InstanceOf<ArgumentNullException>());
+			Assert.That(() => _characteristicValue.Format(null),
+				Throws.InstanceOf<ArgumentNullException>());
 		}
 
 		[Test]
 		public void Format_AnyCulture_ShouldCallDoFormatWithThatCulture()
 		{
 			//Arrange
-			var value = CreateCharacteristicWithSpecifiedDefaults();
-			var culture = CultureInfo.CurrentCulture;
-			value.Format(culture);
+			_characteristicValue.Format(CultureInfo.CurrentCulture);
 
-			Assert.That(value.IsDoFormatCalled);
+			Assert.That(_characteristicValue.IsDoFormatCalled);
+		}
+
+		[Test]
+		public void AttachToComponent_NullComponent_ShouldThrowArgumentNullException()
+		{
+			Assert.That(() => _characteristicValue.AttachToComponent(null),
+				Throws.InstanceOf<ArgumentNullException>());
+		}
+
+		[Test]
+		public void AttachToComponent_ComponentNotAdded_ShouldUpdateComponentProperty()
+		{
+			//Arrange
+			var newComponent = CreateComponent();
+			_characteristicValue.AttachToComponent(newComponent);
+
+			Assert.That(_characteristicValue.Component.SameIdentityAs(newComponent));
+		}
+
+		[Test]
+		public void AttachToComponent_ComponentNotAdded_ShouldUpdateComponentIdProperty()
+		{
+			//Arrange
+			var newComponent = CreateComponent();
+			_characteristicValue.AttachToComponent(newComponent);
+
+			Assert.That(_characteristicValue.ComponentId, Is.EqualTo(newComponent.Id));
+		}
+
+		[Test]
+		public void AttachToComponent_SomeComponentAlreadyAdded_ShouldThrowInvalidOperationException()
+		{
+			//Arrange
+			_characteristicValue.AttachToComponent(CreateComponent());
+
+			Assert.That(() => _characteristicValue.AttachToComponent(CreateComponent()),
+				Throws.InstanceOf<InvalidOperationException>());
+		}
+
+		private PCComponent CreateComponent()
+		{
+			return new Mock<PCComponent>().WithId(Guid.NewGuid()).Object;
 		}
 
 		private FakeCharacteristicValue CreateCharacteristicWithSpecifiedDefaults()
