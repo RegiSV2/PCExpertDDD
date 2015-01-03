@@ -52,8 +52,8 @@
     <Compile Include="ComponentCharacteristicTests.cs" />
     <Compile Include="ComponentInterfaceTests.cs" />
     <Compile Include="ConcreteCharacteristicValueTests.cs" />
-    <Compile Include="IntCharacteristicTests.cs" />
-    <Compile Include="IntCharacteristicValueTests.cs" />
+    <Compile Include="DecimalCharacteristicTests.cs" />
+    <Compile Include="DecimalCharacteristicValueTests.cs" />
     <Compile Include="NullComponentInterfaceTests.cs" />
     <Compile Include="PCComponentTests.cs" />
     <Compile Include="PCConfigurationTests.cs" />

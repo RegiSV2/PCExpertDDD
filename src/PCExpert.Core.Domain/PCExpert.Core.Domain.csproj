@@ -89,8 +89,8 @@
     <Compile Include="ComponentCharacteristic.cs" />
     <Compile Include="ComponentInterface.cs" />
     <Compile Include="ComponentType.cs" />
-    <Compile Include="IntCharacteristic.cs" />
-    <Compile Include="IntCharacteristicValue.cs" />
+    <Compile Include="NumericCharacteristic.cs" />
+    <Compile Include="DecimalCharacteristicValue.cs" />
     <Compile Include="PCConfigurationStatus.cs" />
     <Compile Include="Repositories\ComponentInterfaceRepository.cs" />
     <Compile Include="Repositories\IComponentInterfaceRepository.cs" />

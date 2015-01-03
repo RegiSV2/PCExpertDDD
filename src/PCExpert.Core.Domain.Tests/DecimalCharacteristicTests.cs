@@ -5,15 +5,15 @@ using PCExpert.Core.Tests.Utils;
 namespace PCExpert.Core.Domain.Tests
 {
 	[TestFixture]
-	public class IntCharacteristicTests
+	public class DecimalCharacteristicTests
 	{
 		[Test]
-		[TestCase(0)]
-		[TestCase(150)]
-		public void CreateValue_AnyArg_ShouldReturnNewCharacteristicValueWithSpecifiedValue(int valueArg)
+		[TestCase(0d)]
+		[TestCase(150.43d)]
+		public void CreateValue_AnyArg_ShouldReturnNewCharacteristicValueWithSpecifiedValue(decimal valueArg)
 		{
 			//Arrange
-			var characteristic = new IntCharacteristic("some name", ComponentType.HardDiskDrive).WithId(Guid.NewGuid());
+			var characteristic = new NumericCharacteristic("some name", ComponentType.HardDiskDrive).WithId(Guid.NewGuid());
 			var value = characteristic.CreateValue(valueArg);
 
 			//Assert

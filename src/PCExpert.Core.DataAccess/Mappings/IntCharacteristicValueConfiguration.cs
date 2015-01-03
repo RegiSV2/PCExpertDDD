@@ -3,7 +3,7 @@ using PCExpert.Core.Domain;
 
 namespace PCExpert.Core.DataAccess.Mappings
 {
-	public class IntCharacteristicValueConfiguration : EntityTypeConfiguration<IntCharacteristicValue>
+	public class IntCharacteristicValueConfiguration : EntityTypeConfiguration<DecimalCharacteristicValue>
 	{
 		public IntCharacteristicValueConfiguration()
 		{

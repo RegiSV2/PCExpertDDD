@@ -4,16 +4,16 @@ using PCExpert.Core.DomainFramework.Utils;
 namespace PCExpert.Core.Domain
 {
 	/// <summary>
-	/// Value of <value>IntCharacteristic</value> characteristic
+	/// Value of <value>NumericCharacteristic</value> characteristic
 	/// </summary>
-	public class IntCharacteristicValue : CharacteristicValue
+	public class DecimalCharacteristicValue : CharacteristicValue
 	{
 		#region Constructors
 
-		protected IntCharacteristicValue()
+		protected DecimalCharacteristicValue()
 		{}
 
-		public IntCharacteristicValue(IntCharacteristic characteristic, int value) 
+		public DecimalCharacteristicValue(NumericCharacteristic characteristic, decimal value) 
 			: base(characteristic)
 		{
 			Argument.NotNull(characteristic);
@@ -23,9 +23,9 @@ namespace PCExpert.Core.Domain
 
 		#endregion
 
-		public int Value { get; private set; }
+		public decimal Value { get; private set; }
 
-		public void EditValue(int newValue)
+		public void EditValue(decimal newValue)
 		{
 			Value = newValue;
 		}

@@ -2,26 +2,26 @@
 using PCExpert.Core.Tests.Utils;
 namespace PCExpert.Core.DataAccess.Tests.Utils
 {
-	class IntCharacteristicHandler : CharacteristicHandler
+	class DecimalCharacteristicHandler : CharacteristicHandler
 	{
-		public IntCharacteristicHandler() 
-			: base(typeof(IntCharacteristic), typeof(IntCharacteristicValue))
+		public DecimalCharacteristicHandler() 
+			: base(typeof(NumericCharacteristic), typeof(DecimalCharacteristicValue))
 		{
 		}
 
 		public override CharacteristicValue CreateRandomValue(ComponentCharacteristic characteristic)
 		{
-			return ((IntCharacteristic) characteristic).CreateValue(Random.Next());
+			return ((NumericCharacteristic) characteristic).CreateValue(Random.Next());
 		}
 
 		protected override bool DoCompareValues(CharacteristicValue valueA, CharacteristicValue valueB)
 		{
-			return ((IntCharacteristicValue)valueA).Value == ((IntCharacteristicValue)valueB).Value;
+			return ((DecimalCharacteristicValue)valueA).Value == ((DecimalCharacteristicValue)valueB).Value;
 		}
 
 		protected override ComponentCharacteristic CreateCharacteristic(string name, ComponentType compType)
 		{
-			return new IntCharacteristic(name, compType);
+			return new NumericCharacteristic(name, compType);
 		}
 	}
 }
