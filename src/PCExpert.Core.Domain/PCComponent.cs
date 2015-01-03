@@ -154,7 +154,8 @@ namespace PCExpert.Core.Domain
 			Argument.NotNull(characteristicValue);
 
 			CharacteristicVals.Add(characteristicValue);
-			_characteristics.Value.Add(characteristicValue.Characteristic, characteristicValue);
+			if(_characteristics.IsValueCreated)
+				_characteristics.Value.Add(characteristicValue.Characteristic, characteristicValue);
 
 			return this;
 		}
