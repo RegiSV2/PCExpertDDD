@@ -34,7 +34,8 @@ namespace PCExpert.Core.DataAccess
 				.Add(new ComponentCharacteristicConfiguration())
 				.Add(new CharacteristicValueConfiguration())
 				.Add(new IntCharacteristicValueConfiguration())
-				.Add(new BoolCharacteristicValueConfiguration());
+				.Add(new BoolCharacteristicValueConfiguration())
+				.Add(new StringCharacteristicValueConfiguration());
 		}
 	}
 }

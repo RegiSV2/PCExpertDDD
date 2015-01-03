@@ -65,6 +65,8 @@
     <Compile Include="Specifications\ConfigurationNameNotEmptySpecificationTests.cs" />
     <Compile Include="Specifications\PCConfigurationSpecificationsTests.cs" />
     <Compile Include="Specifications\PublishedPCConfigurationSpecificationTests.cs" />
+    <Compile Include="StringCharacteristicTests.cs" />
+    <Compile Include="StringCharacteristicValueTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

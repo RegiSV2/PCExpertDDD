@@ -15,6 +15,7 @@ namespace PCExpert.Core.DataAccess.Mappings
 			HasRequired(x => x.Component).WithMany().HasForeignKey(x => x.ComponentId);
 			Map<IntCharacteristicValue>(m => m.Requires(DiscriminatorColumn).HasValue(1));
 			Map<BoolCharacteristicValue>(m => m.Requires(DiscriminatorColumn).HasValue(2));
+			Map<StringCharacteristicValue>(m => m.Requires(DiscriminatorColumn).HasValue(3));
 		}
 	}
 }

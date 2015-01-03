@@ -55,6 +55,7 @@
     <Compile Include="Mappings\PCComponentConfiguration.cs" />
     <Compile Include="Mappings\EntityTypeConfigurationExtensions.cs" />
     <Compile Include="Mappings\PCConfigurationConfiguration.cs" />
+    <Compile Include="Mappings\StringCharacteristicValueConfiguration.cs" />
     <Compile Include="PCExpertContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -13,7 +13,12 @@ namespace PCExpert.Core.DataAccess.Tests
 	[TestFixture, Category("IntegrationTests")]
 	public class MappingTests
 	{
-		private Random _random = new Random();
+		private readonly CharacteristicHandler[] _characteristicHandlers =
+		{
+			new BoolCharacteristicHandler(),
+			new IntCharacteristicHandler(),
+			new StringCharacteristicHandler()
+		};
 
 		[Test]
 		public void DbOperationsTest()
@@ -81,23 +86,8 @@ namespace PCExpert.Core.DataAccess.Tests
 			var characteristics = new List<ComponentCharacteristic>();
 
 			for (var i = 0; i < 9; i ++)
-			{
-				switch (i%2)
-				{
-					case 0:
-						characteristics.Add(new BoolCharacteristic(
-							NamesGenerator.CharacteristicName(i),
-							ComponentType.PowerSupply)
-							.WithPattern("bool pattern"));
-						break;
-					case 1:
-						characteristics.Add(new IntCharacteristic(
-							NamesGenerator.CharacteristicName(i),
-							ComponentType.PowerSupply)
-							.WithPattern("int pattern"));
-						break;
-				}
-			}
+				characteristics.Add(
+					_characteristicHandlers[i%3].CreateRandomCharacteristic(i));
 
 			return characteristics;
 		}
@@ -136,10 +126,9 @@ namespace PCExpert.Core.DataAccess.Tests
 			for (var j = 0; j < 3; j++)
 			{
 				var characteristic = characteristics.RandomElementExcept(newComponent.Characteristics.Keys.ToList());
-				if (characteristic is BoolCharacteristic)
-					newComponent.WithCharacteristicValue((characteristic as BoolCharacteristic).CreateValue(RandomBool()));
-				else if (characteristic is IntCharacteristic)
-					newComponent.WithCharacteristicValue((characteristic as IntCharacteristic).CreateValue(_random.Next()));
+				var value = _characteristicHandlers.First(x => x.CharacteristicType.IsInstanceOfType(characteristic))
+					.CreateRandomValue(characteristic);
+				newComponent.WithCharacteristicValue(value);
 			}
 		}
 
@@ -166,11 +155,6 @@ namespace PCExpert.Core.DataAccess.Tests
 			}
 
 			return configurations;
-		}
-
-		private bool RandomBool()
-		{
-			return _random.Next(2) != 0;
 		}
 
 		#endregion
@@ -213,7 +197,7 @@ namespace PCExpert.Core.DataAccess.Tests
 			}
 		}
 
-		private static void AssertComponentsEqual(PCComponent savedComp, PCComponent loadedComp)
+		private void AssertComponentsEqual(PCComponent savedComp, PCComponent loadedComp)
 		{
 			Assert.That(loadedComp, Is.Not.Null);
 			Assert.That(loadedComp.AveragePrice, Is.EqualTo(savedComp.AveragePrice));
@@ -225,15 +209,11 @@ namespace PCExpert.Core.DataAccess.Tests
 				CompareCharacteristicValues);
 		}
 
-		private static bool CompareCharacteristicValues(CharacteristicValue valueA, CharacteristicValue valueB)
+		private bool CompareCharacteristicValues(CharacteristicValue valueA, CharacteristicValue valueB)
 		{
 			if (!valueA.Characteristic.SameIdentityAs(valueB.Characteristic))
 				return false;
-			if (valueA is BoolCharacteristicValue && valueB is BoolCharacteristicValue)
-				return ((BoolCharacteristicValue)valueA).Value == ((BoolCharacteristicValue) valueB).Value;
-			if (valueA is IntCharacteristicValue && valueB is IntCharacteristicValue)
-				return ((IntCharacteristicValue) valueA).Value == ((IntCharacteristicValue) valueB).Value;
-			return false;
+			return _characteristicHandlers.Any(x => x.CompareValues(valueA, valueB));
 		}
 
 		private void CompareInterfaces(List<ComponentInterface> savedInts, List<ComponentInterface> loadedInts)

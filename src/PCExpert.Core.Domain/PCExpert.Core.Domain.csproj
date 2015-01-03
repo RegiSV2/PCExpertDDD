@@ -108,6 +108,8 @@
     <Compile Include="Mechanisms\IDagBuilderNodeManager.cs" />
     <Compile Include="Specifications\PCConfigurationHasCorrectSetOfRequiredComponents.cs" />
     <Compile Include="Specifications\PublishedPCConfigurationSpecification.cs" />
+    <Compile Include="StringCharacteristic.cs" />
+    <Compile Include="StringCharacteristicValue.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PCExpert.Core.DomainFramework\PCExpert.Core.DomainFramework.csproj">
