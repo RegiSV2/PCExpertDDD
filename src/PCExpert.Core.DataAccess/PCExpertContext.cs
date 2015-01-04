@@ -1,5 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
+using System.Linq;
+using FluentValidation;
 using PCExpert.Core.DataAccess.Mappings;
 using PCExpert.Core.Domain;
 
@@ -7,16 +12,24 @@ namespace PCExpert.Core.DataAccess
 {
 	public class PCExpertContext : DbContext
 	{
-		public PCExpertContext(IDatabaseInitializer<PCExpertContext> initializer)
+		private readonly IValidatorFactory _validatorFactory;
+
+		public PCExpertContext(IDatabaseInitializer<PCExpertContext> initializer,
+			IValidatorFactory validatorFactory)
 		{
 			Database.SetInitializer(initializer);
+
+			_validatorFactory = validatorFactory;
 		}
 
 		public PCExpertContext(string connectionStringName,
-			IDatabaseInitializer<PCExpertContext> initializer)
+			IDatabaseInitializer<PCExpertContext> initializer,
+			IValidatorFactory validatorFactory)
 			: base(connectionStringName)
 		{
 			Database.SetInitializer(initializer);
+
+			_validatorFactory = validatorFactory;
 		}
 
 		public DbSet<PCComponent> PCComponents { get; set; }
@@ -33,9 +46,26 @@ namespace PCExpert.Core.DataAccess
 				.Add(new PCConfigurationConfiguration())
 				.Add(new ComponentCharacteristicConfiguration())
 				.Add(new CharacteristicValueConfiguration())
-				.Add(new IntCharacteristicValueConfiguration())
+				.Add(new NumericCharacteristicValueConfiguration())
 				.Add(new BoolCharacteristicValueConfiguration())
 				.Add(new StringCharacteristicValueConfiguration());
+		}
+
+		protected override DbEntityValidationResult ValidateEntity(DbEntityEntry entityEntry, IDictionary<object, object> items)
+		{
+			var validator = _validatorFactory.GetValidator(entityEntry.Entity.GetType());
+			if (validator != null)
+			{
+				var validationResult = validator.Validate(entityEntry.Entity);
+				var validationErrors =
+					validationResult.IsValid
+						? Enumerable.Empty<DbValidationError>()
+						: validator.Validate(entityEntry.Entity)
+							.Errors.Select(x => new DbValidationError(x.PropertyName, x.ErrorMessage));
+
+				return new DbEntityValidationResult(entityEntry, validationErrors);
+			}
+			return base.ValidateEntity(entityEntry, items);
 		}
 	}
 }

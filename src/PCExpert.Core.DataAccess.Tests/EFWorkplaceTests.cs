@@ -1,5 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
+using PCExpert.Core.DataAccess.Mappings;
 using PCExpert.Core.DataAccess.Tests.Utils;
 using PCExpert.Core.Domain;
 

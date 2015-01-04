@@ -6,14 +6,14 @@ namespace PCExpert.Core.Domain
 	/// <summary>
 	/// Value of <value>NumericCharacteristic</value> characteristic
 	/// </summary>
-	public class DecimalCharacteristicValue : CharacteristicValue
+	public class NumericCharacteristicValue : CharacteristicValue
 	{
 		#region Constructors
 
-		protected DecimalCharacteristicValue()
+		protected NumericCharacteristicValue()
 		{}
 
-		public DecimalCharacteristicValue(NumericCharacteristic characteristic, decimal value) 
+		public NumericCharacteristicValue(NumericCharacteristic characteristic, decimal value) 
 			: base(characteristic)
 		{
 			Argument.NotNull(characteristic);

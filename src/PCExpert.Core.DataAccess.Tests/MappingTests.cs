@@ -16,7 +16,7 @@ namespace PCExpert.Core.DataAccess.Tests
 		private readonly CharacteristicHandler[] _characteristicHandlers =
 		{
 			new BoolCharacteristicHandler(),
-			new DecimalCharacteristicHandler(),
+			new NumericCharacteristicHandler(),
 			new StringCharacteristicHandler()
 		};
 

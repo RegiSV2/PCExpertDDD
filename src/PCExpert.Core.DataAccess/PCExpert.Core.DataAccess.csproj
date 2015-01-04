@@ -36,6 +36,10 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="FluentValidation, Version=5.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentValidation.5.5.0.0\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -51,7 +55,7 @@
     <Compile Include="Mappings\ComponentCharacteristicConfiguration.cs" />
     <Compile Include="Mappings\CharacteristicValueConfiguration.cs" />
     <Compile Include="Mappings\ComponentInterfaceConfiguration.cs" />
-    <Compile Include="Mappings\IntCharacteristicValueConfiguration.cs" />
+    <Compile Include="Mappings\NumericCharacteristicValueConfiguration.cs" />
     <Compile Include="Mappings\PCComponentConfiguration.cs" />
     <Compile Include="Mappings\EntityTypeConfigurationExtensions.cs" />
     <Compile Include="Mappings\PCConfigurationConfiguration.cs" />

@@ -1,4 +1,6 @@
-﻿using PCExpert.Core.DomainFramework.Specifications.Logic;
+﻿using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
+using PCExpert.Core.DomainFramework.Specifications.Logic;
 
 namespace PCExpert.Core.DomainFramework.Specifications
 {

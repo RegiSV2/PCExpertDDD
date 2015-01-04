@@ -4,8 +4,8 @@ using NUnit.Framework;
 namespace PCExpert.Core.Domain.Tests
 {
 	[TestFixture]
-	public class DecimalCharacteristicValueTests :
-		ConcreteCharacteristicValueTests<NumericCharacteristic, DecimalCharacteristicValue, decimal>
+	public class NumericCharacteristicValueTests :
+		ConcreteCharacteristicValueTests<NumericCharacteristic, NumericCharacteristicValue, decimal>
 	{
 		[Test]
 		public void Format_NotNullCulture_ShouldReturnStringifiedIntValue()
@@ -18,17 +18,17 @@ namespace PCExpert.Core.Domain.Tests
 			Assert.That(value.Format(culture), Is.EqualTo("150"));
 		}
 
-		protected override DecimalCharacteristicValue CreateCharacteristicValueWithDefaults(NumericCharacteristic characteristic)
+		protected override NumericCharacteristicValue CreateCharacteristicValueWithDefaults(NumericCharacteristic characteristic)
 		{
-			return new DecimalCharacteristicValue(characteristic, GetDefaultValue());
+			return new NumericCharacteristicValue(characteristic, GetDefaultValue());
 		}
 
-		protected override decimal GetValue(DecimalCharacteristicValue charValue)
+		protected override decimal GetValue(NumericCharacteristicValue charValue)
 		{
 			return charValue.Value;
 		}
 
-		protected override void SetValue(DecimalCharacteristicValue charValue, decimal value)
+		protected override void SetValue(NumericCharacteristicValue charValue, decimal value)
 		{
 			charValue.EditValue(value);
 		}

@@ -3,9 +3,9 @@ using PCExpert.Core.Domain;
 
 namespace PCExpert.Core.DataAccess.Mappings
 {
-	public class IntCharacteristicValueConfiguration : EntityTypeConfiguration<DecimalCharacteristicValue>
+	public class NumericCharacteristicValueConfiguration : EntityTypeConfiguration<NumericCharacteristicValue>
 	{
-		public IntCharacteristicValueConfiguration()
+		public NumericCharacteristicValueConfiguration()
 		{
 			Property(x => x.Value).HasColumnName("IntValue");
 		}

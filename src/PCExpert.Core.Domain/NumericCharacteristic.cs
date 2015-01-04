@@ -18,9 +18,9 @@
 
 		#region Public Methods
 
-		public DecimalCharacteristicValue CreateValue(decimal value)
+		public NumericCharacteristicValue CreateValue(decimal value)
 		{
-			return new DecimalCharacteristicValue(this, value);
+			return new NumericCharacteristicValue(this, value);
 		}
 
 		#endregion

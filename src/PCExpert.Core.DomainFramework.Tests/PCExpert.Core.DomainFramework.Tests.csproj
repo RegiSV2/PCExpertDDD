@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentValidation">
+      <HintPath>..\packages\FluentValidation.5.5.0.0\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
     </Reference>
@@ -54,6 +57,8 @@
     <Compile Include="Specifications\Logic\LogicSpecificationsTests.cs" />
     <Compile Include="Specifications\Logic\PersistenceAndSpecificationTests.cs" />
     <Compile Include="Specifications\PersistenceAwareSpecificationBaseTests.cs" />
+    <Compile Include="Validation\DomainValidatorFactoryTests.cs" />
+    <Compile Include="Validation\SpecificationValidationRuleTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -68,6 +73,7 @@
       <Name>PCExpert.Core.Tests.Utils</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -90,7 +90,7 @@
     <Compile Include="ComponentInterface.cs" />
     <Compile Include="ComponentType.cs" />
     <Compile Include="NumericCharacteristic.cs" />
-    <Compile Include="DecimalCharacteristicValue.cs" />
+    <Compile Include="NumericCharacteristicValue.cs" />
     <Compile Include="PCConfigurationStatus.cs" />
     <Compile Include="Repositories\ComponentInterfaceRepository.cs" />
     <Compile Include="Repositories\IComponentInterfaceRepository.cs" />
@@ -116,6 +116,9 @@
       <Project>{E3F85B03-73D8-460D-B380-38036836B295}</Project>
       <Name>PCExpert.Core.DomainFramework</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Validation\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

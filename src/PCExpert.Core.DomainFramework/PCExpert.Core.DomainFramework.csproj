@@ -74,6 +74,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentValidation">
+      <HintPath>..\packages\FluentValidation.5.5.0.0\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -89,14 +92,22 @@
     <Compile Include="Exceptions\DuplicateElementException.cs" />
     <Compile Include="Exceptions\EmptyCollectionException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Specifications\ISpecificationWithDetailedresult.cs" />
     <Compile Include="Specifications\Logic\AndSpecification.cs" />
     <Compile Include="Specifications\Logic\SpecificationLogic.cs" />
     <Compile Include="Specifications\PersistenceAwareSpecificationContracts.cs" />
+    <Compile Include="Specifications\SpecificationDetailedCheckResult.cs" />
     <Compile Include="Utils\Argument.cs" />
     <Compile Include="Specifications\Specification.cs" />
     <Compile Include="Specifications\Logic\PersistenceAndSpecification.cs" />
     <Compile Include="Specifications\PersistenceAwareSpecification.cs" />
     <Compile Include="Utils\PredicateBuilder.cs" />
+    <Compile Include="Validation\DomainValidatorFactory.cs" />
+    <Compile Include="Validation\SpecificationValidationRule.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

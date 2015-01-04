@@ -31,7 +31,7 @@ namespace PCExpert.Core.Domain.Tests
 		[Test]
 		public void Constructor_NullCharacteristic_ShouldThrowArgumentNullException()
 		{
-			Assert.That(() => new DecimalCharacteristicValue(null, 1),
+			Assert.That(() => new NumericCharacteristicValue(null, 1),
 				Throws.InstanceOf<ArgumentNullException>());
 		}
 

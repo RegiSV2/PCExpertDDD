@@ -5,7 +5,7 @@ using PCExpert.Core.Tests.Utils;
 namespace PCExpert.Core.Domain.Tests
 {
 	[TestFixture]
-	public class DecimalCharacteristicTests
+	public class NumericCharacteristicTests
 	{
 		[Test]
 		[TestCase(0d)]
