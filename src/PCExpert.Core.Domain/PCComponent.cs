@@ -155,7 +155,7 @@ namespace PCExpert.Core.Domain
 
 			characteristicValue.AttachToComponent(this);
 			CharacteristicVals.Add(characteristicValue);
-			if(_characteristics.IsValueCreated)
+			if (_characteristics.IsValueCreated)
 				_characteristics.Value.Add(characteristicValue.Characteristic, characteristicValue);
 
 			return this;

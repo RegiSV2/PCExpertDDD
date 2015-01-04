@@ -50,13 +50,9 @@ namespace PCExpert.Core.Domain.Tests
 		}
 
 		protected abstract TCharacteristicValue CreateCharacteristicValueWithDefaults(TCharacteristic characteristic);
-
 		protected abstract TVal GetValue(TCharacteristicValue charValue);
-
 		protected abstract void SetValue(TCharacteristicValue charValue, TVal value);
-
 		protected abstract TVal GetDefaultValue();
-
 		protected abstract TVal GetModifiedValue();
 	}
 }

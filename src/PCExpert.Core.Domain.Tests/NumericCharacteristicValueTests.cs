@@ -18,7 +18,8 @@ namespace PCExpert.Core.Domain.Tests
 			Assert.That(value.Format(culture), Is.EqualTo("150"));
 		}
 
-		protected override NumericCharacteristicValue CreateCharacteristicValueWithDefaults(NumericCharacteristic characteristic)
+		protected override NumericCharacteristicValue CreateCharacteristicValueWithDefaults(
+			NumericCharacteristic characteristic)
 		{
 			return new NumericCharacteristicValue(characteristic, GetDefaultValue());
 		}

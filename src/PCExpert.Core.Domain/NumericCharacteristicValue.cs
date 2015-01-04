@@ -4,25 +4,12 @@ using PCExpert.Core.DomainFramework.Utils;
 namespace PCExpert.Core.Domain
 {
 	/// <summary>
-	/// Value of <value>NumericCharacteristic</value> characteristic
+	///     Value of
+	///     <value>NumericCharacteristic</value>
+	///     characteristic
 	/// </summary>
 	public class NumericCharacteristicValue : CharacteristicValue
 	{
-		#region Constructors
-
-		protected NumericCharacteristicValue()
-		{}
-
-		public NumericCharacteristicValue(NumericCharacteristic characteristic, decimal value) 
-			: base(characteristic)
-		{
-			Argument.NotNull(characteristic);
-
-			Value = value;
-		}
-
-		#endregion
-
 		public decimal Value { get; private set; }
 
 		public void EditValue(decimal newValue)
@@ -39,5 +26,21 @@ namespace PCExpert.Core.Domain
 		{
 			return string.Format("{0}: {1}", GetType().Name, Value);
 		}
+
+		#region Constructors
+
+		protected NumericCharacteristicValue()
+		{
+		}
+
+		public NumericCharacteristicValue(NumericCharacteristic characteristic, decimal value)
+			: base(characteristic)
+		{
+			Argument.NotNull(characteristic);
+
+			Value = value;
+		}
+
+		#endregion
 	}
 }

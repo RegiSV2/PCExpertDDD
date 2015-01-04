@@ -72,7 +72,7 @@ namespace PCExpert.Core.Domain
 		}
 
 		/// <summary>
-		/// Changes status of the configuration
+		///     Changes status of the configuration
 		/// </summary>
 		public void MoveToStatus(PCConfigurationStatus newStatus)
 		{

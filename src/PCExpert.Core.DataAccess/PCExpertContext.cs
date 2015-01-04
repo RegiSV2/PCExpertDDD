@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
@@ -36,7 +35,7 @@ namespace PCExpert.Core.DataAccess
 		public DbSet<ComponentInterface> ComponentInterfaces { get; set; }
 		public DbSet<PCConfiguration> PCConfigurations { get; set; }
 		public DbSet<ComponentCharacteristic> Characteristics { get; set; }
-		public DbSet<CharacteristicValue> CharacteristicValues { get; set; } 
+		public DbSet<CharacteristicValue> CharacteristicValues { get; set; }
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
@@ -51,7 +50,8 @@ namespace PCExpert.Core.DataAccess
 				.Add(new StringCharacteristicValueConfiguration());
 		}
 
-		protected override DbEntityValidationResult ValidateEntity(DbEntityEntry entityEntry, IDictionary<object, object> items)
+		protected override DbEntityValidationResult ValidateEntity(DbEntityEntry entityEntry,
+			IDictionary<object, object> items)
 		{
 			var validator = _validatorFactory.GetValidator(entityEntry.Entity.GetType());
 			if (validator != null)

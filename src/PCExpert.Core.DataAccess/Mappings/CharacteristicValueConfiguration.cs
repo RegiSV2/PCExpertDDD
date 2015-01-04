@@ -1,5 +1,4 @@
 using System.Data.Entity.ModelConfiguration;
-using System.Data.Entity.ModelConfiguration.Configuration;
 using PCExpert.Core.Domain;
 
 namespace PCExpert.Core.DataAccess.Mappings
@@ -10,7 +9,7 @@ namespace PCExpert.Core.DataAccess.Mappings
 
 		public CharacteristicValueConfiguration()
 		{
-			HasKey(x => new { x.CharacteristicId, x.ComponentId });
+			HasKey(x => new {x.CharacteristicId, x.ComponentId});
 			HasRequired(x => x.Characteristic).WithMany().HasForeignKey(x => x.CharacteristicId);
 			HasRequired(x => x.Component).WithMany().HasForeignKey(x => x.ComponentId);
 			Map<NumericCharacteristicValue>(m => m.Requires(DiscriminatorColumn).HasValue(1));

@@ -10,23 +10,7 @@ namespace PCExpert.Core.Domain.Tests
 	public class CharacteristicValueTests
 	{
 		private ComponentCharacteristic _characteristic;
-
 		private FakeCharacteristicValue _characteristicValue;
-
-		private class FakeCharacteristicValue : CharacteristicValue
-		{
-			public FakeCharacteristicValue(ComponentCharacteristic characteristic)
-				:base(characteristic)
-			{ }
-
-			protected override string DoFormat(CultureInfo cultureInfo)
-			{
-				IsDoFormatCalled = true;
-				return "";
-			}
-
-			public bool IsDoFormatCalled { get; private set; }
-		}
 
 		[SetUp]
 		public void EstablishContext()
@@ -110,6 +94,22 @@ namespace PCExpert.Core.Domain.Tests
 		private FakeCharacteristicValue CreateCharacteristicWithSpecifiedDefaults()
 		{
 			return new FakeCharacteristicValue(_characteristic);
+		}
+
+		private class FakeCharacteristicValue : CharacteristicValue
+		{
+			public FakeCharacteristicValue(ComponentCharacteristic characteristic)
+				: base(characteristic)
+			{
+			}
+
+			public bool IsDoFormatCalled { get; private set; }
+
+			protected override string DoFormat(CultureInfo cultureInfo)
+			{
+				IsDoFormatCalled = true;
+				return "";
+			}
 		}
 	}
 }

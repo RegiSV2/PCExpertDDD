@@ -4,7 +4,7 @@ using PCExpert.Core.Tests.Utils;
 
 namespace PCExpert.Core.DataAccess.Tests.Utils
 {
-	abstract class CharacteristicHandler
+	internal abstract class CharacteristicHandler
 	{
 		protected readonly Random Random = new Random();
 
@@ -15,7 +15,6 @@ namespace PCExpert.Core.DataAccess.Tests.Utils
 		}
 
 		public Type CharacteristicType { get; private set; }
-
 		private Type CharacteristicValueType { get; set; }
 
 		public ComponentCharacteristic CreateRandomCharacteristic(int index)
@@ -35,9 +34,7 @@ namespace PCExpert.Core.DataAccess.Tests.Utils
 		}
 
 		public abstract CharacteristicValue CreateRandomValue(ComponentCharacteristic characteristic);
-
 		protected abstract bool DoCompareValues(CharacteristicValue valueA, CharacteristicValue valueB);
-
 		protected abstract ComponentCharacteristic CreateCharacteristic(string name, ComponentType compType);
 	}
 }

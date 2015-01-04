@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using Moq;
 using NUnit.Framework;
 
 namespace PCExpert.Core.Domain.Tests

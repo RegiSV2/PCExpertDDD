@@ -2,10 +2,10 @@
 
 namespace PCExpert.Core.DataAccess.Tests.Utils
 {
-	class BoolCharacteristicHandler : CharacteristicHandler
+	internal class BoolCharacteristicHandler : CharacteristicHandler
 	{
 		public BoolCharacteristicHandler()
-			: base(typeof(BoolCharacteristic), typeof(BoolCharacteristicValue))
+			: base(typeof (BoolCharacteristic), typeof (BoolCharacteristicValue))
 		{
 		}
 
@@ -21,7 +21,7 @@ namespace PCExpert.Core.DataAccess.Tests.Utils
 
 		protected override bool DoCompareValues(CharacteristicValue valueA, CharacteristicValue valueB)
 		{
-			return ((BoolCharacteristicValue)valueA).Value == ((BoolCharacteristicValue)valueB).Value;
+			return ((BoolCharacteristicValue) valueA).Value == ((BoolCharacteristicValue) valueB).Value;
 		}
 
 		protected override ComponentCharacteristic CreateCharacteristic(string name, ComponentType compType)

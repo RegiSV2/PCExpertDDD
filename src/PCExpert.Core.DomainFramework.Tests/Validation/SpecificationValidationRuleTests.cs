@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.Internal;
 using Moq;
@@ -17,15 +14,11 @@ namespace PCExpert.Core.DomainFramework.Tests.Validation
 	public class SpecificationValidationRuleTests
 	{
 		private const string ValidationErrorMessage = "some message";
-
 		private Mock<Specification<TestType>> _specificationMock;
-
-		private ValidationContext _validationContext;
-
 		private SpecificationValidationRule<TestType> _testedRule;
+		private ValidationContext _validationContext;
+		private readonly string _validatedInstance = "some string";
 
-		private string _validatedInstance = "some string";
-			
 		[SetUp]
 		public void EstablishContext()
 		{
@@ -34,7 +27,7 @@ namespace PCExpert.Core.DomainFramework.Tests.Validation
 			_validationContext = new ValidationContext(_validatedInstance, new PropertyChain(Enumerable.Empty<TestType>()),
 				new Mock<IValidatorSelector>().Object);
 		}
-		
+
 		[Test]
 		public void Constructor_NullSpecification_ShouldThrowArgumentNullException()
 		{

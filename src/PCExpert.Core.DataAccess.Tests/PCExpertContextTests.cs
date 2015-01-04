@@ -1,4 +1,3 @@
-using System;
 using System.Data.Entity.Validation;
 using System.Linq;
 using FluentValidation;
@@ -14,7 +13,6 @@ namespace PCExpert.Core.DataAccess.Tests
 	public class PCExpertContextTests
 	{
 		private PCExpertContext _context;
-
 		private Mock<IValidatorFactory> _validatorFactory;
 
 		[SetUp]
@@ -47,7 +45,7 @@ namespace PCExpert.Core.DataAccess.Tests
 			const string errorMessage = "some error message";
 			var validator = new Mock<IValidator>();
 			validator.Setup(x => x.Validate(entity))
-				.Returns(new ValidationResult(new[] { new ValidationFailure(propName, errorMessage) }));
+				.Returns(new ValidationResult(new[] {new ValidationFailure(propName, errorMessage)}));
 			_validatorFactory.Setup(x => x.GetValidator(typeof (ComponentInterface)))
 				.Returns(validator.Object);
 

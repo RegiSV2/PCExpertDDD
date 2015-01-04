@@ -103,7 +103,8 @@ namespace PCExpert.Core.DataAccess.Tests
 			}
 		}
 
-		private List<PCComponent> CreateComponents(List<ComponentInterface> slotsToInsert, List<ComponentCharacteristic> characteristics)
+		private List<PCComponent> CreateComponents(List<ComponentInterface> slotsToInsert,
+			List<ComponentCharacteristic> characteristics)
 		{
 			var componentsToInsert = new List<PCComponent>();
 			for (var i = 0; i < 5; i++)

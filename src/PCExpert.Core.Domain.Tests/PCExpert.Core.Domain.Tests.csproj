@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentValidation, Version=5.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentValidation.5.5.0.0\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
     </Reference>
@@ -67,6 +71,9 @@
     <Compile Include="Specifications\PublishedPCConfigurationSpecificationTests.cs" />
     <Compile Include="StringCharacteristicTests.cs" />
     <Compile Include="StringCharacteristicValueTests.cs" />
+    <Compile Include="Validation\CharacteristicValueTests.cs" />
+    <Compile Include="Validation\ComponentCharacteristicValidatorTests.cs" />
+    <Compile Include="Validation\ValidatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

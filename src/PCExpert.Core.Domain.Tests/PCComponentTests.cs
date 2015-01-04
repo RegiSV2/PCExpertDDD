@@ -350,7 +350,7 @@ namespace PCExpert.Core.Domain.Tests
 		{
 			//Arrange
 			var valuesList = new List<CharacteristicValue>();
-			for(var i =0; i< 5; i++)
+			for (var i = 0; i < 5; i++)
 				valuesList.Add(CreateCharacteristicValue());
 
 			DefaultComponent.GetType().GetProperty("CharacteristicVals",
@@ -364,7 +364,6 @@ namespace PCExpert.Core.Domain.Tests
 				Assert.That(DefaultComponent.Characteristics.ContainsKey(value.Characteristic));
 				Assert.That(DefaultComponent.Characteristics[value.Characteristic] == value);
 			}
-				
 		}
 
 		private static CharacteristicValue CreateCharacteristicValue()

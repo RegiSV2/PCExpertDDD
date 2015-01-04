@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using NUnit.Framework;
 using PCExpert.Core.Tests.Utils;
 
@@ -9,15 +8,7 @@ namespace PCExpert.Core.Domain.Tests
 	public class ComponentCharacteristicTests
 	{
 		private const ComponentType DefaultType = ComponentType.SolidStateDrice;
-
 		private readonly string _defaultName = NamesGenerator.CharacteristicName();
-
-		private class FakeCharacteristic : ComponentCharacteristic
-		{
-			public FakeCharacteristic(string name, ComponentType type)
-				:base(name, type)
-			{}
-		}
 
 		[Test]
 		public void Constructor_ValidArguments_ShouldCreateNewCharacteristic()
@@ -77,6 +68,14 @@ namespace PCExpert.Core.Domain.Tests
 		private FakeCharacteristic CreateCharacteristicWithSpecifiedDefaults()
 		{
 			return new FakeCharacteristic(_defaultName, DefaultType);
+		}
+
+		private class FakeCharacteristic : ComponentCharacteristic
+		{
+			public FakeCharacteristic(string name, ComponentType type)
+				: base(name, type)
+			{
+			}
 		}
 	}
 }

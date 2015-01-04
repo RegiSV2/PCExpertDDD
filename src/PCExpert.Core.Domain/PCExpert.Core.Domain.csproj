@@ -74,6 +74,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentValidation, Version=5.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FluentValidation.5.5.0.0\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -89,6 +93,11 @@
     <Compile Include="ComponentCharacteristic.cs" />
     <Compile Include="ComponentInterface.cs" />
     <Compile Include="ComponentType.cs" />
+    <Compile Include="Resources\ValidationMessages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ValidationMessages.resx</DependentUpon>
+    </Compile>
     <Compile Include="NumericCharacteristic.cs" />
     <Compile Include="NumericCharacteristicValue.cs" />
     <Compile Include="PCConfigurationStatus.cs" />
@@ -110,6 +119,8 @@
     <Compile Include="Specifications\PublishedPCConfigurationSpecification.cs" />
     <Compile Include="StringCharacteristic.cs" />
     <Compile Include="StringCharacteristicValue.cs" />
+    <Compile Include="Validation\CharacteristicValueValidator.cs" />
+    <Compile Include="Validation\ComponentCharacteristicValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PCExpert.Core.DomainFramework\PCExpert.Core.DomainFramework.csproj">
@@ -118,7 +129,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Validation\" />
+    <EmbeddedResource Include="Resources\ValidationMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ValidationMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

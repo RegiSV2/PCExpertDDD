@@ -4,24 +4,12 @@ using PCExpert.Core.DomainFramework.Utils;
 namespace PCExpert.Core.Domain
 {
 	/// <summary>
-	/// Value of <value>StringCharacteristic</value> characteristic
+	///     Value of
+	///     <value>StringCharacteristic</value>
+	///     characteristic
 	/// </summary>
 	public class StringCharacteristicValue : CharacteristicValue
 	{
-		#region Constructors
-
-		protected StringCharacteristicValue()
-		{ }
-
-		public StringCharacteristicValue(StringCharacteristic characteristic, string value)
-			: base(characteristic)
-		{
-			Argument.NotNull(characteristic);
-			Value = value;
-		}
-
-		#endregion
-
 		public string Value { get; private set; }
 
 		public void EditValue(string newValue)
@@ -38,5 +26,20 @@ namespace PCExpert.Core.Domain
 		{
 			return Value.ToString(cultureInfo);
 		}
+
+		#region Constructors
+
+		protected StringCharacteristicValue()
+		{
+		}
+
+		public StringCharacteristicValue(StringCharacteristic characteristic, string value)
+			: base(characteristic)
+		{
+			Argument.NotNull(characteristic);
+			Value = value;
+		}
+
+		#endregion
 	}
 }

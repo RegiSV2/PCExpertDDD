@@ -46,7 +46,7 @@ namespace PCExpert.Core.DomainFramework.Tests.Validation
 		[Test]
 		public void GetValidator_ValidatorForRequestedTypeNotRegistered_ShouldReturnNull()
 		{
-			Assert.That(_factory.GetValidator(typeof(TestType)), Is.Null);
+			Assert.That(_factory.GetValidator(typeof (TestType)), Is.Null);
 		}
 
 		[Test]

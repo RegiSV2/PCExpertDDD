@@ -4,24 +4,12 @@ using PCExpert.Core.DomainFramework.Utils;
 namespace PCExpert.Core.Domain
 {
 	/// <summary>
-	/// Value of <value>BoolCharacteristic</value> characteristic
+	///     Value of
+	///     <value>BoolCharacteristic</value>
+	///     characteristic
 	/// </summary>
 	public class BoolCharacteristicValue : CharacteristicValue
 	{
-		#region Constructors
-
-		protected BoolCharacteristicValue()
-		{}
-
-		public BoolCharacteristicValue(BoolCharacteristic characteristic, bool value) 
-			: base(characteristic)
-		{
-			Argument.NotNull(characteristic);
-			Value = value;
-		}
-
-		#endregion
-
 		public bool Value { get; private set; }
 
 		public void EditValue(bool newValue)
@@ -38,5 +26,20 @@ namespace PCExpert.Core.Domain
 		{
 			return Value.ToString(cultureInfo);
 		}
+
+		#region Constructors
+
+		protected BoolCharacteristicValue()
+		{
+		}
+
+		public BoolCharacteristicValue(BoolCharacteristic characteristic, bool value)
+			: base(characteristic)
+		{
+			Argument.NotNull(characteristic);
+			Value = value;
+		}
+
+		#endregion
 	}
 }

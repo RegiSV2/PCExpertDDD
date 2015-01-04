@@ -44,7 +44,7 @@ namespace PCExpert.Core.Domain.Tests.Repositories
 
 			//Act
 			var queriesComponents = _repository.Query(requestType).ToList();
-			
+
 			//Assert
 			Assert.That(queriesComponents.Count == 2);
 			Assert.That(queriesComponents.All(x => x.Type == requestType));

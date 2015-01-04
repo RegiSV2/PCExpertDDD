@@ -1,11 +1,11 @@
 ﻿using PCExpert.Core.Domain;
-using PCExpert.Core.Tests.Utils;
+
 namespace PCExpert.Core.DataAccess.Tests.Utils
 {
-	class NumericCharacteristicHandler : CharacteristicHandler
+	internal class NumericCharacteristicHandler : CharacteristicHandler
 	{
-		public NumericCharacteristicHandler() 
-			: base(typeof(NumericCharacteristic), typeof(NumericCharacteristicValue))
+		public NumericCharacteristicHandler()
+			: base(typeof (NumericCharacteristic), typeof (NumericCharacteristicValue))
 		{
 		}
 
@@ -16,7 +16,7 @@ namespace PCExpert.Core.DataAccess.Tests.Utils
 
 		protected override bool DoCompareValues(CharacteristicValue valueA, CharacteristicValue valueB)
 		{
-			return ((NumericCharacteristicValue)valueA).Value == ((NumericCharacteristicValue)valueB).Value;
+			return ((NumericCharacteristicValue) valueA).Value == ((NumericCharacteristicValue) valueB).Value;
 		}
 
 		protected override ComponentCharacteristic CreateCharacteristic(string name, ComponentType compType)

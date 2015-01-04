@@ -9,11 +9,8 @@ namespace PCExpert.Core.Domain.Tests.Repositories
 		where TEntity : class
 	{
 		protected TRepository _repository;
-
-		protected Mock<PersistenceWorkplace> MockWorkplace; 
-
+		protected Mock<PersistenceWorkplace> MockWorkplace;
 		protected abstract TRepository CreateRepositoryWithWorkplace(PersistenceWorkplace workplace);
-
 		protected abstract void Save(TRepository repository, TEntity entity);
 
 		[SetUp]
