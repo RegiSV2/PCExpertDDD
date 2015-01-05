@@ -22,7 +22,7 @@ namespace PCExpert.Core.Domain.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class ValidationMessages {
+    public class ValidationMessages {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace PCExpert.Core.Domain.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PCExpert.Core.Domain.Resources.ValidationMessages", typeof(ValidationMessages).Assembly);
@@ -51,7 +51,7 @@ namespace PCExpert.Core.Domain.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,27 +63,45 @@ namespace PCExpert.Core.Domain.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Name length should not be greater than 255 symbols.
         /// </summary>
-        internal static string CharacteristicNameTooLongMsg {
+        public static string NameTooLongMsg {
             get {
-                return ResourceManager.GetString("CharacteristicNameTooLongMsg", resourceCulture);
+                return ResourceManager.GetString("NameTooLongMsg", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Name length should be at least 10.
         /// </summary>
-        internal static string CharacteristicNameTooShortMsg {
+        public static string NameTooShortMsg {
             get {
-                return ResourceManager.GetString("CharacteristicNameTooShortMsg", resourceCulture);
+                return ResourceManager.GetString("NameTooShortMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The price of the component cannot be negative.
+        /// </summary>
+        public static string NegativePriceMsg {
+            get {
+                return ResourceManager.GetString("NegativePriceMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The price of the component cannot be greater than 1000000$.
+        /// </summary>
+        public static string PriceTooGreateMsg {
+            get {
+                return ResourceManager.GetString("PriceTooGreateMsg", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Cannot save characteristic value that is not attached to component.
         /// </summary>
-        internal static string CharacteristicValueShouldBeAttachedMsg {
+        public static string ValueShouldBeAttachedMsg {
             get {
-                return ResourceManager.GetString("CharacteristicValueShouldBeAttachedMsg", resourceCulture);
+                return ResourceManager.GetString("ValueShouldBeAttachedMsg", resourceCulture);
             }
         }
     }

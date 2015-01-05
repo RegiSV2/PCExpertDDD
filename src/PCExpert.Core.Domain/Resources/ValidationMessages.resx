@@ -117,13 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CharacteristicNameTooLongMsg" xml:space="preserve">
+  <data name="NameTooLongMsg" xml:space="preserve">
     <value>Name length should not be greater than 255 symbols</value>
   </data>
-  <data name="CharacteristicNameTooShortMsg" xml:space="preserve">
+  <data name="NameTooShortMsg" xml:space="preserve">
     <value>Name length should be at least 10</value>
   </data>
-  <data name="CharacteristicValueShouldBeAttachedMsg" xml:space="preserve">
+  <data name="NegativePriceMsg" xml:space="preserve">
+    <value>The price of the component cannot be negative</value>
+  </data>
+  <data name="PriceTooGreateMsg" xml:space="preserve">
+    <value>The price of the component cannot be greater than 1000000$</value>
+  </data>
+  <data name="ValueShouldBeAttachedMsg" xml:space="preserve">
     <value>Cannot save characteristic value that is not attached to component</value>
   </data>
 </root>

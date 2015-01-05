@@ -1,4 +1,5 @@
-﻿using PCExpert.Core.DomainFramework.Specifications;
+﻿using PCExpert.Core.Domain.Repositories;
+using PCExpert.Core.DomainFramework.Specifications;
 
 namespace PCExpert.Core.Domain.Specifications
 {
@@ -17,10 +18,11 @@ namespace PCExpert.Core.Domain.Specifications
 		public const int NameMaxLength = 256;
 		private readonly Specification<PCConfiguration> _combinedSpecification;
 
-		public PublishedPCConfigurationSpecification()
+		public PublishedPCConfigurationSpecification(IPCConfigurationRepository configurationRepository)
 		{
 			_combinedSpecification = new ConfigurationNameNotEmptySpecification()
 			                         & new ConfigurationNameMaxLengthSpecification(NameMaxLength)
+									 & new PCConfigurationNameIsUniqueSpecification(configurationRepository)
 			                         & new PCConfigurationHasCorrectSetOfRequiredComponents()
 			                         & new AllRootComponentsOfConfigurationCanBePluggedToOtherComponents();
 		}

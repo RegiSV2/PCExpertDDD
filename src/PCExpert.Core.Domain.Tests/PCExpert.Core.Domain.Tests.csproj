@@ -64,6 +64,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ComponentInterfaceRepositoryTests.cs" />
     <Compile Include="Repositories\PCComponentRepositoryTests.cs" />
+    <Compile Include="Repositories\PCConfigurationRepositoryTests.cs" />
     <Compile Include="Repositories\RepositoryTests.cs" />
     <Compile Include="Specifications\ConfigurationNameMaxLengthSpecificationTests.cs" />
     <Compile Include="Specifications\ConfigurationNameNotEmptySpecificationTests.cs" />
@@ -73,6 +74,9 @@
     <Compile Include="StringCharacteristicValueTests.cs" />
     <Compile Include="Validation\CharacteristicValueTests.cs" />
     <Compile Include="Validation\ComponentCharacteristicValidatorTests.cs" />
+    <Compile Include="Validation\ComponentInterfaceValidatorTests.cs" />
+    <Compile Include="Validation\PCComponentValidatorTests.cs" />
+    <Compile Include="Validation\PCConfigurationValidatorTests.cs" />
     <Compile Include="Validation\ValidatorTests.cs" />
   </ItemGroup>
   <ItemGroup>

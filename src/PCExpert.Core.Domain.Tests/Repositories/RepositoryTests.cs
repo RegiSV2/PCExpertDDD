@@ -5,10 +5,11 @@ using PCExpert.Core.Tests.Utils;
 
 namespace PCExpert.Core.Domain.Tests.Repositories
 {
+	[TestFixture]
 	public abstract class RepositoryTests<TRepository, TEntity>
 		where TEntity : class
 	{
-		protected TRepository _repository;
+		protected TRepository Repository;
 		protected Mock<PersistenceWorkplace> MockWorkplace;
 		protected abstract TRepository CreateRepositoryWithWorkplace(PersistenceWorkplace workplace);
 		protected abstract void Save(TRepository repository, TEntity entity);
@@ -17,9 +18,10 @@ namespace PCExpert.Core.Domain.Tests.Repositories
 		public void EstablishContext()
 		{
 			MockWorkplace = new Mock<PersistenceWorkplace>();
-			_repository = CreateRepositoryWithWorkplace(MockWorkplace.Object);
+			Repository = CreateRepositoryWithWorkplace(MockWorkplace.Object);
 		}
 
+		[Test]
 		public virtual void Save_AnyValue_ShouldDelegateToPersistenceWorkplace()
 		{
 			//Arrange

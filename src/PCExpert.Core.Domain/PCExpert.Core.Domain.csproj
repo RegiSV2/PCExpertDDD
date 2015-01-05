@@ -93,6 +93,8 @@
     <Compile Include="ComponentCharacteristic.cs" />
     <Compile Include="ComponentInterface.cs" />
     <Compile Include="ComponentType.cs" />
+    <Compile Include="Repositories\IPCConfigurationRepository.cs" />
+    <Compile Include="Repositories\PCConfigurationRepository.cs" />
     <Compile Include="Resources\ValidationMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -116,11 +118,16 @@
     <Compile Include="Mechanisms\DagBuilderMechanism.cs" />
     <Compile Include="Mechanisms\IDagBuilderNodeManager.cs" />
     <Compile Include="Specifications\PCConfigurationHasCorrectSetOfRequiredComponents.cs" />
+    <Compile Include="Specifications\PCConfigurationNameIsUniqueSpecification.cs" />
     <Compile Include="Specifications\PublishedPCConfigurationSpecification.cs" />
     <Compile Include="StringCharacteristic.cs" />
     <Compile Include="StringCharacteristicValue.cs" />
     <Compile Include="Validation\CharacteristicValueValidator.cs" />
     <Compile Include="Validation\ComponentCharacteristicValidator.cs" />
+    <Compile Include="Validation\ComponentInterfaceValidator.cs" />
+    <Compile Include="Validation\PCComponentValidator.cs" />
+    <Compile Include="Validation\PCConfigurationValidator.cs" />
+    <Compile Include="Validation\ValidationExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PCExpert.Core.DomainFramework\PCExpert.Core.DomainFramework.csproj">
@@ -130,8 +137,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\ValidationMessages.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ValidationMessages.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

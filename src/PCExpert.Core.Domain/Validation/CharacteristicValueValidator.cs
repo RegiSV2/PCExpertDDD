@@ -9,7 +9,7 @@ namespace PCExpert.Core.Domain.Validation
 		public CharacteristicValueValidator()
 		{
 			RuleFor(x => x.Component).NotNull()
-				.WithLocalizedMessage(() => ValidationMessages.CharacteristicValueShouldBeAttachedMsg);
+				.WithLocalizedMessage(() => ValidationMessages.ValueShouldBeAttachedMsg);
 		}
 	}
 }

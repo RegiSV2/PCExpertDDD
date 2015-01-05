@@ -43,7 +43,7 @@ namespace PCExpert.Core.Domain.Tests.Repositories
 				.Returns(components.AsQueryable());
 
 			//Act
-			var queriesComponents = _repository.Query(requestType).ToList();
+			var queriesComponents = Repository.Query(requestType).ToList();
 
 			//Assert
 			Assert.That(queriesComponents.Count == 2);

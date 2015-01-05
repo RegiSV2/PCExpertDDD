@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Moq;
 using NUnit.Framework;
+using PCExpert.Core.Domain.Repositories;
 using PCExpert.Core.Domain.Specifications;
 using PCExpert.Core.Tests.Utils;
 
@@ -11,6 +13,8 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 		: PCConfigurationSpecificationsTests<PublishedPCConfigurationSpecification>
 	{
 		private PublishedPCConfigurationSpecification _specification;
+
+		private Mock<IPCConfigurationRepository> _configurationRepositoryMock;
 
 		private readonly ComponentType[] _exactlyOneComponentTypes =
 		{
@@ -30,7 +34,8 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 		public override void EstablishContext()
 		{
 			base.EstablishContext();
-			_specification = new PublishedPCConfigurationSpecification();
+			_configurationRepositoryMock = new Mock<IPCConfigurationRepository>();
+			_specification = new PublishedPCConfigurationSpecification(_configurationRepositoryMock.Object);
 		}
 
 		[Test]
@@ -56,6 +61,18 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 			AddRequiredWithAllowedDuplicatesComponents();
 
 			//Assert
+			Assert.That(!_specification.IsSatisfiedBy(Configuration));
+		}
+
+		[Test]
+		public void IsSatisfied_NameNotUnique_ShouldNotPass()
+		{
+			//Arrange
+			AddAllRequiredComponentsAndValidName();
+
+			_configurationRepositoryMock.Setup(x => x.FindPublishedConfigurations(Configuration.Name))
+				.Returns(new List<PCConfiguration> {new PCConfiguration()}.AsQueryable());
+
 			Assert.That(!_specification.IsSatisfiedBy(Configuration));
 		}
 

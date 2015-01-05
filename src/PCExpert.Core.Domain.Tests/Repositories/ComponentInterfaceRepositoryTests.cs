@@ -25,12 +25,6 @@ namespace PCExpert.Core.Domain.Tests.Repositories
 		}
 
 		[Test]
-		public override void Save_AnyValue_ShouldDelegateToPersistenceWorkplace()
-		{
-			base.Save_AnyValue_ShouldDelegateToPersistenceWorkplace();
-		}
-
-		[Test]
 		public void Query_WithSpecification_ShouldReturnFilteredQueryFromWorkplace()
 		{
 			//Arrange
@@ -42,11 +36,11 @@ namespace PCExpert.Core.Domain.Tests.Repositories
 			};
 			MockWorkplace.Setup(x => x.Query<ComponentInterface>())
 				.Returns(list.AsQueryable());
-			_repository = CreateRepositoryWithWorkplace(MockWorkplace.Object);
+			Repository = CreateRepositoryWithWorkplace(MockWorkplace.Object);
 			Expression<Func<ComponentInterface, bool>> specExpression = x => x.Id != Guid.Empty;
 
 			//Act
-			var result = _repository.Query(
+			var result = Repository.Query(
 				new TestPersistenceAwareSpec<ComponentInterface>(specExpression)).ToList();
 
 			//Assert

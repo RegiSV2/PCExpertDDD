@@ -17,7 +17,7 @@ namespace PCExpert.Core.Domain.Tests.Validation
 	{
 		[Test]
 		[TestCase(256, 1)]
-		[TestCase(9, 1)]
+		[TestCase(2, 1)]
 		[TestCase(40, 0)]
 		public void NameLength_Tests(int nameLength, int expectedErrorCount)
 		{

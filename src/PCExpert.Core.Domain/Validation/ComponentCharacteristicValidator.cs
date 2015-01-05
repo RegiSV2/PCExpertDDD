@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using PCExpert.Core.Domain.Resources;
 
 namespace PCExpert.Core.Domain.Validation
 {
@@ -8,10 +7,7 @@ namespace PCExpert.Core.Domain.Validation
 	{
 		public ComponentCharacteristicValidator()
 		{
-			RuleFor(x => x.Name).Must(x => x.Length < 250)
-				.WithLocalizedMessage(() => ValidationMessages.CharacteristicNameTooLongMsg);
-			RuleFor(x => x.Name).Must(x => x.Length >= 10)
-				.WithLocalizedMessage(() => ValidationMessages.CharacteristicNameTooShortMsg);
+			this.RuleForNameLength(x => x.Name, 3, 250);
 		}
 	}
 }
