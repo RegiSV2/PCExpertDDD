@@ -57,7 +57,7 @@ namespace PCExpert.Core.Domain.Tests.Validation
 		public void InPublishedState_ShouldValidateWithPublishedPCConfigurationSpecification()
 		{
 			//Arrange
-			_publishedSpecificationMock.As<IDetailedSpecification<PCConfiguration, PublishedPCConfigurationCheckDetails>>()
+			_publishedSpecificationMock.As<IDetailedSpecification<PCConfiguration, IPublishedPCConfigurationCheckDetails>>()
 				.Setup(x => x.IsSatisfiedBy(It.IsAny<PCConfiguration>()))
 				.Returns(CreateResultWithOneInvalidDetail()).Verifiable();
 
@@ -68,12 +68,12 @@ namespace PCExpert.Core.Domain.Tests.Validation
 			_publishedSpecificationMock.Verify(x => x.IsSatisfiedBy(configuration), Times.Once());
 		}
 
-		private SpecificationDetailedCheckResult<PublishedPCConfigurationCheckDetails> CreateResultWithOneInvalidDetail()
+		private SpecificationDetailedCheckResult<IPublishedPCConfigurationCheckDetails> CreateResultWithOneInvalidDetail()
 		{
-			return new SpecificationDetailedCheckResult<PublishedPCConfigurationCheckDetails>(
-				false, new PublishedPCConfigurationCheckDetails(true, false, false,
-					new List<ComponentType>(), new List<ComponentType>(),
-					new List<InterfaceDeficitInfo>(), new List<PCComponent>()));
+			var detailsMock = new Mock<IPublishedPCConfigurationCheckDetails>();
+			detailsMock.Setup(x => x.NameNotEmptyFailure).Returns(true);
+			return new SpecificationDetailedCheckResult<IPublishedPCConfigurationCheckDetails>(
+				false, detailsMock.Object);
 		}
 
 		private void AssertErrorsCount(PCConfiguration instance, int expectedErrorsCount)

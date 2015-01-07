@@ -15,7 +15,7 @@ namespace PCExpert.Core.Domain.Specifications
 	///     practice it is true almost always)
 	/// </summary>
 	public class PublishedPCConfigurationDetailedSpecification : Specification<PCConfiguration>,
-		IDetailedSpecification<PCConfiguration, PublishedPCConfigurationCheckDetails>
+		IDetailedSpecification<PCConfiguration, IPublishedPCConfigurationCheckDetails>
 	{
 		public const int NameMaxLength = 256;
 		private readonly Specification<PCConfiguration>[] _internalSpecifications;
@@ -32,11 +32,14 @@ namespace PCExpert.Core.Domain.Specifications
 			};
 		}
 
-		SpecificationDetailedCheckResult<PublishedPCConfigurationCheckDetails>
-			IDetailedSpecification<PCConfiguration, PublishedPCConfigurationCheckDetails>.IsSatisfiedBy(
+		SpecificationDetailedCheckResult<IPublishedPCConfigurationCheckDetails>
+			IDetailedSpecification<PCConfiguration, IPublishedPCConfigurationCheckDetails>.IsSatisfiedBy(
 			PCConfiguration entity)
 		{
-			return null;
+			if (IsSatisfiedBy(entity))
+				return new SpecificationDetailedCheckResult<IPublishedPCConfigurationCheckDetails>(true, null);
+			return new SpecificationDetailedCheckResult<IPublishedPCConfigurationCheckDetails>(false,
+				new PublishedPCConfigurationCheckDetails());
 		}
 
 		public override bool IsSatisfiedBy(PCConfiguration configuration)

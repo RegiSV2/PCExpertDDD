@@ -117,6 +117,8 @@
     <Compile Include="Specifications\ConfigurationNameNotEmptySpecification.cs" />
     <Compile Include="Mechanisms\DagBuilderMechanism.cs" />
     <Compile Include="Mechanisms\IDagBuilderNodeManager.cs" />
+    <Compile Include="Specifications\InterfaceDeficitInfo.cs" />
+    <Compile Include="Specifications\IPublishedPCConfigurationCheckDetails.cs" />
     <Compile Include="Specifications\PCConfigurationHasCorrectSetOfRequiredComponents.cs" />
     <Compile Include="Specifications\PCConfigurationNameIsUniqueSpecification.cs" />
     <Compile Include="Specifications\PublishedPCConfigurationCheckDetails.cs" />

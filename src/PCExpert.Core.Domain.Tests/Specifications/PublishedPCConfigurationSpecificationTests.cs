@@ -14,7 +14,7 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 		: PCConfigurationSpecificationsTests<PublishedPCConfigurationDetailedSpecification>
 	{
 		private Mock<IPCConfigurationRepository> _configurationRepositoryMock;
-		private IDetailedSpecification<PCConfiguration, PublishedPCConfigurationCheckDetails> _detailedSpecification;
+		private IDetailedSpecification<PCConfiguration, IPublishedPCConfigurationCheckDetails> _detailedSpecification;
 
 		private readonly ComponentType[] _exactlyOneComponentTypes =
 		{
