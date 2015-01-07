@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
 using PCExpert.Core.DataAccess.Tests.Utils;
 using PCExpert.Core.Domain;
-using PCExpert.Core.DomainFramework;
 using PCExpert.Core.Tests.Utils;
 
 namespace PCExpert.Core.DataAccess.Tests
@@ -203,11 +201,11 @@ namespace PCExpert.Core.DataAccess.Tests
 			Assert.That(loadedComp, Is.Not.Null);
 			Assert.That(loadedComp.AveragePrice, Is.EqualTo(savedComp.AveragePrice));
 			Assert.That(loadedComp.Name, Is.EqualTo(savedComp.Name));
-			AssertCollectionsEqual(savedComp.ContainedSlots, loadedComp.ContainedSlots);
-			AssertCollectionsEqual(savedComp.PlugSlots, loadedComp.PlugSlots);
-			AssertCollectionsEqual(savedComp.ContainedComponents, loadedComp.ContainedComponents);
-			AssertCollectionsEqual(savedComp.CharacteristicValues, loadedComp.CharacteristicValues,
-				CompareCharacteristicValues);
+			Assert.That(UtilsAssert.CollectionsEqual(savedComp.ContainedSlots, loadedComp.ContainedSlots));
+			Assert.That(UtilsAssert.CollectionsEqual(savedComp.PlugSlots, loadedComp.PlugSlots));
+			Assert.That(UtilsAssert.CollectionsEqual(savedComp.ContainedComponents, loadedComp.ContainedComponents));
+			Assert.That(UtilsAssert.CollectionsEqual(savedComp.CharacteristicValues, loadedComp.CharacteristicValues,
+				CompareCharacteristicValues));
 		}
 
 		private bool CompareCharacteristicValues(CharacteristicValue valueA, CharacteristicValue valueB)
@@ -246,21 +244,6 @@ namespace PCExpert.Core.DataAccess.Tests
 		{
 			Assert.That(loadedConfig, Is.Not.Null);
 			Assert.That(savedConfig.Name, Is.EqualTo(loadedConfig.Name));
-		}
-
-		private static void AssertCollectionsEqual<TEntity>(IReadOnlyCollection<TEntity> savedEntities,
-			IReadOnlyCollection<TEntity> loadedEntities)
-			where TEntity : Entity
-		{
-			AssertCollectionsEqual(savedEntities, loadedEntities, (x, y) => x.SameIdentityAs(y));
-		}
-
-		private static void AssertCollectionsEqual<T>(IReadOnlyCollection<T> savedItems,
-			IReadOnlyCollection<T> loadedItems, Func<T, T, bool> compare)
-		{
-			Assert.That(savedItems.Count == loadedItems.Count);
-			foreach (var loadedEntity in loadedItems)
-				Assert.That(savedItems.Count(x => compare(x, loadedEntity)) == 1);
 		}
 
 		#endregion

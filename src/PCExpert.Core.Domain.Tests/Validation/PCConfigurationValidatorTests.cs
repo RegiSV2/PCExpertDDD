@@ -1,21 +1,24 @@
+using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
+using PCExpert.Core.Domain.Repositories;
 using PCExpert.Core.Domain.Specifications;
 using PCExpert.Core.Domain.Validation;
+using PCExpert.Core.DomainFramework.Specifications;
 
 namespace PCExpert.Core.Domain.Tests.Validation
 {
 	[TestFixture]
 	public class PCConfigurationValidatorTests
 	{
+		private Mock<PublishedPCConfigurationDetailedSpecification> _publishedSpecificationMock;
 		private PCConfigurationValidator _validator;
-
-		private Mock<PublishedPCConfigurationSpecification> _publishedSpecificationMock;
 
 		[SetUp]
 		public void EstablishContext()
 		{
-			_publishedSpecificationMock = new Mock<PublishedPCConfigurationSpecification>();
+			_publishedSpecificationMock = new Mock<PublishedPCConfigurationDetailedSpecification>(
+				new Mock<IPCConfigurationRepository>().Object);
 			_validator = new PCConfigurationValidator(_publishedSpecificationMock.Object);
 		}
 
@@ -54,14 +57,23 @@ namespace PCExpert.Core.Domain.Tests.Validation
 		public void InPublishedState_ShouldValidateWithPublishedPCConfigurationSpecification()
 		{
 			//Arrange
-			_publishedSpecificationMock.Setup(x => x.IsSatisfiedBy(It.IsAny<PCConfiguration>()))
-				.Returns(false).Verifiable();
+			_publishedSpecificationMock.As<IDetailedSpecification<PCConfiguration, PublishedPCConfigurationCheckDetails>>()
+				.Setup(x => x.IsSatisfiedBy(It.IsAny<PCConfiguration>()))
+				.Returns(CreateResultWithOneInvalidDetail()).Verifiable();
 
 			var configuration = new PCConfiguration();
 			configuration.MoveToStatus(PCConfigurationStatus.Published);
 
 			AssertErrorsCount(configuration, 1);
 			_publishedSpecificationMock.Verify(x => x.IsSatisfiedBy(configuration), Times.Once());
+		}
+
+		private SpecificationDetailedCheckResult<PublishedPCConfigurationCheckDetails> CreateResultWithOneInvalidDetail()
+		{
+			return new SpecificationDetailedCheckResult<PublishedPCConfigurationCheckDetails>(
+				false, new PublishedPCConfigurationCheckDetails(true, false, false,
+					new List<ComponentType>(), new List<ComponentType>(),
+					new List<InterfaceDeficitInfo>(), new List<PCComponent>()));
 		}
 
 		private void AssertErrorsCount(PCConfiguration instance, int expectedErrorsCount)

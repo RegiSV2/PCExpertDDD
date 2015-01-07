@@ -119,7 +119,8 @@
     <Compile Include="Mechanisms\IDagBuilderNodeManager.cs" />
     <Compile Include="Specifications\PCConfigurationHasCorrectSetOfRequiredComponents.cs" />
     <Compile Include="Specifications\PCConfigurationNameIsUniqueSpecification.cs" />
-    <Compile Include="Specifications\PublishedPCConfigurationSpecification.cs" />
+    <Compile Include="Specifications\PublishedPCConfigurationCheckDetails.cs" />
+    <Compile Include="Specifications\PublishedPCConfigurationDetailedSpecification.cs" />
     <Compile Include="StringCharacteristic.cs" />
     <Compile Include="StringCharacteristicValue.cs" />
     <Compile Include="Validation\CharacteristicValueValidator.cs" />

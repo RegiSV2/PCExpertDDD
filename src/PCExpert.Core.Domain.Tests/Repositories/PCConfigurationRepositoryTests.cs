@@ -42,7 +42,7 @@ namespace PCExpert.Core.Domain.Tests.Repositories
 				new Mock<PCConfiguration>().Object.WithName(NamesGenerator.ConfigurationName(1)),
 				new Mock<PCConfiguration>().Object.WithName(requestedName),
 				new Mock<PCConfiguration>().Object.WithName(requestedName),
-				new Mock<PCConfiguration>().Object.WithName(NamesGenerator.ConfigurationName(2)),
+				new Mock<PCConfiguration>().Object.WithName(NamesGenerator.ConfigurationName(2))
 			};
 			configurationsList[1].MoveToStatus(PCConfigurationStatus.Published);
 			configurationsList[3].MoveToStatus(PCConfigurationStatus.Published);

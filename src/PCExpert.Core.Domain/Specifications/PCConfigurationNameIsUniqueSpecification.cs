@@ -5,7 +5,7 @@ using PCExpert.Core.DomainFramework.Specifications;
 namespace PCExpert.Core.Domain.Specifications
 {
 	/// <summary>
-	/// Configuration name should be unique among currently published specifications
+	///     Configuration name should be unique among currently published specifications
 	/// </summary>
 	internal sealed class PCConfigurationNameIsUniqueSpecification : Specification<PCConfiguration>
 	{

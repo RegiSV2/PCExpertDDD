@@ -5,8 +5,8 @@
 	/// </summary>
 	/// <typeparam name="TEntity">Type, the specification is defined for</typeparam>
 	/// <typeparam name="TCheckData">Type of check feedback</typeparam>
-	public interface ISpecificationWithDetailedresult<in TEntity, TCheckData>
-		where TEntity : Entity
+	public interface IDetailedSpecification<in TEntity, TCheckData>
+		where TEntity : class
 	{
 		SpecificationDetailedCheckResult<TCheckData> IsSatisfiedBy(TEntity entity);
 	}

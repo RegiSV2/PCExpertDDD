@@ -57,8 +57,11 @@
     <Compile Include="Specifications\Logic\LogicSpecificationsTests.cs" />
     <Compile Include="Specifications\Logic\PersistenceAndSpecificationTests.cs" />
     <Compile Include="Specifications\PersistenceAwareSpecificationBaseTests.cs" />
+    <Compile Include="Validation\DetailedSpecificationValidationRuleTests.cs" />
     <Compile Include="Validation\DomainValidatorFactoryTests.cs" />
+    <Compile Include="Validation\SpecificationValidationRuleBaseTests.cs" />
     <Compile Include="Validation\SpecificationValidationRuleTests.cs" />
+    <Compile Include="Validation\ValidationRuleTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

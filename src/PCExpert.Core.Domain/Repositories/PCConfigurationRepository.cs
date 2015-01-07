@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using PCExpert.Core.DomainFramework.DataAccess;
-using PCExpert.Core.DomainFramework.Utils;
 
 namespace PCExpert.Core.Domain.Repositories
 {
@@ -15,7 +15,9 @@ namespace PCExpert.Core.Domain.Repositories
 
 		public IQueryable<PCConfiguration> FindPublishedConfigurations(string name)
 		{
-			Argument.NotNullAndNotEmpty(name);
+			if (string.IsNullOrEmpty(name))
+				throw new ArgumentNullException();
+
 			return _workplace.Query<PCConfiguration>()
 				.Where(x => x.Status == PCConfigurationStatus.Published && x.Name == name);
 		}

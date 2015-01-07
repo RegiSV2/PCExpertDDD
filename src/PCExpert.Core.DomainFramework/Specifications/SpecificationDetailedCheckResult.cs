@@ -6,13 +6,13 @@
 	/// <typeparam name="TCheckData">Type of additional check data</typeparam>
 	public sealed class SpecificationDetailedCheckResult<TCheckData>
 	{
-		public SpecificationDetailedCheckResult(bool isSatisfied, TCheckData checkData)
+		public SpecificationDetailedCheckResult(bool isSatisfied, TCheckData failureDetails)
 		{
 			IsSatisfied = isSatisfied;
-			CheckData = checkData;
+			FailureDetails = failureDetails;
 		}
 
 		public bool IsSatisfied { get; private set; }
-		public TCheckData CheckData { get; private set; }
+		public TCheckData FailureDetails { get; private set; }
 	}
 }
