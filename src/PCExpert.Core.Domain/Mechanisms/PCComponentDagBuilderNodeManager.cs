@@ -15,8 +15,8 @@ namespace PCExpert.Core.Domain.Mechanisms
 
 			_availableInterfaces = new Dictionary<ComponentInterface, int>();
 			PutInterfacesInDictionary(components
-				.Where(x => !x.PlugSlots.Any())
-				.SelectMany(GetComponentInterfaces));
+				.Where(x => x.PlugSlots.IsEmpty())
+				.SelectMany(x => x.EnumerateContainedSlots()));
 		}
 
 		public bool CanVisitNode(PCComponent nodeValue)
@@ -29,12 +29,12 @@ namespace PCExpert.Core.Domain.Mechanisms
 		public void OnNodeVisited(PCComponent nodeValue)
 		{
 			PopInterfacesFromDictionary(nodeValue.PlugSlots);
-			PutInterfacesInDictionary(GetComponentInterfaces(nodeValue));
+			PutInterfacesInDictionary(nodeValue.EnumerateContainedSlots());
 		}
 
 		public void OnNodeRemovedFromVisited(PCComponent nodeValue)
 		{
-			PopInterfacesFromDictionary(GetComponentInterfaces(nodeValue));
+			PopInterfacesFromDictionary(nodeValue.EnumerateContainedSlots());
 			PutInterfacesInDictionary(nodeValue.PlugSlots);
 		}
 
@@ -61,14 +61,6 @@ namespace PCExpert.Core.Domain.Mechanisms
 				if (_availableInterfaces[compInt] == 0)
 					_availableInterfaces.Remove(compInt);
 			}
-		}
-
-		private static IEnumerable<ComponentInterface> GetComponentInterfaces(PCComponent component)
-		{
-			foreach (var componentInterface in component.ContainedSlots)
-				yield return componentInterface;
-			foreach (var componentInterface in component.ContainedComponents.SelectMany(GetComponentInterfaces))
-				yield return componentInterface;
 		}
 	}
 }

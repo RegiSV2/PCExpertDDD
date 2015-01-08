@@ -101,6 +101,7 @@
     <Compile Include="Specifications\Specification.cs" />
     <Compile Include="Specifications\Logic\PersistenceAndSpecification.cs" />
     <Compile Include="Specifications\PersistenceAwareSpecification.cs" />
+    <Compile Include="Utils\EnumerableExtensions.cs" />
     <Compile Include="Utils\PredicateBuilder.cs" />
     <Compile Include="Validation\DetailedSpecificationValidationRule.cs" />
     <Compile Include="Validation\DomainValidatorFactory.cs" />

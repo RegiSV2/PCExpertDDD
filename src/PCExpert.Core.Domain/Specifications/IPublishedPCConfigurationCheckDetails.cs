@@ -14,7 +14,7 @@ namespace PCExpert.Core.Domain.Specifications
 
 		List<ComponentType> TypesViolatedUniqueConstraint { get; }
 
-		List<PCComponent> ComponentPlugCycle { get; }
+		bool ComponentsCycleFailure { get; }
 
 		List<InterfaceDeficitInfo> NotFoundInterfaces { get; }
 	}

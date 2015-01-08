@@ -3,6 +3,7 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using PCExpert.Core.DomainFramework.Specifications;
+using PCExpert.Core.DomainFramework.Utils;
 using PCExpert.Core.DomainFramework.Validation;
 using TestType = System.String;
 
@@ -43,7 +44,7 @@ namespace PCExpert.Core.DomainFramework.Tests.Validation
 			//Arrange
 			_specificationMock.Setup(x => x.IsSatisfiedBy(It.IsAny<TestType>())).Returns(true);
 
-			Assert.That(!_testedRule.Validate(ValidationContext).Any());
+			Assert.That(_testedRule.Validate(ValidationContext).IsEmpty());
 		}
 
 		[Test]

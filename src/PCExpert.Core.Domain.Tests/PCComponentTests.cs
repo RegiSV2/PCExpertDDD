@@ -186,6 +186,43 @@ namespace PCExpert.Core.Domain.Tests
 			Assert.That(() => DefaultComponent.WithContainedComponent(secondComponent),
 				Throws.InstanceOf<DuplicateElementException>());
 		}
+
+		[Test]
+		public void EnumerateContainedSlots_AnyConfiguration_ShouldEnumerateAllSlotsFromComponentAndContainedComponents()
+		{
+			//Arrange
+			const int interfacesCount = 5;
+			var interfaces = new ComponentInterface[interfacesCount];
+			for (var i = 0; i < interfacesCount; i++)
+				interfaces[i] = CreateInterface(i).Object;
+			var parentComponent = CreateComponent(1)
+				.WithContainedSlot(interfaces[0])
+				.WithContainedSlot(interfaces[1])
+				.WithContainedComponent(
+					CreateComponent(2)
+						.WithContainedSlot(interfaces[1])
+						.WithContainedSlot(interfaces[2])
+						.WithContainedComponent(
+							CreateComponent(3).WithContainedSlot(interfaces[4]))
+						.WithContainedComponent(
+							CreateComponent(4).WithContainedSlot(interfaces[4])));
+
+			//Act
+			var actualInterfaceCounts = parentComponent.EnumerateContainedSlots()
+				.GroupBy(x => x).ToDictionary(x => x.Key, x => x.Count());
+
+			//Assert
+			var assertedInterfaceCounts = new Dictionary<ComponentInterface, int>
+			{
+				{interfaces[0], 1},
+				{interfaces[1], 2},
+				{interfaces[2], 1},
+				{interfaces[4], 2}
+			};
+			Assert.That(!actualInterfaceCounts.ContainsKey(interfaces[3]));
+			foreach(var assertedCount in assertedInterfaceCounts)
+				Assert.That(actualInterfaceCounts[assertedCount.Key], Is.EqualTo(assertedCount.Value));
+		}
 	}
 
 	public class PCComponentInterfaceConnectionsTests : PCComponentTests

@@ -233,8 +233,7 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 
 			//Assert
 			Assert.That(!result.IsSatisfied);
-			Assert.That(result.FailureDetails.ComponentPlugCycle.Count == 1);
-			Assert.That(result.FailureDetails.ComponentPlugCycle.First().SameIdentityAs(ComponentAt(0)));
+			Assert.That(result.FailureDetails.ComponentsCycleFailure);
 		}
 
 		[Test]
@@ -284,10 +283,7 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 
 			//Assert
 			Assert.That(!result.IsSatisfied);
-			var cycle = result.FailureDetails.ComponentPlugCycle;
-			Assert.That(cycle.Contains(ComponentAt(0)));
-			Assert.That(cycle.Contains(ComponentAt(2)));
-			Assert.That(cycle.Contains(ComponentAt(4)));
+			Assert.That(result.FailureDetails.ComponentsCycleFailure);
 		}
 
 		[Test]

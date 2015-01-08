@@ -161,6 +161,17 @@ namespace PCExpert.Core.Domain
 			return this;
 		}
 
+		/// <summary>
+		/// Enumerates all interfaces that are contained in current components and in evert child component (if any)
+		/// </summary>
+		public IEnumerable<ComponentInterface> EnumerateContainedSlots()
+		{
+			foreach (var componentInterface in ContainedSlots)
+				yield return componentInterface;
+			foreach (var componentInterface in ContainedComponents.SelectMany(x => x.EnumerateContainedSlots()))
+				yield return componentInterface;
+		}
+
 		#endregion
 
 		#region Private Methods

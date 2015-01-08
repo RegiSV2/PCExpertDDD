@@ -8,7 +8,8 @@ namespace PCExpert.Core.Domain.Specifications
 	///     All required component types should be contained and
 	///     component types that must be unique across the configuration should occur no more than once
 	/// </summary>
-	internal sealed class PCConfigurationHasCorrectSetOfRequiredComponents : Specification<PCConfiguration>
+	internal sealed class PCConfigurationHasCorrectSetOfRequiredComponents : Specification<PCConfiguration>,
+		IDetailedSpecification<PCConfiguration, RequiredComponentTypesSetContraversions>
 	{
 		private readonly ComponentType[] _requiredComponentTypes =
 		{
@@ -26,12 +27,19 @@ namespace PCExpert.Core.Domain.Specifications
 			ComponentType.PowerSupply
 		};
 
+		SpecificationDetailedCheckResult<RequiredComponentTypesSetContraversions>
+			IDetailedSpecification<PCConfiguration, RequiredComponentTypesSetContraversions>.IsSatisfiedBy(
+			PCConfiguration entity)
+		{
+			var details = CheckCompnentTypesOfConfiguration(entity);
+
+			return new SpecificationDetailedCheckResult<RequiredComponentTypesSetContraversions>(
+				!details.ContraversionsFound(), details);
+		}
+
 		public override bool IsSatisfiedBy(PCConfiguration entity)
 		{
-			var componentTypesCountMap = CountComponentTypes(entity);
-
-			return _requiredComponentTypes.All(requiredType => componentTypesCountMap[requiredType] > 0)
-			       && _uniqueComponentTypes.All(uniqueType => componentTypesCountMap[uniqueType] <= 1);
+			return !CheckCompnentTypesOfConfiguration(entity).ContraversionsFound();
 		}
 
 		private Dictionary<ComponentType, int> CountComponentTypes(PCConfiguration configuration)
@@ -58,6 +66,15 @@ namespace PCExpert.Core.Domain.Specifications
 			yield return component.Type;
 			foreach (var type in component.ContainedComponents.SelectMany(GetContainedComponentTypes))
 				yield return type;
+		}
+
+		private RequiredComponentTypesSetContraversions CheckCompnentTypesOfConfiguration(PCConfiguration entity)
+		{
+			var componentTypesCountMap = CountComponentTypes(entity);
+			var requiredButNotAddedTypes = _requiredComponentTypes.Where(x => componentTypesCountMap[x] == 0).ToList();
+			var typesViolatedUniqueConstraint = _uniqueComponentTypes.Where(x => componentTypesCountMap[x] > 1).ToList();
+			var details = new RequiredComponentTypesSetContraversions(requiredButNotAddedTypes, typesViolatedUniqueConstraint);
+			return details;
 		}
 	}
 }

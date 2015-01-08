@@ -112,7 +112,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IPCComponentRepository.cs" />
     <Compile Include="Repositories\PCComponentRepository.cs" />
-    <Compile Include="Specifications\AllRootComponentsOfConfigurationCanBePluggedToOtherComponents.cs" />
+    <Compile Include="Specifications\AllRootComponentsCanBePluggedSpecification.cs" />
+    <Compile Include="Specifications\ComponentPlugContraversions.cs" />
     <Compile Include="Specifications\ConfigurationNameMaxLengthSpecification.cs" />
     <Compile Include="Specifications\ConfigurationNameNotEmptySpecification.cs" />
     <Compile Include="Mechanisms\DagBuilderMechanism.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="Specifications\PCConfigurationNameIsUniqueSpecification.cs" />
     <Compile Include="Specifications\PublishedPCConfigurationCheckDetails.cs" />
     <Compile Include="Specifications\PublishedPCConfigurationDetailedSpecification.cs" />
+    <Compile Include="Specifications\RequiredComponentTypesSetContraversions.cs" />
     <Compile Include="StringCharacteristic.cs" />
     <Compile Include="StringCharacteristicValue.cs" />
     <Compile Include="Validation\CharacteristicValueValidator.cs" />

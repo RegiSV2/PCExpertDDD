@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using PCExpert.Core.DomainFramework.Utils;
 
 namespace PCExpert.Core.Domain.Specifications
 {
@@ -11,7 +13,6 @@ namespace PCExpert.Core.Domain.Specifications
 		{
 			RequiredButNotAddedTypes = new List<ComponentType>();
 			TypesViolatedUniqueConstraint = new List<ComponentType>();
-			ComponentPlugCycle = new List<PCComponent>();
 			NotFoundInterfaces = new List<InterfaceDeficitInfo>();
 		}
 
@@ -25,8 +26,19 @@ namespace PCExpert.Core.Domain.Specifications
 
 		public List<ComponentType> TypesViolatedUniqueConstraint { get; set; }
 
-		public List<PCComponent> ComponentPlugCycle { get; set; }
+		public bool ComponentsCycleFailure { get; set; }
 
 		public List<InterfaceDeficitInfo> NotFoundInterfaces { get; set; }
+
+		public bool AllRequirementsSatisfied()
+		{
+			return !NameMaxLengthFailure
+			       && !NameNotEmptyFailure
+			       && !NameUniqueFailure
+				   && !ComponentsCycleFailure
+			       && NotFoundInterfaces.IsEmpty()
+				   && RequiredButNotAddedTypes.IsEmpty()
+				   && TypesViolatedUniqueConstraint.IsEmpty();
+		}
 	}
 }

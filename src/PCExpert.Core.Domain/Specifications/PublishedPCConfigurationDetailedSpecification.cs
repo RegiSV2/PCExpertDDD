@@ -18,33 +18,89 @@ namespace PCExpert.Core.Domain.Specifications
 		IDetailedSpecification<PCConfiguration, IPublishedPCConfigurationCheckDetails>
 	{
 		public const int NameMaxLength = 256;
+
+		private readonly ConfigurationNameNotEmptySpecification _nameNotEmptySpecification;
+
+		private readonly ConfigurationNameMaxLengthSpecification _maxLengthSpecification;
+
+		private readonly PCConfigurationNameIsUniqueSpecification _nameUniqueSpecification;
+
 		private readonly Specification<PCConfiguration>[] _internalSpecifications;
+
+		private readonly IDetailedSpecification<PCConfiguration, RequiredComponentTypesSetContraversions> _componentTypesSetSpecification;
+
+		private readonly IDetailedSpecification<PCConfiguration, ComponentPlugContraversions> _componentsCanBePluggedSpecification;
 
 		public PublishedPCConfigurationDetailedSpecification(IPCConfigurationRepository configurationRepository)
 		{
+			_nameNotEmptySpecification = new ConfigurationNameNotEmptySpecification();
+			_maxLengthSpecification = new ConfigurationNameMaxLengthSpecification(NameMaxLength);
+			_nameUniqueSpecification = new PCConfigurationNameIsUniqueSpecification(configurationRepository);
+			var componentTypesSetSpecification = new PCConfigurationHasCorrectSetOfRequiredComponents();
+			_componentTypesSetSpecification = componentTypesSetSpecification;
+			var componentsCanBePluggedSpecification = new AllRootComponentsCanBePluggedSpecification();
+			_componentsCanBePluggedSpecification = componentsCanBePluggedSpecification;
+
 			_internalSpecifications = new Specification<PCConfiguration>[]
 			{
-				new ConfigurationNameNotEmptySpecification(),
-				new ConfigurationNameMaxLengthSpecification(NameMaxLength),
-				new PCConfigurationNameIsUniqueSpecification(configurationRepository),
-				new PCConfigurationHasCorrectSetOfRequiredComponents(),
-				new AllRootComponentsOfConfigurationCanBePluggedToOtherComponents()
+				_nameNotEmptySpecification,
+				_maxLengthSpecification,
+				_nameUniqueSpecification,
+				componentTypesSetSpecification,
+				componentsCanBePluggedSpecification
 			};
+		}
+
+		public override bool IsSatisfiedBy(PCConfiguration configuration)
+		{
+			return _internalSpecifications.All(x => x.IsSatisfiedBy(configuration));
 		}
 
 		SpecificationDetailedCheckResult<IPublishedPCConfigurationCheckDetails>
 			IDetailedSpecification<PCConfiguration, IPublishedPCConfigurationCheckDetails>.IsSatisfiedBy(
 			PCConfiguration entity)
 		{
-			if (IsSatisfiedBy(entity))
-				return new SpecificationDetailedCheckResult<IPublishedPCConfigurationCheckDetails>(true, null);
-			return new SpecificationDetailedCheckResult<IPublishedPCConfigurationCheckDetails>(false,
-				new PublishedPCConfigurationCheckDetails());
+			var details = BuildCheckDetails(entity);
+			return CreateResult(details);
 		}
 
-		public override bool IsSatisfiedBy(PCConfiguration configuration)
+		private PublishedPCConfigurationCheckDetails BuildCheckDetails(PCConfiguration entity)
 		{
-			return _internalSpecifications.All(x => x.IsSatisfiedBy(configuration));
+			var details = new PublishedPCConfigurationCheckDetails();
+
+			if (!_nameNotEmptySpecification.IsSatisfiedBy(entity))
+				details.NameNotEmptyFailure = true;
+			if (!_maxLengthSpecification.IsSatisfiedBy(entity))
+				details.NameMaxLengthFailure = true;
+			if (!_nameUniqueSpecification.IsSatisfiedBy(entity))
+				details.NameUniqueFailure = true;
+
+			CheckComponentTypesSpecification(entity, details);
+			CheckComponentsPlugSpecification(entity, details);
+
+			return details;
+		}
+
+		private void CheckComponentsPlugSpecification(PCConfiguration entity, PublishedPCConfigurationCheckDetails details)
+		{
+			var componentsPlugDetails = _componentsCanBePluggedSpecification.IsSatisfiedBy(entity);
+			if (componentsPlugDetails.IsSatisfied) return;
+			details.ComponentsCycleFailure = !componentsPlugDetails.FailureDetails.CanPlugWithoutCycles;
+			details.NotFoundInterfaces = componentsPlugDetails.FailureDetails.NotFoundInterfaces;
+		}
+
+		private void CheckComponentTypesSpecification(PCConfiguration entity, PublishedPCConfigurationCheckDetails details)
+		{
+			var typesSetDetails = _componentTypesSetSpecification.IsSatisfiedBy(entity);
+			if (typesSetDetails.IsSatisfied) return;
+			details.RequiredButNotAddedTypes = typesSetDetails.FailureDetails.RequiredButNotAddedTypes;
+			details.TypesViolatedUniqueConstraint = typesSetDetails.FailureDetails.TypesViolatedUniqueConstraint;
+		}
+
+		private static SpecificationDetailedCheckResult<IPublishedPCConfigurationCheckDetails> CreateResult(PublishedPCConfigurationCheckDetails details)
+		{
+			var isSatisfied = details.AllRequirementsSatisfied();
+			return new SpecificationDetailedCheckResult<IPublishedPCConfigurationCheckDetails>(isSatisfied, details);
 		}
 	}
 }
