@@ -17,19 +17,18 @@ namespace PCExpert.Core.Domain.Specifications
 	public class PublishedPCConfigurationDetailedSpecification : Specification<PCConfiguration>,
 		IDetailedSpecification<PCConfiguration, IPublishedPCConfigurationCheckDetails>
 	{
-		public const int NameMaxLength = 256;
+		public const int NameMaxLength = 250;
 
-		private readonly ConfigurationNameNotEmptySpecification _nameNotEmptySpecification;
+		private readonly IDetailedSpecification<PCConfiguration, ComponentPlugContraversions>
+			_componentsCanBePluggedSpecification;
 
-		private readonly ConfigurationNameMaxLengthSpecification _maxLengthSpecification;
-
-		private readonly PCConfigurationNameIsUniqueSpecification _nameUniqueSpecification;
+		private readonly IDetailedSpecification<PCConfiguration, RequiredComponentTypesSetContraversions>
+			_componentTypesSetSpecification;
 
 		private readonly Specification<PCConfiguration>[] _internalSpecifications;
-
-		private readonly IDetailedSpecification<PCConfiguration, RequiredComponentTypesSetContraversions> _componentTypesSetSpecification;
-
-		private readonly IDetailedSpecification<PCConfiguration, ComponentPlugContraversions> _componentsCanBePluggedSpecification;
+		private readonly ConfigurationNameMaxLengthSpecification _maxLengthSpecification;
+		private readonly ConfigurationNameNotEmptySpecification _nameNotEmptySpecification;
+		private readonly PCConfigurationNameIsUniqueSpecification _nameUniqueSpecification;
 
 		public PublishedPCConfigurationDetailedSpecification(IPCConfigurationRepository configurationRepository)
 		{
@@ -51,17 +50,17 @@ namespace PCExpert.Core.Domain.Specifications
 			};
 		}
 
-		public override bool IsSatisfiedBy(PCConfiguration configuration)
-		{
-			return _internalSpecifications.All(x => x.IsSatisfiedBy(configuration));
-		}
-
 		SpecificationDetailedCheckResult<IPublishedPCConfigurationCheckDetails>
 			IDetailedSpecification<PCConfiguration, IPublishedPCConfigurationCheckDetails>.IsSatisfiedBy(
 			PCConfiguration entity)
 		{
 			var details = BuildCheckDetails(entity);
 			return CreateResult(details);
+		}
+
+		public override bool IsSatisfiedBy(PCConfiguration configuration)
+		{
+			return _internalSpecifications.All(x => x.IsSatisfiedBy(configuration));
 		}
 
 		private PublishedPCConfigurationCheckDetails BuildCheckDetails(PCConfiguration entity)
@@ -97,7 +96,8 @@ namespace PCExpert.Core.Domain.Specifications
 			details.TypesViolatedUniqueConstraint = typesSetDetails.FailureDetails.TypesViolatedUniqueConstraint;
 		}
 
-		private static SpecificationDetailedCheckResult<IPublishedPCConfigurationCheckDetails> CreateResult(PublishedPCConfigurationCheckDetails details)
+		private static SpecificationDetailedCheckResult<IPublishedPCConfigurationCheckDetails> CreateResult(
+			PublishedPCConfigurationCheckDetails details)
 		{
 			var isSatisfied = details.AllRequirementsSatisfied();
 			return new SpecificationDetailedCheckResult<IPublishedPCConfigurationCheckDetails>(isSatisfied, details);

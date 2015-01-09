@@ -162,7 +162,7 @@ namespace PCExpert.Core.Domain
 		}
 
 		/// <summary>
-		/// Enumerates all interfaces that are contained in current components and in evert child component (if any)
+		///     Enumerates all interfaces that are contained in current components and in evert child component (if any)
 		/// </summary>
 		public IEnumerable<ComponentInterface> EnumerateContainedSlots()
 		{

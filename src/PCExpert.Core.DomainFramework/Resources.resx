@@ -117,40 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConfigCyclicPluggingMsg" xml:space="preserve">
-    <value>Components cannot be composed without cyclicly plugging some components to each other</value>
-  </data>
-  <data name="ConfigHasRequiredButNotAddedTypeMsg" xml:space="preserve">
-    <value>Configuration should contain {0}, but it is not added</value>
-  </data>
-  <data name="ConfigHasRequiredButNotAddedTypesMsg" xml:space="preserve">
-    <value>Configuration doesn't contain following required components: {0}</value>
-  </data>
-  <data name="ConfigNameCannotBeEmptyMsg" xml:space="preserve">
-    <value>Configuration name must be specified</value>
-  </data>
-  <data name="ConfigNameNotUniqueMsg" xml:space="preserve">
-    <value>Specified name is already used</value>
-  </data>
-  <data name="ConfigNameTooLongMsg" xml:space="preserve">
-    <value>Configuration name should not be greater than 250 symbols</value>
-  </data>
-  <data name="ConfigTypesViolatedUniqueConstraintMsg" xml:space="preserve">
-    <value>The configuration has more than one {0}</value>
-  </data>
-  <data name="NameTooLongMsg" xml:space="preserve">
-    <value>Name length should not be greater than 250 symbols</value>
-  </data>
-  <data name="NameTooShortMsg" xml:space="preserve">
-    <value>Name length should be at least 10</value>
-  </data>
-  <data name="NegativePriceMsg" xml:space="preserve">
-    <value>The price of the component cannot be negative</value>
-  </data>
-  <data name="PriceTooGreateMsg" xml:space="preserve">
-    <value>The price of the component cannot be greater than 1000000$</value>
-  </data>
-  <data name="ValueShouldBeAttachedMsg" xml:space="preserve">
-    <value>Cannot save characteristic value that is not attached to component</value>
+  <data name="LastListSeparator" xml:space="preserve">
+    <value>and</value>
   </data>
 </root>

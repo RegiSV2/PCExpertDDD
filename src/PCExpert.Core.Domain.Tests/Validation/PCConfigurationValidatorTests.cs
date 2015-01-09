@@ -1,16 +1,18 @@
-using System.Collections.Generic;
+using FluentValidation.Results;
 using Moq;
 using NUnit.Framework;
 using PCExpert.Core.Domain.Repositories;
 using PCExpert.Core.Domain.Specifications;
 using PCExpert.Core.Domain.Validation;
 using PCExpert.Core.DomainFramework.Specifications;
+using PCExpert.Core.DomainFramework.Validation;
 
 namespace PCExpert.Core.Domain.Tests.Validation
 {
 	[TestFixture]
 	public class PCConfigurationValidatorTests
 	{
+		private Mock<ISpecificationDetailsInterpreter<IPublishedPCConfigurationCheckDetails>> _interpreterMock;
 		private Mock<PublishedPCConfigurationDetailedSpecification> _publishedSpecificationMock;
 		private PCConfigurationValidator _validator;
 
@@ -19,7 +21,8 @@ namespace PCExpert.Core.Domain.Tests.Validation
 		{
 			_publishedSpecificationMock = new Mock<PublishedPCConfigurationDetailedSpecification>(
 				new Mock<IPCConfigurationRepository>().Object);
-			_validator = new PCConfigurationValidator(_publishedSpecificationMock.Object);
+			_interpreterMock = new Mock<ISpecificationDetailsInterpreter<IPublishedPCConfigurationCheckDetails>>();
+			_validator = new PCConfigurationValidator(_publishedSpecificationMock.Object, _interpreterMock.Object);
 		}
 
 		[Test]
@@ -60,12 +63,18 @@ namespace PCExpert.Core.Domain.Tests.Validation
 			_publishedSpecificationMock.As<IDetailedSpecification<PCConfiguration, IPublishedPCConfigurationCheckDetails>>()
 				.Setup(x => x.IsSatisfiedBy(It.IsAny<PCConfiguration>()))
 				.Returns(CreateResultWithOneInvalidDetail()).Verifiable();
+			_interpreterMock.Setup(x => x.Interpret(It.IsAny<IPublishedPCConfigurationCheckDetails>()))
+				.Returns(new[] {new ValidationFailure("some prop", "some error")}).Verifiable();
 
 			var configuration = new PCConfiguration();
 			configuration.MoveToStatus(PCConfigurationStatus.Published);
 
 			AssertErrorsCount(configuration, 1);
-			_publishedSpecificationMock.Verify(x => x.IsSatisfiedBy(configuration), Times.Once());
+			_publishedSpecificationMock.As<IDetailedSpecification<PCConfiguration, IPublishedPCConfigurationCheckDetails>>()
+				.Verify(x => x.IsSatisfiedBy(configuration), Times.Once());
+			_interpreterMock.Verify(
+				x => x.Interpret(It.IsAny<IPublishedPCConfigurationCheckDetails>()),
+				Times.Once());
 		}
 
 		private SpecificationDetailedCheckResult<IPublishedPCConfigurationCheckDetails> CreateResultWithOneInvalidDetail()

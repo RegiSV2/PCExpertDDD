@@ -6,14 +6,15 @@ namespace PCExpert.Core.Domain.Validation
 {
 	public class PCConfigurationValidator : AbstractValidator<PCConfiguration>
 	{
-		public PCConfigurationValidator(PublishedPCConfigurationDetailedSpecification publishedDetailedSpecification)
+		public PCConfigurationValidator(PublishedPCConfigurationDetailedSpecification publishedDetailedSpecification,
+			ISpecificationDetailsInterpreter<IPublishedPCConfigurationCheckDetails> publishedDetailsInterpreter)
 		{
 			RuleFor(x => x.Status).NotEqual(PCConfigurationStatus.Undefined);
 			When(x => x.Name != null, () => { this.RuleForNameLength(x => x.Name, 3, 250); });
 			When(x => x.Status == PCConfigurationStatus.Published, () =>
 			{
-				AddRule(new SpecificationValidationRule<PCConfiguration>(publishedDetailedSpecification,
-					"Configuration does not satisfy requirements to be published"));
+				AddRule(new DetailedSpecificationValidationRule<PCConfiguration, IPublishedPCConfigurationCheckDetails>(
+					publishedDetailedSpecification, publishedDetailsInterpreter));
 			});
 		}
 	}

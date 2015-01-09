@@ -132,6 +132,7 @@
     <Compile Include="Validation\ComponentInterfaceValidator.cs" />
     <Compile Include="Validation\PCComponentValidator.cs" />
     <Compile Include="Validation\PCConfigurationValidator.cs" />
+    <Compile Include="Validation\PublishedPCConfigurationCheckDetailsInterpreter.cs" />
     <Compile Include="Validation\ValidationExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

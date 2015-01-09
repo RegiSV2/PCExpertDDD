@@ -6,7 +6,6 @@ using PCExpert.Core.Tests.Utils;
 
 namespace PCExpert.Core.Domain.Tests
 {
-	[TestFixture]
 	public class PCConfigurationTests
 	{
 		protected PCConfiguration DefaultConfiguration;
@@ -18,6 +17,7 @@ namespace PCExpert.Core.Domain.Tests
 		}
 	}
 
+	[TestFixture]
 	public class PCConfigurationConstructorTests : PCConfigurationTests
 	{
 		[Test]
@@ -39,6 +39,7 @@ namespace PCExpert.Core.Domain.Tests
 		}
 	}
 
+	[TestFixture]
 	public class PCConfigurationNameTests : PCConfigurationTests
 	{
 		[Test]
@@ -59,6 +60,7 @@ namespace PCExpert.Core.Domain.Tests
 		}
 	}
 
+	[TestFixture]
 	public class PCConfigurationComponentsTests : PCConfigurationTests
 	{
 		[Test]
@@ -97,6 +99,7 @@ namespace PCExpert.Core.Domain.Tests
 		}
 	}
 
+	[TestFixture]
 	public class PCConfigurationCalculatePriceTests : PCConfigurationTests
 	{
 		[Test]
@@ -116,6 +119,7 @@ namespace PCExpert.Core.Domain.Tests
 		}
 	}
 
+	[TestFixture]
 	public class PCConfigurationStatusTests : PCConfigurationTests
 	{
 		[Test]

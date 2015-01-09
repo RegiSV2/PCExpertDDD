@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using PCExpert.Core.DomainFramework.Utils;
 
 namespace PCExpert.Core.Domain.Specifications
@@ -17,17 +16,11 @@ namespace PCExpert.Core.Domain.Specifications
 		}
 
 		public bool NameNotEmptyFailure { get; set; }
-
 		public bool NameMaxLengthFailure { get; set; }
-
 		public bool NameUniqueFailure { get; set; }
-
 		public List<ComponentType> RequiredButNotAddedTypes { get; set; }
-
 		public List<ComponentType> TypesViolatedUniqueConstraint { get; set; }
-
 		public bool ComponentsCycleFailure { get; set; }
-
 		public List<InterfaceDeficitInfo> NotFoundInterfaces { get; set; }
 
 		public bool AllRequirementsSatisfied()
@@ -35,10 +28,10 @@ namespace PCExpert.Core.Domain.Specifications
 			return !NameMaxLengthFailure
 			       && !NameNotEmptyFailure
 			       && !NameUniqueFailure
-				   && !ComponentsCycleFailure
+			       && !ComponentsCycleFailure
 			       && NotFoundInterfaces.IsEmpty()
-				   && RequiredButNotAddedTypes.IsEmpty()
-				   && TypesViolatedUniqueConstraint.IsEmpty();
+			       && RequiredButNotAddedTypes.IsEmpty()
+			       && TypesViolatedUniqueConstraint.IsEmpty();
 		}
 	}
 }

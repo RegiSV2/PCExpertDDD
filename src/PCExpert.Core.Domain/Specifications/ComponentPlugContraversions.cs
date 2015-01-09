@@ -11,7 +11,6 @@ namespace PCExpert.Core.Domain.Specifications
 		}
 
 		public bool CanPlugWithoutCycles { get; private set; }
-
 		public List<InterfaceDeficitInfo> NotFoundInterfaces { get; private set; }
 	}
 }

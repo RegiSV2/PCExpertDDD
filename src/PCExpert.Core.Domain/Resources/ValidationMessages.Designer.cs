@@ -61,7 +61,70 @@ namespace PCExpert.Core.Domain.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name length should not be greater than 255 symbols.
+        ///   Looks up a localized string similar to Components cannot be composed without cyclicly plugging some components to each other.
+        /// </summary>
+        public static string ConfigCyclicPluggingMsg {
+            get {
+                return ResourceManager.GetString("ConfigCyclicPluggingMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration should contain {0}, but it is not added.
+        /// </summary>
+        public static string ConfigHasRequiredButNotAddedTypeMsg {
+            get {
+                return ResourceManager.GetString("ConfigHasRequiredButNotAddedTypeMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration doesn&apos;t contain following required components: {0}.
+        /// </summary>
+        public static string ConfigHasRequiredButNotAddedTypesMsg {
+            get {
+                return ResourceManager.GetString("ConfigHasRequiredButNotAddedTypesMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration name must be specified.
+        /// </summary>
+        public static string ConfigNameCannotBeEmptyMsg {
+            get {
+                return ResourceManager.GetString("ConfigNameCannotBeEmptyMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specified name is already used.
+        /// </summary>
+        public static string ConfigNameNotUniqueMsg {
+            get {
+                return ResourceManager.GetString("ConfigNameNotUniqueMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration name should not be greater than 250 symbols.
+        /// </summary>
+        public static string ConfigNameTooLongMsg {
+            get {
+                return ResourceManager.GetString("ConfigNameTooLongMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The configuration has more than one {0}.
+        /// </summary>
+        public static string ConfigTypesViolatedUniqueConstraintMsg {
+            get {
+                return ResourceManager.GetString("ConfigTypesViolatedUniqueConstraintMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name length should not be greater than 250 symbols.
         /// </summary>
         public static string NameTooLongMsg {
             get {

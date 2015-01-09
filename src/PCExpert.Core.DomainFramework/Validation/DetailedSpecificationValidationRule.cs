@@ -29,7 +29,7 @@ namespace PCExpert.Core.DomainFramework.Validation
 			var specResult = _specification.IsSatisfiedBy(instanceToValidate);
 			return specResult.IsSatisfied
 				? Enumerable.Empty<ValidationFailure>()
-				: _interpreter.InterpretSpecificationResultDetails(specResult.FailureDetails);
+				: _interpreter.Interpret(specResult.FailureDetails);
 		}
 	}
 }

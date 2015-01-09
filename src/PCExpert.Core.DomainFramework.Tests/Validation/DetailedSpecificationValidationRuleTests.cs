@@ -63,7 +63,7 @@ namespace PCExpert.Core.DomainFramework.Tests.Validation
 		{
 			//Arrange
 			var interpreterResult = new[] {new ValidationFailure("some prop", "some error")};
-			_interpreterMock.Setup(x => x.InterpretSpecificationResultDetails(It.IsAny<TestTypeDetails>()))
+			_interpreterMock.Setup(x => x.Interpret(It.IsAny<TestTypeDetails>()))
 				.Returns(interpreterResult).Verifiable();
 			SetupSpecificationNotSatisfied();
 			var rule = CreateRuleWithMocks();
@@ -73,7 +73,7 @@ namespace PCExpert.Core.DomainFramework.Tests.Validation
 
 			//Assert
 			Assert.That(validationResult == interpreterResult);
-			_interpreterMock.Verify(x => x.InterpretSpecificationResultDetails(It.IsAny<TestTypeDetails>()), Times.Once());
+			_interpreterMock.Verify(x => x.Interpret(It.IsAny<TestTypeDetails>()), Times.Once());
 		}
 
 		private DetailedSpecificationValidationRule<TestType, TestTypeDetails> CreateRuleWithMocks()

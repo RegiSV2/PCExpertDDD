@@ -13,9 +13,7 @@ namespace PCExpert.Core.Domain.Specifications
 		}
 
 		public ComponentInterface ProblemInterface { get; private set; }
-
 		public int Deficit { get; private set; }
-
 		public List<PCComponent> RequiredByComponents { get; private set; }
 	}
 }

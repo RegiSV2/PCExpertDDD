@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Sockets;
 using PCExpert.Core.Domain.Mechanisms;
 using PCExpert.Core.DomainFramework;
 using PCExpert.Core.DomainFramework.Specifications;
@@ -16,12 +15,8 @@ namespace PCExpert.Core.Domain.Specifications
 	internal sealed class AllRootComponentsCanBePluggedSpecification : Specification<PCConfiguration>,
 		IDetailedSpecification<PCConfiguration, ComponentPlugContraversions>
 	{
-		private readonly IEqualityComparer<ComponentInterface> _interfaceComparer = new EntityEqualityComparer<ComponentInterface>();
- 
-		public override bool IsSatisfiedBy(PCConfiguration entity)
-		{
-			return FindPlugContraversions(entity).CanPlugWithoutCycles;
-		}
+		private readonly IEqualityComparer<ComponentInterface> _interfaceComparer =
+			new EntityEqualityComparer<ComponentInterface>();
 
 		SpecificationDetailedCheckResult<ComponentPlugContraversions>
 			IDetailedSpecification<PCConfiguration, ComponentPlugContraversions>.IsSatisfiedBy(
@@ -29,6 +24,11 @@ namespace PCExpert.Core.Domain.Specifications
 		{
 			var contraversionsInfo = FindPlugContraversions(entity);
 			return CreateSpecificationResult(contraversionsInfo);
+		}
+
+		public override bool IsSatisfiedBy(PCConfiguration entity)
+		{
+			return FindPlugContraversions(entity).CanPlugWithoutCycles;
 		}
 
 		private ComponentPlugContraversions FindPlugContraversions(PCConfiguration configuration)
@@ -52,8 +52,8 @@ namespace PCExpert.Core.Domain.Specifications
 		private ILookup<ComponentInterface, PCComponent> AggregateRequiredInterfaces(PCConfiguration configuration)
 		{
 			return configuration.Components
-				.SelectMany(x => x.PlugSlots.Select(y => new { Component = x, Interface = y }))
-					.ToLookup(x => x.Interface, x => x.Component, _interfaceComparer);
+				.SelectMany(x => x.PlugSlots.Select(y => new {Component = x, Interface = y}))
+				.ToLookup(x => x.Interface, x => x.Component, _interfaceComparer);
 		}
 
 		private Dictionary<ComponentInterface, int> AggregateAvailableInterfaces(PCConfiguration configuration)
@@ -64,7 +64,8 @@ namespace PCExpert.Core.Domain.Specifications
 				.ToDictionary(x => x.Key, x => x.Count());
 		}
 
-		private List<InterfaceDeficitInfo> ComputeInterfacesDeficit(ILookup<ComponentInterface, PCComponent> requiredInterfaces, Dictionary<ComponentInterface, int> availableInterfaces)
+		private List<InterfaceDeficitInfo> ComputeInterfacesDeficit(
+			ILookup<ComponentInterface, PCComponent> requiredInterfaces, Dictionary<ComponentInterface, int> availableInterfaces)
 		{
 			return
 				requiredInterfaces
@@ -74,7 +75,8 @@ namespace PCExpert.Core.Domain.Specifications
 					.ToList();
 		}
 
-		private int GetAvailableInterfacesCount(IReadOnlyDictionary<ComponentInterface, int> interfaces, ComponentInterface arg)
+		private int GetAvailableInterfacesCount(IReadOnlyDictionary<ComponentInterface, int> interfaces,
+			ComponentInterface arg)
 		{
 			return interfaces.ContainsKey(arg) ? interfaces[arg] : 0;
 		}

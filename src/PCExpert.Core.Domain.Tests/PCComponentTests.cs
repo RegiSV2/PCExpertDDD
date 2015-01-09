@@ -9,7 +9,6 @@ using PCExpert.Core.Tests.Utils;
 
 namespace PCExpert.Core.Domain.Tests
 {
-	[TestFixture]
 	public class PCComponentTests
 	{
 		protected const decimal ComponentPrice = 100m;
@@ -36,6 +35,7 @@ namespace PCExpert.Core.Domain.Tests
 		}
 	}
 
+	[TestFixture]
 	public class PCComponentConstructorTests : PCComponentTests
 	{
 		[Test]
@@ -66,6 +66,7 @@ namespace PCExpert.Core.Domain.Tests
 		}
 	}
 
+	[TestFixture]
 	public class PCComponentAveragePriceTests : PCComponentTests
 	{
 		[Test]
@@ -90,6 +91,7 @@ namespace PCExpert.Core.Domain.Tests
 		}
 	}
 
+	[TestFixture]
 	public class PCComponentNameTests : PCComponentTests
 	{
 		[Test]
@@ -114,6 +116,7 @@ namespace PCExpert.Core.Domain.Tests
 		}
 	}
 
+	[TestFixture]
 	public class PCComponentContainedComponentsTests : PCComponentTests
 	{
 		[Test]
@@ -220,11 +223,12 @@ namespace PCExpert.Core.Domain.Tests
 				{interfaces[4], 2}
 			};
 			Assert.That(!actualInterfaceCounts.ContainsKey(interfaces[3]));
-			foreach(var assertedCount in assertedInterfaceCounts)
+			foreach (var assertedCount in assertedInterfaceCounts)
 				Assert.That(actualInterfaceCounts[assertedCount.Key], Is.EqualTo(assertedCount.Value));
 		}
 	}
 
+	[TestFixture]
 	public class PCComponentInterfaceConnectionsTests : PCComponentTests
 	{
 		[Test]
@@ -306,6 +310,7 @@ namespace PCExpert.Core.Domain.Tests
 		}
 	}
 
+	[TestFixture]
 	public class PCComponentComponentTypeTests : PCComponentTests
 	{
 		[Test]
@@ -330,6 +335,7 @@ namespace PCExpert.Core.Domain.Tests
 		}
 	}
 
+	[TestFixture]
 	public class PCComponentCharacteristicsTests : PCComponentTests
 	{
 		[Test]
