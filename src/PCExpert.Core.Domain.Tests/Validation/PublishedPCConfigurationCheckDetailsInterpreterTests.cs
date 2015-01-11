@@ -8,8 +8,8 @@ using NUnit.Framework;
 using PCExpert.Core.Domain.Resources;
 using PCExpert.Core.Domain.Specifications;
 using PCExpert.Core.Domain.Validation;
-using PCExpert.Core.DomainFramework.Utils;
 using PCExpert.Core.Tests.Utils;
+using PCExpert.DomainFramework.Utils;
 
 namespace PCExpert.Core.Domain.Tests.Validation
 {

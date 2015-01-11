@@ -1,9 +1,9 @@
 using System.Linq;
-using PCExpert.Core.DomainFramework.DataAccess;
+using PCExpert.DomainFramework.DataAccess;
 
 namespace PCExpert.Core.Domain.Repositories
 {
-	public class PCComponentRepository : IPCComponentRepository
+	public sealed class PCComponentRepository : IPCComponentRepository
 	{
 		private readonly PersistenceWorkplace _workplace;
 

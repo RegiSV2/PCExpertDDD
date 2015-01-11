@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
 using PCExpert.Core.Domain.Specifications;
-using PCExpert.Core.DomainFramework.Validation;
+using PCExpert.DomainFramework.Validation;
 
 namespace PCExpert.Core.Domain.Validation
 {
-	public class PCConfigurationValidator : AbstractValidator<PCConfiguration>
+	public sealed class PCConfigurationValidator : AbstractValidator<PCConfiguration>
 	{
-		public PCConfigurationValidator(PublishedPCConfigurationDetailedSpecification publishedDetailedSpecification,
+		public PCConfigurationValidator(PublishedPCConfigurationSpecification publishedSpecification,
 			ISpecificationDetailsInterpreter<IPublishedPCConfigurationCheckDetails> publishedDetailsInterpreter)
 		{
 			RuleFor(x => x.Status).NotEqual(PCConfigurationStatus.Undefined);
@@ -14,7 +14,7 @@ namespace PCExpert.Core.Domain.Validation
 			When(x => x.Status == PCConfigurationStatus.Published, () =>
 			{
 				AddRule(new DetailedSpecificationValidationRule<PCConfiguration, IPublishedPCConfigurationCheckDetails>(
-					publishedDetailedSpecification, publishedDetailsInterpreter));
+					publishedSpecification, publishedDetailsInterpreter));
 			});
 		}
 	}

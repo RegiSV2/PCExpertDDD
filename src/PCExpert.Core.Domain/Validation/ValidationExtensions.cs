@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using FluentValidation;
 using PCExpert.Core.Domain.Resources;
-using PCExpert.Core.DomainFramework.Utils;
+using PCExpert.DomainFramework.Utils;
 
 namespace PCExpert.Core.Domain.Validation
 {

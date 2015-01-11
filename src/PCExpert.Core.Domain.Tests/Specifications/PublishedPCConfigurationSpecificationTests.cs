@@ -4,14 +4,14 @@ using Moq;
 using NUnit.Framework;
 using PCExpert.Core.Domain.Repositories;
 using PCExpert.Core.Domain.Specifications;
-using PCExpert.Core.DomainFramework.Specifications;
 using PCExpert.Core.Tests.Utils;
+using PCExpert.DomainFramework.Specifications;
 
 namespace PCExpert.Core.Domain.Tests.Specifications
 {
 	[TestFixture]
 	public class PublishedPCConfigurationSpecificationTests
-		: PCConfigurationSpecificationsTests<PublishedPCConfigurationDetailedSpecification>
+		: PCConfigurationSpecificationsTests<PublishedPCConfigurationSpecification>
 	{
 		private Mock<IPCConfigurationRepository> _configurationRepositoryMock;
 		private IDetailedSpecification<PCConfiguration, IPublishedPCConfigurationCheckDetails> _detailedSpecification;
@@ -35,7 +35,7 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 		{
 			base.EstablishContext();
 			_configurationRepositoryMock = new Mock<IPCConfigurationRepository>();
-			_detailedSpecification = new PublishedPCConfigurationDetailedSpecification(_configurationRepositoryMock.Object);
+			_detailedSpecification = new PublishedPCConfigurationSpecification(_configurationRepositoryMock.Object);
 		}
 
 		[Test]
@@ -60,7 +60,7 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 		public void IsSatisfied_PCConfigurationWithTooLargeName_ShouldNotPass()
 		{
 			//Arrange
-			Configuration.WithName("".PadLeft(PublishedPCConfigurationDetailedSpecification.NameMaxLength + 1, '*'));
+			Configuration.WithName("".PadLeft(PublishedPCConfigurationSpecification.NameMaxLength + 1, '*'));
 			AddRequiredComponents();
 			AddRequiredWithAllowedDuplicatesComponents();
 

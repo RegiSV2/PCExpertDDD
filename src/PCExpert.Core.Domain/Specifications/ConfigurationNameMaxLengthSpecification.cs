@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq.Expressions;
-using PCExpert.Core.DomainFramework.Specifications;
+using PCExpert.DomainFramework.Specifications;
 
 namespace PCExpert.Core.Domain.Specifications
 {
-	public class ConfigurationNameMaxLengthSpecification : PersistenceAwareSpecification<PCConfiguration>
+	public sealed class ConfigurationNameMaxLengthSpecification : PersistenceAwareSpecification<PCConfiguration>
 	{
 		private readonly int _maxLength;
 

@@ -2,7 +2,7 @@
 
 namespace PCExpert.Core.Domain.Validation
 {
-	public class ComponentCharacteristicValidator<T> : AbstractValidator<T>
+	public sealed class ComponentCharacteristicValidator<T> : AbstractValidator<T>
 		where T : ComponentCharacteristic
 	{
 		public ComponentCharacteristicValidator()

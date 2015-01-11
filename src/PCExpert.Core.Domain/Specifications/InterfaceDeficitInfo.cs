@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace PCExpert.Core.Domain.Specifications
 {
-	public class InterfaceDeficitInfo
+	public sealed class InterfaceDeficitInfo
 	{
 		public InterfaceDeficitInfo(ComponentInterface problemInterface, int deficit,
 			IEnumerable<PCComponent> requiredByComponents)

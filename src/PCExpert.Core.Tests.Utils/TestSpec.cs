@@ -1,6 +1,6 @@
 using System;
-using PCExpert.Core.DomainFramework;
-using PCExpert.Core.DomainFramework.Specifications;
+using PCExpert.DomainFramework;
+using PCExpert.DomainFramework.Specifications;
 
 namespace PCExpert.Core.Tests.Utils
 {

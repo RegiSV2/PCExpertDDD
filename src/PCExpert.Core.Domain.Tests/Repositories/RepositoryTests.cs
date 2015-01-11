@@ -1,7 +1,7 @@
 ﻿using Moq;
 using NUnit.Framework;
-using PCExpert.Core.DomainFramework.DataAccess;
 using PCExpert.Core.Tests.Utils;
+using PCExpert.DomainFramework.DataAccess;
 
 namespace PCExpert.Core.Domain.Tests.Repositories
 {

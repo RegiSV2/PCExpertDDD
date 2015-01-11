@@ -3,7 +3,7 @@ using PCExpert.Core.Domain.Resources;
 
 namespace PCExpert.Core.Domain.Validation
 {
-	public class PCComponentValidator : AbstractValidator<PCComponent>
+	public sealed class PCComponentValidator : AbstractValidator<PCComponent>
 	{
 		public PCComponentValidator()
 		{

@@ -84,10 +84,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PCExpert.Core.DomainFramework\PCExpert.Core.DomainFramework.csproj">
-      <Project>{E3F85B03-73D8-460D-B380-38036836B295}</Project>
-      <Name>PCExpert.Core.DomainFramework</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PCExpert.Core.Domain\PCExpert.Core.Domain.csproj">
       <Project>{8CB3EFF3-9938-4443-9287-184A7E0364A8}</Project>
       <Name>PCExpert.Core.Domain</Name>
@@ -95,6 +91,10 @@
     <ProjectReference Include="..\PCExpert.Core.Tests.Utils\PCExpert.Core.Tests.Utils.csproj">
       <Project>{A388985E-E1AB-42B9-BB91-EB526C4C777B}</Project>
       <Name>PCExpert.Core.Tests.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PCExpert.DomainFramework\PCExpert.DomainFramework.csproj">
+      <Project>{E3F85B03-73D8-460D-B380-38036836B295}</Project>
+      <Name>PCExpert.DomainFramework</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

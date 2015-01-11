@@ -5,6 +5,7 @@ using NUnit.Framework;
 using PCExpert.Core.DataAccess.Tests.Utils;
 using PCExpert.Core.Domain;
 using PCExpert.Core.Tests.Utils;
+using PCExpert.DomainFramework.EF;
 
 namespace PCExpert.Core.DataAccess.Tests
 {
@@ -21,9 +22,10 @@ namespace PCExpert.Core.DataAccess.Tests
 		[Test]
 		public void DbOperationsTest()
 		{
-			using (var dbContext = TestContextCreator.Create())
+			var dbContextProvider = TestContextCreator.Create();
+			using (var dbContext = dbContextProvider.DbContext)
 			{
-				var workplace = new EfWorkplace(dbContext);
+				var workplace = new EfWorkplace(dbContextProvider);
 				var savedModel = InsertModel(workplace);
 				dbContext.SaveChanges();
 

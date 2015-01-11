@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Moq;
-using PCExpert.Core.DomainFramework;
+using PCExpert.DomainFramework;
 
 namespace PCExpert.Core.Tests.Utils
 {

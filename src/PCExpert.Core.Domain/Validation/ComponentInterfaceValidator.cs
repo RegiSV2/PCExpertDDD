@@ -2,7 +2,7 @@
 
 namespace PCExpert.Core.Domain.Validation
 {
-	public class ComponentInterfaceValidator : AbstractValidator<ComponentInterface>
+	public sealed class ComponentInterfaceValidator : AbstractValidator<ComponentInterface>
 	{
 		public ComponentInterfaceValidator()
 		{

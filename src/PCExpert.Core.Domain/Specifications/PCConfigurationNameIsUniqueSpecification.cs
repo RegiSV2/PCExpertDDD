@@ -1,6 +1,6 @@
 using System.Linq;
 using PCExpert.Core.Domain.Repositories;
-using PCExpert.Core.DomainFramework.Specifications;
+using PCExpert.DomainFramework.Specifications;
 
 namespace PCExpert.Core.Domain.Specifications
 {

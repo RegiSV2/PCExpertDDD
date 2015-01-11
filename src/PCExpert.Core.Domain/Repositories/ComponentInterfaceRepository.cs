@@ -1,10 +1,10 @@
 ﻿using System.Linq;
-using PCExpert.Core.DomainFramework.DataAccess;
-using PCExpert.Core.DomainFramework.Specifications;
+using PCExpert.DomainFramework.DataAccess;
+using PCExpert.DomainFramework.Specifications;
 
 namespace PCExpert.Core.Domain.Repositories
 {
-	public class ComponentInterfaceRepository : IComponentInterfaceRepository
+	public sealed class ComponentInterfaceRepository : IComponentInterfaceRepository
 	{
 		private readonly PersistenceWorkplace _workplace;
 

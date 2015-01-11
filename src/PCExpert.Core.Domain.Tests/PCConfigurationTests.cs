@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
-using PCExpert.Core.DomainFramework.Exceptions;
 using PCExpert.Core.Tests.Utils;
+using PCExpert.DomainFramework.Exceptions;
 
 namespace PCExpert.Core.Domain.Tests
 {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq.Expressions;
-using PCExpert.Core.DomainFramework.Specifications;
+using PCExpert.DomainFramework.Specifications;
 
 namespace PCExpert.Core.Domain.Specifications
 {
-	public class ConfigurationNameNotEmptySpecification : PersistenceAwareSpecification<PCConfiguration>
+	public sealed class ConfigurationNameNotEmptySpecification : PersistenceAwareSpecification<PCConfiguration>
 	{
 		public override Expression<Func<PCConfiguration, bool>> GetConditionExpression()
 		{

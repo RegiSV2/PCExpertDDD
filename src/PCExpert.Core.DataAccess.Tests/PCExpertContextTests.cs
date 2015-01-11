@@ -4,8 +4,8 @@ using FluentValidation;
 using FluentValidation.Results;
 using Moq;
 using NUnit.Framework;
-using PCExpert.Core.DataAccess.Tests.Utils;
 using PCExpert.Core.Domain;
+using PCExpert.Core.Tests.Utils;
 
 namespace PCExpert.Core.DataAccess.Tests
 {
@@ -19,7 +19,7 @@ namespace PCExpert.Core.DataAccess.Tests
 		public void EstablishContext()
 		{
 			_validatorFactory = new Mock<IValidatorFactory>();
-			_context = TestContextCreator.Create(_validatorFactory.Object);
+			_context = TestContextCreator.Create(_validatorFactory.Object).PCExpertContext;
 		}
 
 		[Test]

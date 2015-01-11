@@ -1,4 +1,4 @@
-﻿using PCExpert.Core.DomainFramework;
+﻿using PCExpert.DomainFramework;
 
 namespace PCExpert.Core.Domain
 {

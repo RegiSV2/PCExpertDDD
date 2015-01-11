@@ -4,8 +4,8 @@ using NUnit.Framework;
 using PCExpert.Core.Domain.Repositories;
 using PCExpert.Core.Domain.Specifications;
 using PCExpert.Core.Domain.Validation;
-using PCExpert.Core.DomainFramework.Specifications;
-using PCExpert.Core.DomainFramework.Validation;
+using PCExpert.DomainFramework.Specifications;
+using PCExpert.DomainFramework.Validation;
 
 namespace PCExpert.Core.Domain.Tests.Validation
 {
@@ -13,13 +13,13 @@ namespace PCExpert.Core.Domain.Tests.Validation
 	public class PCConfigurationValidatorTests
 	{
 		private Mock<ISpecificationDetailsInterpreter<IPublishedPCConfigurationCheckDetails>> _interpreterMock;
-		private Mock<PublishedPCConfigurationDetailedSpecification> _publishedSpecificationMock;
+		private Mock<PublishedPCConfigurationSpecification> _publishedSpecificationMock;
 		private PCConfigurationValidator _validator;
 
 		[SetUp]
 		public void EstablishContext()
 		{
-			_publishedSpecificationMock = new Mock<PublishedPCConfigurationDetailedSpecification>(
+			_publishedSpecificationMock = new Mock<PublishedPCConfigurationSpecification>(
 				new Mock<IPCConfigurationRepository>().Object);
 			_interpreterMock = new Mock<ISpecificationDetailsInterpreter<IPublishedPCConfigurationCheckDetails>>();
 			_validator = new PCConfigurationValidator(_publishedSpecificationMock.Object, _interpreterMock.Object);

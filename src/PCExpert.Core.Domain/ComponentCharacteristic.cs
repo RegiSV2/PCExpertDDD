@@ -1,5 +1,5 @@
-﻿using PCExpert.Core.DomainFramework;
-using PCExpert.Core.DomainFramework.Utils;
+﻿using PCExpert.DomainFramework;
+using PCExpert.DomainFramework.Utils;
 
 namespace PCExpert.Core.Domain
 {

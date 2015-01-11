@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace PCExpert.Core.Domain.Specifications
 {
-	internal class RequiredComponentTypesSetContraversions
+	internal sealed class RequiredComponentTypesSetContraversions
 	{
 		public RequiredComponentTypesSetContraversions(List<ComponentType> requiredButNotAddedTypes,
 			List<ComponentType> typesViolatedUniqueConstraint)

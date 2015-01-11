@@ -4,14 +4,19 @@ using System.Linq;
 using FluentValidation.Results;
 using PCExpert.Core.Domain.Resources;
 using PCExpert.Core.Domain.Specifications;
-using PCExpert.Core.DomainFramework.Utils;
-using PCExpert.Core.DomainFramework.Validation;
+using PCExpert.DomainFramework.Utils;
+using PCExpert.DomainFramework.Validation;
 
 namespace PCExpert.Core.Domain.Validation
 {
-	public class PublishedPCConfigurationCheckDetailsInterpreter
+	public sealed class PublishedPCConfigurationCheckDetailsInterpreter
 		: ISpecificationDetailsInterpreter<IPublishedPCConfigurationCheckDetails>
 	{
+		private static string ConfigNameProperty
+		{
+			get { return ExpressionReflection.Property<PCConfiguration>(x => x.Name).Name; }
+		}
+
 		public IEnumerable<ValidationFailure> Interpret(IPublishedPCConfigurationCheckDetails details)
 		{
 			if (details.NameNotEmptyFailure)
@@ -67,11 +72,6 @@ namespace PCExpert.Core.Domain.Validation
 		private static ValidationFailure ConfigNameFailure(string message)
 		{
 			return new ValidationFailure(ConfigNameProperty, message);
-		}
-
-		private static string ConfigNameProperty
-		{
-			get { return ExpressionReflection.Property<PCConfiguration>(x => x.Name).Name; }
 		}
 
 		private static ValidationFailure Failure(string message)

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using PCExpert.Core.DomainFramework.Utils;
+using PCExpert.DomainFramework.Utils;
 
 namespace PCExpert.Core.Domain
 {
