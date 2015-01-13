@@ -6,7 +6,7 @@ namespace PCExpert.DomainFramework.Exceptions
 	/// <summary>
 	///     Thrown when empty collection is passed to context that doesn't allow empty collection
 	/// </summary>
-	public class EmptyCollectionException : ApplicationException, ISerializable
+	public class EmptyCollectionException : Exception, ISerializable
 	{
 		public EmptyCollectionException(string message)
 			: base(message)

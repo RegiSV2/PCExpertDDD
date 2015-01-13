@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using PCExpert.DomainFramework.Exceptions;
 
 namespace PCExpert.DomainFramework
 {
@@ -9,5 +10,7 @@ namespace PCExpert.DomainFramework
 	public interface IUnitOfWork
 	{
 		Task Execute(Action action);
+
+		Task Execute(Action action, Action<PersistenceException> exceptionHandler);
 	}
 }

@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using PCExpert.Core.Tests.Utils;
 
 namespace PCExpert.Core.Domain.Tests
@@ -15,6 +16,14 @@ namespace PCExpert.Core.Domain.Tests
 
 			//Assert
 			Assert.That(componentInterface.Name, Is.EqualTo(name));
+		}
+
+		[Test]
+		[TestCase(null)]
+		[TestCase("")]
+		public void Constructor_NullOrEmptyName_ShouldThrowArgumentNullException(string argument)
+		{
+			Assert.That(() => new ComponentInterface(argument), Throws.InstanceOf<ArgumentNullException>());
 		}
 	}
 }

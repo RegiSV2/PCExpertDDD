@@ -1,5 +1,7 @@
 using System;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
+using PCExpert.DomainFramework.Exceptions;
 
 namespace PCExpert.DomainFramework.EF
 {
@@ -14,6 +16,11 @@ namespace PCExpert.DomainFramework.EF
 
 		public async Task Execute(Action action)
 		{
+			await Execute(action, x => { throw x; });
+		}
+
+		public async Task Execute(Action action, Action<PersistenceException> exceptionHandler)
+		{
 			using (var transaction = _contextProvider.DbContext.Database.BeginTransaction())
 			{
 				try
@@ -22,9 +29,13 @@ namespace PCExpert.DomainFramework.EF
 					await _contextProvider.DbContext.SaveChangesAsync();
 					transaction.Commit();
 				}
-				catch (Exception)
+				catch (Exception ex)
 				{
 					transaction.Rollback();
+					if (ex is PersistenceException)
+						exceptionHandler(ex as PersistenceException);
+					else
+						throw;
 				}
 			}
 		}

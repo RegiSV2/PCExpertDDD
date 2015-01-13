@@ -13,7 +13,7 @@ namespace PCExpert.Core.Application
 	public interface IComponentInterfaceService
 	{
 		Task CreateComponentInterface(ComponentInterfaceVO newInterface);
-		Task<PagedResult<ComponentInterfaceVO>> GetComponentInterfaces(PagingParameters pagingParameters);
+		Task<PagedResult<ComponentInterfaceVO>> GetComponentInterfaces(TableParameters parameters);
 	}
 
 	[ContractClassFor(typeof (IComponentInterfaceService))]
@@ -26,9 +26,11 @@ namespace PCExpert.Core.Application
 			return null;
 		}
 
-		public Task<PagedResult<ComponentInterfaceVO>> GetComponentInterfaces(PagingParameters pagingParameters)
+		public Task<PagedResult<ComponentInterfaceVO>> GetComponentInterfaces(TableParameters parameters)
 		{
-			throw new NotImplementedException();
+			Argument.NotNull(parameters);
+			Contract.Ensures(Contract.Result<Task<PagedResult<ComponentInterfaceVO>>>() != null);
+			return null;
 		}
 	}
 }

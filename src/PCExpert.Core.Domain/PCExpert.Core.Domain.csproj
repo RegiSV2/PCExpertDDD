@@ -156,6 +156,7 @@
     <Compile Include="Repositories\IPCComponentRepository.cs" />
     <Compile Include="Repositories\PCComponentRepository.cs" />
     <Compile Include="Specifications\AllRootComponentsCanBePluggedSpecification.cs" />
+    <Compile Include="Specifications\ComponentInterfaceNameLikeSpecification.cs" />
     <Compile Include="Specifications\ComponentPlugContraversions.cs" />
     <Compile Include="Specifications\ConfigurationNameMaxLengthSpecification.cs" />
     <Compile Include="Specifications\ConfigurationNameNotEmptySpecification.cs" />
@@ -190,6 +191,9 @@
       <Project>{E3F85B03-73D8-460D-B380-38036836B295}</Project>
       <Name>PCExpert.DomainFramework</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Factories\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

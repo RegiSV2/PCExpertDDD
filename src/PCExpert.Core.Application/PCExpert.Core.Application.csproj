@@ -126,9 +126,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OrderingParameters.cs" />
     <Compile Include="PagingParameters.cs" />
     <Compile Include="IComponentInterfaceService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SortDirection.cs" />
+    <Compile Include="TableParameters.cs" />
     <Compile Include="ViewObjects\ComponentInterfaceVO.cs" />
     <Compile Include="ViewObjects\PagedResult.cs" />
   </ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using PCExpert.DomainFramework;
+using PCExpert.DomainFramework.Utils;
 
 namespace PCExpert.Core.Domain
 {
@@ -24,6 +25,8 @@ namespace PCExpert.Core.Domain
 
 		public ComponentInterface(string name)
 		{
+			Argument.NotNullAndNotEmpty(name);
+
 			Name = name;
 		}
 

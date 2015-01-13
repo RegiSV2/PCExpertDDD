@@ -24,5 +24,24 @@ namespace PCExpert.DomainFramework.Tests.Utils
 
 			Assert.That(ExpressionReflection.Property(propertyExpression), Is.EqualTo(property));
 		}
+
+		[Test]
+		[TestCase(null)]
+		[TestCase("")]
+		public void Expression_NullOrEmptyArgument_ShouldThrowArgumentNullExpression(string arg)
+		{
+			Assert.That(() => ExpressionReflection.Expression<DateTime>(arg),
+				Throws.InstanceOf<ArgumentNullException>());
+		}
+
+		[Test]
+		public void Expression_NotNullArgument_ShouldReturnExpressionCallingSpecifiedProperty()
+		{
+			//Arrange
+			var expression = ExpressionReflection.Expression<DateTime>("Day");
+			var argument = DateTime.Now;
+
+			Assert.That(argument.Day, Is.EqualTo(expression.Compile().Invoke(argument)));
+		}
 	}
 }
