@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -17,7 +18,9 @@ namespace PCExpert.DomainFramework.Utils
 		public static Expression<Func<T, object>> Expression<T>(string propertyName)
 		{
 			Argument.NotNullAndNotEmpty(propertyName);
-			var parameter = LambdaExpression.Parameter(typeof (T), "x");
+			Contract.Ensures(Contract.Result<Expression<Func<T, object>>>() != null);
+
+			var parameter = System.Linq.Expressions.Expression.Parameter(typeof (T), "x");
 			var property = System.Linq.Expressions.Expression.Convert(
 				System.Linq.Expressions.Expression.Property(parameter, typeof (T), propertyName),
 				typeof (object));

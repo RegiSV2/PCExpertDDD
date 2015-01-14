@@ -9,7 +9,6 @@
 		}
 
 		public OrderingParameters OrderingParameters { get; private set; }
-
 		public PagingParameters PagingParameters { get; private set; }
 	}
 }

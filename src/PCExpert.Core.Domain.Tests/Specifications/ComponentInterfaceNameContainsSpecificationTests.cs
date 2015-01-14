@@ -9,9 +9,8 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 	[TestFixture]
 	public class ComponentInterfaceNameContainsSpecificationTests
 	{
-		private ComponentInterfaceNameContainsSpecification _specification;
-
 		private List<ComponentInterface> _interfaces;
+		private ComponentInterfaceNameContainsSpecification _specification;
 
 		[SetUp]
 		public void EstablishContext()

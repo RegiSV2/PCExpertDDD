@@ -7,6 +7,8 @@ namespace PCExpert.Core.Tests.Utils
 {
 	public class FakeUnitOfWork : IUnitOfWork
 	{
+		public bool ShouldThrowPersistenceException { get; set; }
+
 		public async Task Execute(Action action)
 		{
 			await StartTask(() => ExecuteActionInternal(action));
@@ -23,8 +25,6 @@ namespace PCExpert.Core.Tests.Utils
 				exceptionHandler(ex);
 			}
 		}
-
-		public bool ShouldThrowPersistenceException { get; set; }
 
 		private Task StartTask(Action action)
 		{

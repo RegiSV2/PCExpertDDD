@@ -17,8 +17,8 @@ namespace PCExpert.Core.Tests.Utils
 			return CollectionsEqual(expected, actual, (x, y) => x.SameIdentityAs(y));
 		}
 
-		public static bool CollectionsEqual<T>(IReadOnlyCollection<T> expected,
-			IReadOnlyCollection<T> actual, Func<T, T, bool> compare)
+		public static bool CollectionsEqual<TExpected, TActual>(IReadOnlyCollection<TExpected> expected,
+			IReadOnlyCollection<TActual> actual, Func<TExpected, TActual, bool> compare)
 		{
 			Argument.NotNull(expected);
 			Argument.NotNull(actual);

@@ -4,7 +4,9 @@ using System.Runtime.Serialization;
 namespace PCExpert.DomainFramework.Exceptions
 {
 	/// <summary>
-	/// Thrown when operation with <value>PersistenceWorkplace</value> fails
+	///     Thrown when operation with
+	///     <value>PersistenceWorkplace</value>
+	///     fails
 	/// </summary>
 	public class PersistenceException : Exception, ISerializable
 	{

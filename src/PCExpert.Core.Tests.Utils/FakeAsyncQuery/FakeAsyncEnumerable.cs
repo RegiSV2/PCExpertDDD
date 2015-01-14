@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace PCExpert.Core.Tests.Utils.FakeAsyncQuery
 {
@@ -16,7 +14,8 @@ namespace PCExpert.Core.Tests.Utils.FakeAsyncQuery
 
 		public FakeAsyncEnumerable(Expression expression)
 			: base(expression)
-		{ }
+		{
+		}
 
 		public IDbAsyncEnumerator<T> GetAsyncEnumerator()
 		{

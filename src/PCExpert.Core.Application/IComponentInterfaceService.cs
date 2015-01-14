@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
 using PCExpert.Core.Application.ViewObjects;
 using PCExpert.DomainFramework.Utils;

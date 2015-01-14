@@ -1,5 +1,8 @@
-﻿using FluentValidation;
+﻿using System.Web.Mvc;
+using FluentValidation;
 using LightInject;
+using PCExpert.Core.Application;
+using PCExpert.Core.Application.Impl;
 using PCExpert.Core.DataAccess;
 using PCExpert.Core.Domain;
 using PCExpert.Core.Domain.Repositories;
@@ -23,8 +26,8 @@ namespace PCExpert.WebApp
 				sf => new HttpContextPCExpertContextProvider("DefaultConnection", sf.GetInstance<IValidatorFactory>()),
 				new PerContainerLifetime());
 
-			container.Register<PersistenceWorkplace, EfWorkplace>();
-			container.Register<IUnitOfWork, EntityFrameworkUnitOfWork>();
+			container.Register<PersistenceWorkplace, EfWorkplace>(new PerContainerLifetime());
+			container.Register<IUnitOfWork, EntityFrameworkUnitOfWork>(new PerContainerLifetime());
 
 			//Specifications
 			container.Register<PublishedPCConfigurationSpecification>();
@@ -35,6 +38,11 @@ namespace PCExpert.WebApp
 			container.Register<IComponentInterfaceRepository, ComponentInterfaceRepository>();
 			container.Register<IPCComponentRepository, PCComponentRepository>();
 			container.Register<IPCConfigurationRepository, PCConfigurationRepository>();
+
+			//Services
+			container.Register<IComponentInterfaceService, ComponentInterfaceService>();
+
+			ControllerBuilder.Current.SetControllerFactory(new LightInjectControllerFactory(container));
 		}
 
 		private static DomainValidatorFactory InitValidators(DomainValidatorFactory validatorFactory,

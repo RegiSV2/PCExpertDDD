@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Migrations.Model;
 using System.Linq;
 using NUnit.Framework;
 using PCExpert.Core.Domain;
@@ -12,10 +11,9 @@ namespace PCExpert.DomainFramework.EF.Tests
 	[TestFixture, Category("IntegrationTests")]
 	public class EntityFrameworkUnitOfWorkTests
 	{
+		private TestDbContextProvider _provider;
 		private EntityFrameworkUnitOfWork _unitOfWork;
 
-		private TestDbContextProvider _provider;
-		
 		[SetUp]
 		public void EstablishContext()
 		{
@@ -57,7 +55,7 @@ namespace PCExpert.DomainFramework.EF.Tests
 			{
 				// ignored
 			}
-			
+
 			//Assert
 			Assert.That(LoadComponents().Count == 0);
 		}
@@ -70,10 +68,7 @@ namespace PCExpert.DomainFramework.EF.Tests
 			Action<PersistenceException> handler = x => { handlerCalled = true; };
 
 			//Act
-			await _unitOfWork.Execute(() =>
-			{
-				throw new PersistenceException("some msg");
-			}, handler);
+			await _unitOfWork.Execute(() => { throw new PersistenceException("some msg"); }, handler);
 
 			//Assert
 			Assert.That(handlerCalled);

@@ -9,7 +9,6 @@
 		}
 
 		public string OrderBy { get; private set; }
-
 		public SortDirection Direction { get; private set; }
 	}
 }

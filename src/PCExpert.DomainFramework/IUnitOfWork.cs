@@ -10,7 +10,6 @@ namespace PCExpert.DomainFramework
 	public interface IUnitOfWork
 	{
 		Task Execute(Action action);
-
 		Task Execute(Action action, Action<PersistenceException> exceptionHandler);
 	}
 }

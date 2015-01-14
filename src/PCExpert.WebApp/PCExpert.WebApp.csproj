@@ -46,6 +46,9 @@
     <Reference Include="LightInject">
       <HintPath>..\packages\LightInject.3.0.2.1\lib\net45\LightInject.dll</HintPath>
     </Reference>
+    <Reference Include="LightInject.Web">
+      <HintPath>..\packages\LightInject.Web.1.0.0.7\lib\net45\LightInject.Web.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -174,6 +177,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\IoCConfig.cs" />
+    <Compile Include="App_Start\LightInjectControllerFactory.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -286,6 +290,10 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PCExpert.Core.Application.Impl\PCExpert.Core.Application.Impl.csproj">
+      <Project>{4EE47808-D991-43AF-94B7-FE0E576A2C55}</Project>
+      <Name>PCExpert.Core.Application.Impl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PCExpert.Core.Application\PCExpert.Core.Application.csproj">
       <Project>{bc5c9aa2-5a7b-4e4e-8f90-e246e98d5609}</Project>
       <Name>PCExpert.Core.Application</Name>

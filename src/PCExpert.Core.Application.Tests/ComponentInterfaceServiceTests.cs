@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data.Entity.Infrastructure;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Management.Instrumentation;
-using System.Threading;
-using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using PCExpert.Core.Application.Impl;
@@ -16,7 +10,6 @@ using PCExpert.Core.Domain;
 using PCExpert.Core.Domain.Repositories;
 using PCExpert.Core.Tests.Utils;
 using PCExpert.Core.Tests.Utils.FakeAsyncQuery;
-using PCExpert.DomainFramework;
 using PCExpert.DomainFramework.Exceptions;
 using PCExpert.DomainFramework.Specifications;
 using PCExpert.DomainFramework.Utils;
@@ -26,9 +19,11 @@ namespace PCExpert.Core.Application.Tests
 	[TestFixture]
 	public class ComponentInterfaceServiceTests
 	{
+		private const int ListSize = 15;
+		private const int PageSize = 5;
 		private Mock<IComponentInterfaceRepository> _repositoryMock;
-		private FakeUnitOfWork _unitOfWork;
 		private IComponentInterfaceService _service;
+		private FakeUnitOfWork _unitOfWork;
 
 		[SetUp]
 		public void EstablishContext()
@@ -67,10 +62,7 @@ namespace PCExpert.Core.Application.Tests
 			var interfaceVO = CreateInterfaceVO();
 			ComponentInterface savedInterface = null;
 			_repositoryMock.Setup(x => x.Save(It.IsAny<ComponentInterface>()))
-				.Callback(new Action<ComponentInterface>(x =>
-				{
-					savedInterface = x;
-				}));
+				.Callback(new Action<ComponentInterface>(x => { savedInterface = x; }));
 
 			//Act
 			await _service.CreateComponentInterface(interfaceVO);
@@ -90,39 +82,73 @@ namespace PCExpert.Core.Application.Tests
 		[Test]
 		public void GetComponentInterfaces_NotNullParameters_ShouldReturnResultFilteredBySpecifiedParameters()
 		{
-			const int listSize = 15;
-			const int pageSize = 5;
 			//Arrange
-			var intsList = new List<ComponentInterface>();
-			for (var i = 0; i < listSize; i++)
-				intsList.Add(DomainObjectsCreator.CreateInterface(i));
-			_repositoryMock.Setup(x => x.Query(It.IsAny<PersistenceAwareSpecification<ComponentInterface>>()))
-				.Returns(intsList.AsAsyncQueryable());
-
-			var requestParameters = new TableParameters(
-				new PagingParameters(1, pageSize),
-				new OrderingParameters(ExpressionReflection.Property<ComponentInterface>(x => x.Name).Name, SortDirection.Descending));
-			var expectedResult = intsList.OrderByDescending(x => x.Name).Skip(pageSize).Take(pageSize).ToList();
+			var intsList = FillRepositoryWithFakes(ListSize);
+			var requestParameters = CreateRequest(1);
+			var expectedResult = CreatePagedResult(1, intsList.OrderByDescending(x => x.Name));
 
 			//Act
 			var actualResult = _service.GetComponentInterfaces(requestParameters).Result;
 
 			//Assert
-			Assert.That(actualResult.CountTotal == listSize);
-			Assert.That(actualResult.Items.Count == expectedResult.Count);
-			for (var i = 0; i < actualResult.Items.Count; i++)
-				Assert.That(actualResult.Items[i].Name, Is.EqualTo(expectedResult[i].Name));
+			AssertResultsEqual(expectedResult, actualResult);
 		}
 
 		[Test]
-		public void GetComponentInterfaces_RequestedPageGreaterThanTotalNumberOfPages()
+		public void GetComponentInterfaces_RequestedPageGreaterThanTotalNumberOfPages_ShouldReturnLastPage()
 		{
-			Assert.Fail();
+			//Arrange
+			var intsList = FillRepositoryWithFakes(ListSize);
+			var requestParameters = CreateRequest(5);
+			var expectedResult = CreatePagedResult(2, intsList.OrderByDescending(x => x.Name));
+
+			//Act
+			var actualResult = _service.GetComponentInterfaces(requestParameters).Result;
+
+			//Assert
+			AssertResultsEqual(expectedResult, actualResult);
+		}
+
+		private static PagedResult<T> CreatePagedResult<T>(int pageNumber, IEnumerable<T> intsList)
+		{
+			return new PagedResult<T>(new PagingParameters(pageNumber, PageSize), ListSize,
+				intsList.Skip(pageNumber*PageSize).Take(PageSize).ToList());
+		}
+
+		private static void AssertResultsEqual(PagedResult<ComponentInterface> expectedResult,
+			PagedResult<ComponentInterfaceVO> actualResult)
+		{
+			Assert.That(expectedResult.CountTotal == actualResult.CountTotal);
+			Assert.That(expectedResult.PagingParameters.PageNumber == actualResult.PagingParameters.PageNumber);
+			Assert.That(expectedResult.PagingParameters.PageSize == actualResult.PagingParameters.PageSize);
+
+			Assert.That(UtilsAssert.CollectionsEqual(
+				new ReadOnlyCollection<ComponentInterface>(expectedResult.Items),
+				new ReadOnlyCollection<ComponentInterfaceVO>(actualResult.Items),
+				(a, b) => a.Name == b.Name));
+		}
+
+		private static TableParameters CreateRequest(int pageNumber)
+		{
+			var requestParameters = new TableParameters(
+				new PagingParameters(pageNumber, PageSize),
+				new OrderingParameters(ExpressionReflection.Property<ComponentInterface>(x => x.Name).Name, SortDirection.Descending));
+			return requestParameters;
+		}
+
+		private List<ComponentInterface> FillRepositoryWithFakes(int fakesCount)
+		{
+			var intsList = new List<ComponentInterface>();
+			for (var i = 0; i < fakesCount; i++)
+				intsList.Add(DomainObjectsCreator.CreateInterface(i));
+			_repositoryMock.Setup(x => x.Query(It.IsAny<PersistenceAwareSpecification<ComponentInterface>>()))
+				.Returns(intsList.AsAsyncQueryable());
+			return intsList;
 		}
 
 		private static ComponentInterfaceVO CreateInterfaceVO()
 		{
-			return new ComponentInterfaceVO { Name = NamesGenerator.ComponentInterfaceName() };
+			return new ComponentInterfaceVO {Name = NamesGenerator.ComponentInterfaceName()};
 		}
 	}
 }

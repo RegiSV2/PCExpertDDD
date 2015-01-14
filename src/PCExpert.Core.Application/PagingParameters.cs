@@ -1,6 +1,4 @@
-﻿using System.Data.SqlClient;
-
-namespace PCExpert.Core.Application
+﻿namespace PCExpert.Core.Application
 {
 	public sealed class PagingParameters
 	{
@@ -9,8 +7,9 @@ namespace PCExpert.Core.Application
 			PageNumber = pageNumber;
 			PageSize = pageSize;
 		}
+
 		/// <summary>
-		/// Zero-based number of requested page
+		///     Zero-based number of requested page
 		/// </summary>
 		public int PageNumber { get; private set; }
 
