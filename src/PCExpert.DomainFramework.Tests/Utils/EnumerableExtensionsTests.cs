@@ -23,10 +23,9 @@ namespace PCExpert.DomainFramework.Tests.Utils
 		}
 
 		[Test]
-		public void ConcatToFriendlyEnumeration_NoElements_ShouldThrowEmptyCollectionException()
+		public void ConcatToFriendlyEnumeration_NoElements_ShouldReturnEmptyString()
 		{
-			Assert.That(() => Concat(Enumerable.Empty<string>()),
-				Throws.InstanceOf<EmptyCollectionException>());
+			Assert.That(Concat(Enumerable.Empty<string>()), Is.EqualTo(string.Empty));
 		}
 
 		[Test]

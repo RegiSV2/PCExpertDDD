@@ -1,9 +1,14 @@
-﻿namespace PCExpert.Core.Application
+﻿using PCExpert.DomainFramework.Utils;
+
+namespace PCExpert.Core.Application
 {
 	public sealed class PagingParameters
 	{
 		public PagingParameters(int pageNumber, int pageSize)
 		{
+			Argument.NotNegative(pageNumber);
+			Argument.NotNegative(pageSize);
+
 			PageNumber = pageNumber;
 			PageSize = pageSize;
 		}

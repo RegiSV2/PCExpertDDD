@@ -7,7 +7,7 @@ namespace PCExpert.DomainFramework.Exceptions
 	///     Thrown when some logical failure occurs in business logic.
 	///     Should provide user-friendly description of the failure.
 	/// </summary>
-	public class BusinessLogicException : Exception, ISerializable
+	public class BusinessLogicException : Exception
 	{
 		public BusinessLogicException(string message)
 			: base(message)

@@ -28,13 +28,11 @@ namespace PCExpert.Core.Domain.Specifications
 		private readonly Specification<PCConfiguration>[] _internalSpecifications;
 		private readonly ConfigurationNameMaxLengthSpecification _maxLengthSpecification;
 		private readonly ConfigurationNameNotEmptySpecification _nameNotEmptySpecification;
-		private readonly PCConfigurationNameIsUniqueSpecification _nameUniqueSpecification;
 
-		public PublishedPCConfigurationSpecification(IPCConfigurationRepository configurationRepository)
+		public PublishedPCConfigurationSpecification()
 		{
 			_nameNotEmptySpecification = new ConfigurationNameNotEmptySpecification();
 			_maxLengthSpecification = new ConfigurationNameMaxLengthSpecification(NameMaxLength);
-			_nameUniqueSpecification = new PCConfigurationNameIsUniqueSpecification(configurationRepository);
 			var componentTypesSetSpecification = new PCConfigurationHasCorrectSetOfRequiredComponents();
 			_componentTypesSetSpecification = componentTypesSetSpecification;
 			var componentsCanBePluggedSpecification = new AllRootComponentsCanBePluggedSpecification();
@@ -44,7 +42,6 @@ namespace PCExpert.Core.Domain.Specifications
 			{
 				_nameNotEmptySpecification,
 				_maxLengthSpecification,
-				_nameUniqueSpecification,
 				componentTypesSetSpecification,
 				componentsCanBePluggedSpecification
 			};
@@ -71,8 +68,6 @@ namespace PCExpert.Core.Domain.Specifications
 				details.NameNotEmptyFailure = true;
 			if (!_maxLengthSpecification.IsSatisfiedBy(entity))
 				details.NameMaxLengthFailure = true;
-			if (!_nameUniqueSpecification.IsSatisfiedBy(entity))
-				details.NameUniqueFailure = true;
 
 			CheckComponentTypesSpecification(entity, details);
 			CheckComponentsPlugSpecification(entity, details);

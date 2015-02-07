@@ -4,7 +4,7 @@ using PCExpert.DomainFramework.Utils;
 
 namespace PCExpert.Core.Application.ViewObjects
 {
-	public sealed class ComponentInterfaceVO
+	public class ComponentInterfaceVO
 	{
 		public ComponentInterfaceVO()
 		{
@@ -18,6 +18,7 @@ namespace PCExpert.Core.Application.ViewObjects
 		}
 
 		public Guid Id { get; set; }
+
 		public string Name { get; set; }
 	}
 }

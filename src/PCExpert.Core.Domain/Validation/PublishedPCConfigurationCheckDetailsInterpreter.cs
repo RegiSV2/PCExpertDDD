@@ -23,8 +23,6 @@ namespace PCExpert.Core.Domain.Validation
 				yield return ConfigNameFailure(ValidationMessages.ConfigNameCannotBeEmptyMsg);
 			if (details.NameMaxLengthFailure)
 				yield return ConfigNameFailure(ValidationMessages.ConfigNameTooLongMsg);
-			if (details.NameUniqueFailure)
-				yield return ConfigNameFailure(ValidationMessages.ConfigNameNotUniqueMsg);
 			if (details.ComponentsCycleFailure)
 				yield return Failure(ValidationMessages.ConfigCyclicPluggingMsg);
 			if (details.RequiredButNotAddedTypes.Any())

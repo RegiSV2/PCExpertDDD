@@ -165,7 +165,6 @@
     <Compile Include="Specifications\InterfaceDeficitInfo.cs" />
     <Compile Include="Specifications\IPublishedPCConfigurationCheckDetails.cs" />
     <Compile Include="Specifications\PCConfigurationHasCorrectSetOfRequiredComponents.cs" />
-    <Compile Include="Specifications\PCConfigurationNameIsUniqueSpecification.cs" />
     <Compile Include="Specifications\PublishedPCConfigurationCheckDetails.cs" />
     <Compile Include="Specifications\PublishedPCConfigurationSpecification.cs" />
     <Compile Include="Specifications\RequiredComponentTypesSetContraversions.cs" />

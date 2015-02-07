@@ -32,6 +32,18 @@ namespace PCExpert.DomainFramework.Utils
 		[ContractAbbreviator]
 		public static void NotNegative(decimal value)
 		{
+			Contract.Requires<ArgumentOutOfRangeException>(value >= 0);
+		}
+
+		[ContractAbbreviator]
+		public static void NotNegative(int value)
+		{
+			Contract.Requires<ArgumentOutOfRangeException>(value >= 0);
+		}
+
+		[ContractAbbreviator]
+		public static void Positive(int value)
+		{
 			Contract.Requires<ArgumentOutOfRangeException>(value > 0);
 		}
 
@@ -40,6 +52,12 @@ namespace PCExpert.DomainFramework.Utils
 			where TEnum : struct
 		{
 			Contract.Requires<ArgumentException>(Enum.IsDefined(typeof (TEnum), value));
+		}
+
+		[ContractAbbreviator]
+		public static void OfType<TType>(object value)
+		{
+			Contract.Requires(value is TType);
 		}
 	}
 }

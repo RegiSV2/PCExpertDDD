@@ -17,7 +17,6 @@ namespace PCExpert.Core.Domain.Specifications
 
 		public bool NameNotEmptyFailure { get; set; }
 		public bool NameMaxLengthFailure { get; set; }
-		public bool NameUniqueFailure { get; set; }
 		public List<ComponentType> RequiredButNotAddedTypes { get; set; }
 		public List<ComponentType> TypesViolatedUniqueConstraint { get; set; }
 		public bool ComponentsCycleFailure { get; set; }
@@ -27,7 +26,6 @@ namespace PCExpert.Core.Domain.Specifications
 		{
 			return !NameMaxLengthFailure
 			       && !NameNotEmptyFailure
-			       && !NameUniqueFailure
 			       && !ComponentsCycleFailure
 			       && NotFoundInterfaces.IsEmpty()
 			       && RequiredButNotAddedTypes.IsEmpty()

@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Monads;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
+using AutoMapper.QueryableExtensions;
 using PCExpert.Core.Application.ViewObjects;
 using PCExpert.Core.Domain;
 using PCExpert.Core.Domain.Repositories;
@@ -16,7 +20,11 @@ namespace PCExpert.Core.Application.Impl
 	public class ComponentInterfaceService : IComponentInterfaceService
 	{
 		private readonly IComponentInterfaceRepository _repository;
+
 		private readonly IUnitOfWork _unitOfWork;
+
+		private static readonly PagedResult<ComponentInterfaceVO> EmptyResult =
+			new PagedResult<ComponentInterfaceVO>(new PagingParameters(0, 0), 0, new List<ComponentInterfaceVO>());
 
 		public ComponentInterfaceService(IUnitOfWork unitOfWork, IComponentInterfaceRepository repository)
 		{
@@ -40,9 +48,12 @@ namespace PCExpert.Core.Application.Impl
 		public async Task<PagedResult<ComponentInterfaceVO>> GetComponentInterfaces(TableParameters parameters)
 		{
 			var countTotal = await CountTotal();
+
+			if (countTotal == 0)
+				return EmptyResult;
+			
 			var pagingParameters = CorrectPagingParameters(parameters.PagingParameters, countTotal);
 			var results = await SublistInterfaces(parameters.OrderingParameters, pagingParameters);
-
 			return new PagedResult<ComponentInterfaceVO>(pagingParameters, countTotal, results);
 		}
 
@@ -79,12 +90,25 @@ namespace PCExpert.Core.Application.Impl
 		private static IQueryable<ComponentInterface> OrderQuery(IQueryable<ComponentInterface> query,
 			OrderingParameters parameters)
 		{
-			var orderExpression = ExpressionReflection.Expression<ComponentInterface>(parameters.OrderBy);
+			var orderExpression = ParseOrderByParameter(parameters.OrderBy);
+			
 			if (parameters.Direction == SortDirection.Ascending)
 				query = query.OrderBy(orderExpression);
 			else if (parameters.Direction == SortDirection.Descending)
 				query = query.OrderByDescending(orderExpression);
 			return query;
+		}
+
+		private static Expression<Func<ComponentInterface, object>> ParseOrderByParameter(string orderBy)
+		{
+			try
+			{
+				return ExpressionReflection.Expression<ComponentInterface>(orderBy);
+			}
+			catch (Exception ex)
+			{
+				throw new InvalidInputException(string.Format(Messages.InvalidOrderByParameterMsg, orderBy), ex);
+			}
 		}
 
 		private IQueryable<ComponentInterface> SelectPage(IQueryable<ComponentInterface> query,
@@ -96,7 +120,7 @@ namespace PCExpert.Core.Application.Impl
 		private static Task<List<ComponentInterfaceVO>> ListQuery(IQueryable<ComponentInterface> query)
 		{
 			return query
-				.Select(x => new ComponentInterfaceVO(x))
+				.Project().To<ComponentInterfaceVO>()
 				.ToListAsync();
 		}
 	}

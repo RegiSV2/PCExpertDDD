@@ -6,7 +6,6 @@ namespace PCExpert.Core.Domain.Specifications
 	{
 		bool NameNotEmptyFailure { get; }
 		bool NameMaxLengthFailure { get; }
-		bool NameUniqueFailure { get; }
 		List<ComponentType> RequiredButNotAddedTypes { get; }
 		List<ComponentType> TypesViolatedUniqueConstraint { get; }
 		bool ComponentsCycleFailure { get; }

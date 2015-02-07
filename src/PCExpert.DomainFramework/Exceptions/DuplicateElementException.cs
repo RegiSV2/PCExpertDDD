@@ -6,7 +6,7 @@ namespace PCExpert.DomainFramework.Exceptions
 	/// <summary>
 	///     Thrown when trying to add element to collection that has already been added
 	/// </summary>
-	public class DuplicateElementException : Exception, ISerializable
+	public class DuplicateElementException : Exception
 	{
 		public DuplicateElementException(string message)
 			: base(message)

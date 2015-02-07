@@ -24,7 +24,7 @@ namespace PCExpert.DomainFramework.Utils
 			var stringsList = strings.ToArray();
 
 			if (stringsList.Length == 0)
-				throw new EmptyCollectionException("Cannot concat empty enumerable");
+				return string.Empty;
 
 			var result = stringsList.Last();
 			if (stringsList.Length > 1)

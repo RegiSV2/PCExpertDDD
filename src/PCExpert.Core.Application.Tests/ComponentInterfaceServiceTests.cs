@@ -84,7 +84,7 @@ namespace PCExpert.Core.Application.Tests
 		{
 			//Arrange
 			var intsList = FillRepositoryWithFakes(ListSize);
-			var requestParameters = CreateRequest(1);
+			var requestParameters = CreateRequestForPage(1);
 			var expectedResult = CreatePagedResult(1, intsList.OrderByDescending(x => x.Name));
 
 			//Act
@@ -99,7 +99,7 @@ namespace PCExpert.Core.Application.Tests
 		{
 			//Arrange
 			var intsList = FillRepositoryWithFakes(ListSize);
-			var requestParameters = CreateRequest(5);
+			var requestParameters = CreateRequestForPage(5);
 			var expectedResult = CreatePagedResult(2, intsList.OrderByDescending(x => x.Name));
 
 			//Act
@@ -107,6 +107,45 @@ namespace PCExpert.Core.Application.Tests
 
 			//Assert
 			AssertResultsEqual(expectedResult, actualResult);
+		}
+
+		[Test]
+		public void GetComponentInterfaces_NoInterfacesExist_ShouldReturnEmptyResult()
+		{
+			//Arrange
+			FillRepositoryWithFakes(0);
+			var requestParameters = CreateRequestForPage(5);
+			var expectedResult = new PagedResult<ComponentInterface>(new PagingParameters(0, 0), 0, new List<ComponentInterface>());
+
+			//Act
+			var actualResult = _service.GetComponentInterfaces(requestParameters).Result;
+
+			//Assert
+			AssertResultsEqual(expectedResult, actualResult);
+		}
+
+		[Test]
+		public void GetComponentInterfaces_SortByNotExistingColumn_ShouldThrowInvalidInputException()
+		{
+			//Arrange
+			FillRepositoryWithFakes(ListSize);
+			var requestParameters = new TableParameters(new PagingParameters(0, 5),
+				new OrderingParameters(Guid.NewGuid().ToString(), SortDirection.Ascending));
+
+			//Assert
+			try
+			{
+				_service.GetComponentInterfaces(requestParameters).Wait();
+				Assert.Fail();
+			}
+			catch (AggregateException ex)
+			{
+				Assert.That(ex.InnerExceptions.First() is InvalidInputException);
+			}
+			catch (Exception)
+			{
+				Assert.Fail();
+			}
 		}
 
 		private static PagedResult<T> CreatePagedResult<T>(int pageNumber, IEnumerable<T> intsList)
@@ -128,7 +167,7 @@ namespace PCExpert.Core.Application.Tests
 				(a, b) => a.Name == b.Name));
 		}
 
-		private static TableParameters CreateRequest(int pageNumber)
+		private static TableParameters CreateRequestForPage(int pageNumber)
 		{
 			var requestParameters = new TableParameters(
 				new PagingParameters(pageNumber, PageSize),

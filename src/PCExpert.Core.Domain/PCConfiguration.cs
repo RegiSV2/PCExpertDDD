@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using PCExpert.DomainFramework;
 using PCExpert.DomainFramework.Exceptions;
@@ -22,6 +23,8 @@ namespace PCExpert.Core.Domain
 		#region Properties
 
 		public string Name { get; private set; }
+
+		public string PublicName { get; private set; }
 
 		public PCConfigurationStatus Status { get; private set; }
 
@@ -53,6 +56,8 @@ namespace PCExpert.Core.Domain
 		public PCConfiguration WithName(string name)
 		{
 			Name = name;
+			if (Status == PCConfigurationStatus.Published)
+				PublicName = name;
 
 			return this;
 		}
@@ -79,6 +84,25 @@ namespace PCExpert.Core.Domain
 			Argument.ValidEnumItem(newStatus);
 
 			Status = newStatus;
+
+			switch (newStatus)
+			{
+				case PCConfigurationStatus.Published:
+					PublicName = Name;
+					break;
+				case PCConfigurationStatus.Personal:
+					PublicName = null;
+					break;
+			}
+		}
+
+		[ContractInvariantMethod]
+		private void NameInvariant()
+		{
+			Contract.Invariant(
+				(Status == PCConfigurationStatus.Personal && PublicName == null) ||
+				(Status == PCConfigurationStatus.Published && PublicName == Name) ||
+				(Status == PCConfigurationStatus.Undefined));
 		}
 
 		#endregion

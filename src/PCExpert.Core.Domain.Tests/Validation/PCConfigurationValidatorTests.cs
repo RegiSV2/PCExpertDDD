@@ -19,8 +19,7 @@ namespace PCExpert.Core.Domain.Tests.Validation
 		[SetUp]
 		public void EstablishContext()
 		{
-			_publishedSpecificationMock = new Mock<PublishedPCConfigurationSpecification>(
-				new Mock<IPCConfigurationRepository>().Object);
+			_publishedSpecificationMock = new Mock<PublishedPCConfigurationSpecification>();
 			_interpreterMock = new Mock<ISpecificationDetailsInterpreter<IPublishedPCConfigurationCheckDetails>>();
 			_validator = new PCConfigurationValidator(_publishedSpecificationMock.Object, _interpreterMock.Object);
 		}

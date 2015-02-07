@@ -21,9 +21,9 @@ namespace PCExpert.DomainFramework.Utils
 			Contract.Ensures(Contract.Result<Expression<Func<T, object>>>() != null);
 
 			var parameter = System.Linq.Expressions.Expression.Parameter(typeof (T), "x");
-			var property = System.Linq.Expressions.Expression.Convert(
-				System.Linq.Expressions.Expression.Property(parameter, typeof (T), propertyName),
-				typeof (object));
+			Expression property = System.Linq.Expressions.Expression.Property(parameter, typeof (T), propertyName);
+			if (property.Type.IsValueType)
+				property = System.Linq.Expressions.Expression.Convert(property, typeof (object));
 
 			return System.Linq.Expressions.Expression.Lambda<Func<T, object>>(property, parameter);
 		}

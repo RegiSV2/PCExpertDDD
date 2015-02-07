@@ -146,7 +146,9 @@
   <ItemGroup>
     <Compile Include="MappingTests.cs" />
     <Compile Include="PCExpertContextTests.cs" />
+    <Compile Include="PCExpertModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestDataGenerator.cs" />
     <Compile Include="Utils\BoolCharacteristicHandler.cs" />
     <Compile Include="Utils\CharacteristicHandler.cs" />
     <Compile Include="Utils\NumericCharacteristicHandler.cs" />

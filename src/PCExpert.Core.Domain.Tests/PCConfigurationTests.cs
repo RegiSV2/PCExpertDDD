@@ -58,6 +58,22 @@ namespace PCExpert.Core.Domain.Tests
 			//Assert
 			Assert.That(DefaultConfiguration.Name, Is.EqualTo(newName));
 		}
+
+		[Test]
+		public void WithName_ConfigurationNotPublished_ShouldNotChangePublicName()
+		{
+			DefaultConfiguration.WithName("initial name");
+			Assert.That(DefaultConfiguration.PublicName, Is.Null);
+		}
+
+		[Test]
+		public void WithName_ConfigurationIsPublished_ShouldChangeBothNameAndPublicName()
+		{
+			DefaultConfiguration.MoveToStatus(PCConfigurationStatus.Published);
+			DefaultConfiguration.WithName("new name");
+			Assert.That(DefaultConfiguration.PublicName, Is.EqualTo("new name"));
+			Assert.That(DefaultConfiguration.Name, Is.EqualTo("new name"));
+		}
 	}
 
 	[TestFixture]
@@ -144,6 +160,35 @@ namespace PCExpert.Core.Domain.Tests
 		{
 			Assert.That(() => DefaultConfiguration.MoveToStatus((PCConfigurationStatus) 1234),
 				Throws.InstanceOf<ArgumentException>());
+		}
+
+		[Test]
+		public void MoveToStatus_FromPublishedToPersonal_ShouldSetPublicNameToNull()
+		{
+			//Arrange
+			DefaultConfiguration.MoveToStatus(PCConfigurationStatus.Published);
+			DefaultConfiguration.WithName("new name");
+			Assert.That(DefaultConfiguration.PublicName, Is.EqualTo("new name"));
+
+			//Act
+			DefaultConfiguration.MoveToStatus(PCConfigurationStatus.Personal);
+
+			//Assert
+			Assert.That(DefaultConfiguration.PublicName, Is.Null);
+		}
+
+		[Test]
+		public void MoveToStatus_FromPersonalToPublished_ShouldSetPublicNameToName()
+		{
+			//Arrange
+			DefaultConfiguration.WithName("new name");
+			Assert.That(DefaultConfiguration.PublicName, Is.Null);
+
+			//Act
+			DefaultConfiguration.MoveToStatus(PCConfigurationStatus.Published);
+
+			//Assert
+			Assert.That(DefaultConfiguration.PublicName, Is.EqualTo("new name"));
 		}
 	}
 }

@@ -52,7 +52,6 @@ namespace PCExpert.Core.Domain.Tests.Validation
 			{
 				{x => x.NameNotEmptyFailure, ValidationMessages.ConfigNameCannotBeEmptyMsg},
 				{x => x.NameMaxLengthFailure, ValidationMessages.ConfigNameTooLongMsg},
-				{x => x.NameUniqueFailure, ValidationMessages.ConfigNameNotUniqueMsg},
 				{x => x.ComponentsCycleFailure, ValidationMessages.ConfigCyclicPluggingMsg}
 			};
 

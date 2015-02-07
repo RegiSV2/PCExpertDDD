@@ -148,6 +148,15 @@
     <Compile Include="Mappings\EntityTypeConfigurationExtensions.cs" />
     <Compile Include="Mappings\PCConfigurationConfiguration.cs" />
     <Compile Include="Mappings\StringCharacteristicValueConfiguration.cs" />
+    <Compile Include="Migrations\201502071501246_Initial.cs" />
+    <Compile Include="Migrations\201502071501246_Initial.Designer.cs">
+      <DependentUpon>201502071501246_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201502071503183_CreateIndexes.cs" />
+    <Compile Include="Migrations\201502071503183_CreateIndexes.Designer.cs">
+      <DependentUpon>201502071503183_CreateIndexes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="PCExpertContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -168,6 +177,14 @@
       <Project>{E3F85B03-73D8-460D-B380-38036836B295}</Project>
       <Name>PCExpert.DomainFramework</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201502071501246_Initial.resx">
+      <DependentUpon>201502071501246_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502071503183_CreateIndexes.resx">
+      <DependentUpon>201502071503183_CreateIndexes.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
