@@ -1,5 +1,6 @@
 ﻿using System.Web.Http;
 using PCExpert.DomainFramework.Utils;
+using PCExpert.Web.Model.Core;
 
 namespace PCExpert.Web.Api
 {

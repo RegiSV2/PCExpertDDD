@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Web.Http;
-using System.Web.Http.Dependencies;
+using Autofac;
+using Autofac.Integration.WebApi;
 using FluentValidation;
-using LightInject;
-using LightInject.Web;
 using PCExpert.Core.Application;
 using PCExpert.Core.Application.Impl;
 using PCExpert.Core.DataAccess;
@@ -16,12 +18,8 @@ using PCExpert.DomainFramework.DataAccess;
 using PCExpert.DomainFramework.EF;
 using PCExpert.DomainFramework.Utils;
 using PCExpert.DomainFramework.Validation;
-using PCExpert.Web.Api.Common;
 using PCExpert.Web.Api.Common.WebModel;
-using PCExpert.Web.Api.Controllers;
 using PCExpert.Web.Api.LinkSetters;
-using PCExpert.Web.Model.Core;
-using MappersConfig = PCExpert.Web.Model.Core.MappersConfig;
 
 namespace PCExpert.Web.Api
 {
@@ -30,33 +28,29 @@ namespace PCExpert.Web.Api
 		public static void InitIoC(HttpConfiguration configuration)
 		{
 			Argument.NotNull(configuration);
-			var container = new ServiceContainer();
+			var builder = new ContainerBuilder();
 
-			ConfigureWebApiInfrastructure(container, configuration);
-			ConfigureValidators(container);
-			ConfigureDBInfrastructure(container);
-			ConfigureDomainModel(container);
-			ConfigureApplicationServices(container);
+
+			ConfigureValidators(builder);
+			ConfigureDbInfrastructure(builder);
+			ConfigureDomainModel(builder);
+			ConfigureApplicationServices(builder);
+			ConfigureWebLinkSetters(builder);
+			ConfigureWebApiInfrastructure(builder, configuration);
+
+			var container = builder.Build();
 			ConfigureMappers(container);
-			ConfigureWebLinkSetters(container);
-			ConfigureMvcControllers(container);
-
+			configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
 		}
 
-		private static void ConfigureWebApiInfrastructure(IServiceContainer container, HttpConfiguration configuration)
-		{
-			configuration.DependencyResolver = new LightInjectDependencyResolver(container);
-			container.Register<CurrentRequest>(new PerRequestLifeTime());
-		}
-
-		private static void ConfigureValidators(IServiceContainer container)
+		private static void ConfigureValidators(ContainerBuilder container)
 		{
 			container.Register<IValidatorFactory>(
-				sf => InitValidators(new DomainValidatorFactory(), sf), new PerContainerLifetime());
+				c => InitValidators(new DomainValidatorFactory(), c));
 		}
 
 		private static DomainValidatorFactory InitValidators(DomainValidatorFactory validatorFactory,
-			IServiceFactory serviceFactory)
+			IComponentContext context)
 		{
 			return validatorFactory
 				.AddValidator(new CharacteristicValueValidator<NumericCharacteristicValue>())
@@ -68,55 +62,57 @@ namespace PCExpert.Web.Api
 				.AddValidator(new ComponentInterfaceValidator())
 				.AddValidator(new PCComponentValidator())
 				.AddValidator(new PCConfigurationValidator(
-					serviceFactory.GetInstance<PublishedPCConfigurationSpecification>(),
-					serviceFactory.GetInstance<ISpecificationDetailsInterpreter<IPublishedPCConfigurationCheckDetails>>()));
+					context.Resolve<PublishedPCConfigurationSpecification>(),
+					context.Resolve<ISpecificationDetailsInterpreter<IPublishedPCConfigurationCheckDetails>>()));
 		}
 
-		private static void ConfigureDBInfrastructure(ServiceContainer container)
+		private static void ConfigureDbInfrastructure(ContainerBuilder builder)
 		{
-			container.Register<IDbContextProvider>(
-				sf => new HttpContextPCExpertContextProvider("DefaultConnection", sf.GetInstance<IValidatorFactory>()),
-				new PerContainerLifetime());
-			container.Register<PersistenceWorkplace, EfWorkplace>(new PerContainerLifetime());
-			container.Register<IUnitOfWork, EntityFrameworkUnitOfWork>(new PerContainerLifetime());
+			builder.Register(
+				c => new HttpContextPCExpertContextProvider("DefaultConnection", c.Resolve<IValidatorFactory>()))
+				.As<IDbContextProvider>().SingleInstance();
+			builder.RegisterType<EfWorkplace>().As<PersistenceWorkplace>().SingleInstance();
+			builder.RegisterType<EntityFrameworkUnitOfWork>().As<IUnitOfWork>().SingleInstance();
 		}
 
-		private static void ConfigureDomainModel(ServiceContainer container)
+		private static void ConfigureDomainModel(ContainerBuilder builder)
 		{
 			//Specifications
-			container.Register<PublishedPCConfigurationSpecification>();
-			container.Register<ISpecificationDetailsInterpreter<IPublishedPCConfigurationCheckDetails>,
-				PublishedPCConfigurationCheckDetailsInterpreter>();
+			builder.RegisterType<PublishedPCConfigurationSpecification>();
+			builder.RegisterType<PublishedPCConfigurationCheckDetailsInterpreter>()
+				.As<ISpecificationDetailsInterpreter<IPublishedPCConfigurationCheckDetails>>();
 
 			//Repositories
-			container.Register<IComponentInterfaceRepository, ComponentInterfaceRepository>();
-			container.Register<IPCComponentRepository, PCComponentRepository>();
-			container.Register<IPCConfigurationRepository, PCConfigurationRepository>();
+			builder.RegisterType<ComponentInterfaceRepository>().As<IComponentInterfaceRepository>().SingleInstance();
+			builder.RegisterType<PCComponentRepository>().As<IPCComponentRepository>().SingleInstance();
+			builder.RegisterType<PCConfigurationRepository>().As<IPCConfigurationRepository>().SingleInstance();
 		}
 
-		private static void ConfigureApplicationServices(ServiceContainer container)
+		private static void ConfigureApplicationServices(ContainerBuilder container)
 		{
 			//Services
-			container.Register<IComponentInterfaceService, ComponentInterfaceService>();
+			container.RegisterType<ComponentInterfaceService>().As<IComponentInterfaceService>().SingleInstance();
 		}
 
-		private static void ConfigureWebLinkSetters(ServiceContainer container)
+		private static void ConfigureWebLinkSetters(ContainerBuilder builder)
 		{
-			container.Register<ILinkSetter, ComponentInterfaceModelLinkSetter>(new PerContainerLifetime());
-
-			var setters = container.GetAllInstances<ILinkSetter>().ToDictionary(x => x.ModelType);
-			container.Register(sf => new LinkSettingEngine(sf.GetInstance<CurrentRequest>(), setters));
+			builder.RegisterType<ComponentInterfaceModelLinkSetter>().As<ILinkSetter>().SingleInstance();
+			builder.Register(c => c.Resolve<IEnumerable<ILinkSetter>>().ToDictionary(x => x.ModelType))
+				.As<IDictionary<Type, ILinkSetter>>()
+				.SingleInstance();
+			builder.RegisterType<LinkSettingEngine>().InstancePerLifetimeScope();
 		}
 
-		private static void ConfigureMappers(IServiceContainer container)
+		private static void ConfigureWebApiInfrastructure(ContainerBuilder builder, HttpConfiguration configuration)
 		{
-			Web.Model.Core.MappersConfig.Configure(container.Create<LinkSettingEngine>);
-			Core.Application.MappersConfig.Configure();
+			builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
+			builder.RegisterWebApiFilterProvider(configuration);
 		}
 
-		private static void ConfigureMvcControllers(IServiceContainer container)
+		private static void ConfigureMappers(IContainer container)
 		{
-			container.Register<ComponentInterfaceController>();
+			MappersConfig.Configure();
+			Model.Core.MappersConfig.Configure(container.Resolve<LinkSettingEngine>);
 		}
 	}
 }

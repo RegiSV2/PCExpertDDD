@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using AutoMapper;
 using PCExpert.Core.Application.ViewObjects;
 using PCExpert.Web.Api.Common.WebModel;
@@ -16,7 +17,11 @@ namespace PCExpert.Web.Model.Core
 			where TTo : ILinksContaining
 		{
 			Mapper.CreateMap<TFrom, TTo>()
-				.AfterMap((_, x) => engine().SetLinks(x));
+				.AfterMap((_, x) =>
+				{
+					var en = engine();
+					en.SetLinks(x);
+				});
 		}
 	}
 }

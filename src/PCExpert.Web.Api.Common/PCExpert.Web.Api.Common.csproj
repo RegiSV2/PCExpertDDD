@@ -131,6 +131,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Http">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.2\lib\net45\System.Web.Http.dll</HintPath>
       <Private>True</Private>
@@ -146,15 +147,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CurrentRequest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="CurrentRequestHandler.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="LightInjectDependencyResolver.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebModel\ILinksContaining.cs" />
     <Compile Include="WebModel\ILinkSetter.cs" />

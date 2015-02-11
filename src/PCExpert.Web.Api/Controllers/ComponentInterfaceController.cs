@@ -1,9 +1,13 @@
 ﻿using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using AutoMapper;
 using PCExpert.Core.Application;
 using PCExpert.Core.Application.ViewObjects;
+using PCExpert.Web.Api.Common;
+using PCExpert.Web.Api.Common.WebModel;
 using PCExpert.Web.Model.Core;
 
 namespace PCExpert.Web.Api.Controllers
@@ -19,7 +23,7 @@ namespace PCExpert.Web.Api.Controllers
 
 	    // GET: api/ComponentInterface
 		public async Task<PagedResult<ComponentInterfaceModel>> Get(TableParameters parameters)
-        {
+		{
 			parameters = new TableParameters(new PagingParameters(0, 5), new OrderingParameters("Name", SortDirection.Ascending));
 			var results = await _componentInterfaceService.GetComponentInterfaces(parameters);
 			return new PagedResult<ComponentInterfaceModel>(

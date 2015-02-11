@@ -15,7 +15,6 @@ namespace PCExpert.Web.Api
 					IoCConfig.InitIoC(config);
 					WebApiConfig.Register(config);
 				});
-			GlobalConfiguration.Configuration.MessageHandlers.Insert(0, new CurrentRequestHandler());
 			GlobalConfiguration.Configuration.Filters.Add(new PCExpertExceptionFilter());
 		}
 	}
