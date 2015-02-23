@@ -59,5 +59,12 @@ namespace PCExpert.DomainFramework.Utils
 		{
 			Contract.Requires(value is TType);
 		}
+
+		[ContractAbbreviator]
+		public static void NotDefault<T>(T value)
+			where T : struct
+		{
+			Contract.Requires<ArgumentException>(!value.Equals(default(T)));
+		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
 using PCExpert.Core.Application.ViewObjects;
 using PCExpert.DomainFramework.Utils;
@@ -13,6 +14,7 @@ namespace PCExpert.Core.Application
 	{
 		Task CreateComponentInterface(ComponentInterfaceVO newInterface);
 		Task<PagedResult<ComponentInterfaceVO>> GetComponentInterfaces(TableParameters parameters);
+		Task<ComponentInterfaceVO> GetComponentInterface(Guid id);
 	}
 
 	[ContractClassFor(typeof (IComponentInterfaceService))]
@@ -29,6 +31,12 @@ namespace PCExpert.Core.Application
 		{
 			Argument.NotNull(parameters);
 			Contract.Ensures(Contract.Result<Task<PagedResult<ComponentInterfaceVO>>>() != null);
+			return null;
+		}
+
+		public Task<ComponentInterfaceVO> GetComponentInterface(Guid id)
+		{
+			Argument.NotDefault(id);
 			return null;
 		}
 	}

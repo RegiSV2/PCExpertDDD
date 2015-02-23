@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Monads;
-using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
 using PCExpert.Core.Application.ViewObjects;
@@ -19,9 +19,21 @@ namespace PCExpert.Core.Application.Impl
 {
 	public class ComponentInterfaceService : IComponentInterfaceService
 	{
+		#region System messages
+
+		private const string InterfaceNotFoundMsg = "Interface with id = {0} not found";
+
+		private const string InterfaceWithNameAlreadyExistsMsg = "Interface with the name \"{0}\" already exists";
+
+		#endregion
+
+		#region Dependencies
+
 		private readonly IComponentInterfaceRepository _repository;
 
 		private readonly IUnitOfWork _unitOfWork;
+
+		#endregion
 
 		private static readonly PagedResult<ComponentInterfaceVO> EmptyResult =
 			new PagedResult<ComponentInterfaceVO>(new PagingParameters(0, 0), 0, new List<ComponentInterfaceVO>());
@@ -41,7 +53,7 @@ namespace PCExpert.Core.Application.Impl
 			}, ex =>
 			{
 				throw new BusinessLogicException(
-					string.Format("Interface with the name \"{0}\" already exists", newInterface.Name), ex);
+					string.Format(InterfaceWithNameAlreadyExistsMsg, newInterface.Name), ex);
 			});
 		}
 
@@ -55,6 +67,16 @@ namespace PCExpert.Core.Application.Impl
 			var pagingParameters = CorrectPagingParameters(parameters.PagingParameters, countTotal);
 			var results = await SublistInterfaces(parameters.OrderingParameters, pagingParameters);
 			return new PagedResult<ComponentInterfaceVO>(pagingParameters, countTotal, results);
+		}
+
+		public async Task<ComponentInterfaceVO> GetComponentInterface(Guid id)
+		{
+			var query = _repository.Query(new EntityHasIdSpecification<ComponentInterface>(id))
+				.Project().To<ComponentInterfaceVO>();
+			var result = await query.FirstOrDefaultAsync();
+			if(result == null)
+				throw new NotFoundException(string.Format(InterfaceNotFoundMsg, id));
+			return result;
 		}
 
 		private Task<int> CountTotal()
@@ -101,6 +123,7 @@ namespace PCExpert.Core.Application.Impl
 
 		private static Expression<Func<ComponentInterface, object>> ParseOrderByParameter(string orderBy)
 		{
+			Contract.Ensures(Contract.Result<Expression<Func<ComponentInterface, object>>>() != null);
 			try
 			{
 				return ExpressionReflection.Expression<ComponentInterface>(orderBy);

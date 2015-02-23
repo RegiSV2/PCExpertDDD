@@ -16,43 +16,46 @@ using PCExpert.DomainFramework.Utils;
 
 namespace PCExpert.Core.Application.Tests
 {
-	[TestFixture]
-	public class ComponentInterfaceServiceTests
+	public class ComponentInterfaceServiceTests : BaseServiceTests
 	{
-		private const int ListSize = 15;
-		private const int PageSize = 5;
-		private Mock<IComponentInterfaceRepository> _repositoryMock;
-		private IComponentInterfaceService _service;
-		private FakeUnitOfWork _unitOfWork;
+		protected Mock<IComponentInterfaceRepository> RepositoryMock;
+		protected IComponentInterfaceService Service;
+		protected FakeUnitOfWork UnitOfWork;
 
 		[SetUp]
 		public void EstablishContext()
 		{
-			_repositoryMock = new Mock<IComponentInterfaceRepository>();
-			_unitOfWork = new FakeUnitOfWork();
-			_service = new ComponentInterfaceService(_unitOfWork, _repositoryMock.Object);
+			RepositoryMock = new Mock<IComponentInterfaceRepository>();
+			UnitOfWork = new FakeUnitOfWork();
+			Service = new ComponentInterfaceService(UnitOfWork, RepositoryMock.Object);
 		}
+	}
 
+	[TestFixture]
+	public class ComponentInterfaceService_CreateComponentInterfaceTests : ComponentInterfaceServiceTests
+	{
 		[Test]
 		public void CreateComponentInterface_NullArgument_ShouldThrowArgumentNullException()
 		{
-			Assert.That(() => _service.CreateComponentInterface(null), Throws.InstanceOf<ArgumentNullException>());
+			Assert.That(() => Service.CreateComponentInterface(null), Throws.InstanceOf<ArgumentNullException>());
 		}
 
 		[Test]
 		public async void CreateComponentInterface_ArgumentNameIsAlreadyUsed_ShouldThrowBusinessLogicException()
 		{
 			//Arrange
-			_unitOfWork.ShouldThrowPersistenceException = true;
+			UnitOfWork.ShouldThrowPersistenceException = true;
 			var interfaceVO = CreateInterfaceVO();
 
 			try
 			{
-				await _service.CreateComponentInterface(interfaceVO);
+				await Service.CreateComponentInterface(interfaceVO);
 			}
 			catch (BusinessLogicException)
 			{
+				return;
 			}
+			Assert.Fail();
 		}
 
 		[Test]
@@ -61,21 +64,33 @@ namespace PCExpert.Core.Application.Tests
 			//Arrange
 			var interfaceVO = CreateInterfaceVO();
 			ComponentInterface savedInterface = null;
-			_repositoryMock.Setup(x => x.Save(It.IsAny<ComponentInterface>()))
+			RepositoryMock.Setup(x => x.Save(It.IsAny<ComponentInterface>()))
 				.Callback(new Action<ComponentInterface>(x => { savedInterface = x; }));
 
 			//Act
-			await _service.CreateComponentInterface(interfaceVO);
+			await Service.CreateComponentInterface(interfaceVO);
 
 			//Assert
 			Assert.That(savedInterface != null);
 			Assert.That(savedInterface.Name == interfaceVO.Name);
 		}
 
+		private static ComponentInterfaceVO CreateInterfaceVO()
+		{
+			return new ComponentInterfaceVO { Name = NamesGenerator.ComponentInterfaceName() };
+		}
+	}
+
+	[TestFixture]
+	public class ComponentInterfaceService_GetComponentInterfacesTests : ComponentInterfaceServiceTests
+	{
+		private const int ListSize = 15;
+		private const int PageSize = 5;
+
 		[Test]
 		public void GetComponentInterfaces_NullParameters_ShouldThrowArgumentNullException()
 		{
-			Assert.That(() => _service.GetComponentInterfaces(null),
+			Assert.That(() => Service.GetComponentInterfaces(null),
 				Throws.InstanceOf<ArgumentNullException>());
 		}
 
@@ -88,7 +103,7 @@ namespace PCExpert.Core.Application.Tests
 			var expectedResult = CreatePagedResult(1, intsList.OrderByDescending(x => x.Name));
 
 			//Act
-			var actualResult = _service.GetComponentInterfaces(requestParameters).Result;
+			var actualResult = Service.GetComponentInterfaces(requestParameters).Result;
 
 			//Assert
 			AssertResultsEqual(expectedResult, actualResult);
@@ -103,7 +118,7 @@ namespace PCExpert.Core.Application.Tests
 			var expectedResult = CreatePagedResult(2, intsList.OrderByDescending(x => x.Name));
 
 			//Act
-			var actualResult = _service.GetComponentInterfaces(requestParameters).Result;
+			var actualResult = Service.GetComponentInterfaces(requestParameters).Result;
 
 			//Assert
 			AssertResultsEqual(expectedResult, actualResult);
@@ -118,7 +133,7 @@ namespace PCExpert.Core.Application.Tests
 			var expectedResult = new PagedResult<ComponentInterface>(new PagingParameters(0, 0), 0, new List<ComponentInterface>());
 
 			//Act
-			var actualResult = _service.GetComponentInterfaces(requestParameters).Result;
+			var actualResult = Service.GetComponentInterfaces(requestParameters).Result;
 
 			//Assert
 			AssertResultsEqual(expectedResult, actualResult);
@@ -133,25 +148,14 @@ namespace PCExpert.Core.Application.Tests
 				new OrderingParameters(Guid.NewGuid().ToString(), SortDirection.Ascending));
 
 			//Assert
-			try
-			{
-				_service.GetComponentInterfaces(requestParameters).Wait();
-				Assert.Fail();
-			}
-			catch (AggregateException ex)
-			{
-				Assert.That(ex.InnerExceptions.First() is InvalidInputException);
-			}
-			catch (Exception)
-			{
-				Assert.Fail();
-			}
+			UtilsAssert.AssertThrowsAggregateException<InvalidInputException>(
+				() => Service.GetComponentInterfaces(requestParameters).Wait());
 		}
 
 		private static PagedResult<T> CreatePagedResult<T>(int pageNumber, IEnumerable<T> intsList)
 		{
 			return new PagedResult<T>(new PagingParameters(pageNumber, PageSize), ListSize,
-				intsList.Skip(pageNumber*PageSize).Take(PageSize).ToList());
+				intsList.Skip(pageNumber * PageSize).Take(PageSize).ToList());
 		}
 
 		private static void AssertResultsEqual(PagedResult<ComponentInterface> expectedResult,
@@ -180,14 +184,46 @@ namespace PCExpert.Core.Application.Tests
 			var intsList = new List<ComponentInterface>();
 			for (var i = 0; i < fakesCount; i++)
 				intsList.Add(DomainObjectsCreator.CreateInterface(i));
-			_repositoryMock.Setup(x => x.Query(It.IsAny<PersistenceAwareSpecification<ComponentInterface>>()))
+			RepositoryMock.Setup(x => x.Query(It.IsAny<PersistenceAwareSpecification<ComponentInterface>>()))
 				.Returns(intsList.AsAsyncQueryable());
 			return intsList;
 		}
+	}
 
-		private static ComponentInterfaceVO CreateInterfaceVO()
+	[TestFixture]
+	public class ComponentInterfaceService_GetComponentInterfaceTests : ComponentInterfaceServiceTests
+	{
+		[Test]
+		public void GetComponentInterface_EmptyId_ShouldThrowArgumentException()
 		{
-			return new ComponentInterfaceVO {Name = NamesGenerator.ComponentInterfaceName()};
+			Assert.That(() => Service.GetComponentInterface(Guid.Empty), Throws.ArgumentException);
+		}
+
+		[Test]
+		public void GetComponentInterface_ComponentExists_ShouldReturnVOOfThatComponent()
+		{
+			//Arrange
+			var dbComponent = DomainObjectsCreator.CreateInterface(1).WithId(Guid.NewGuid());
+			RepositoryMock.Setup(x => x.Query(It.IsAny<PersistenceAwareSpecification<ComponentInterface>>()))
+				.Returns(new List<ComponentInterface> {dbComponent}.AsAsyncQueryable());
+
+			//Act
+			var componentVO = Service.GetComponentInterface(dbComponent.Id).Result;
+
+			//Assert
+			Assert.That(componentVO.Id == dbComponent.Id);
+		}
+
+		[Test]
+		public void GetComponentInterface_ComponentExists_ShouldThrowNotFoundException()
+		{
+			//Arrange
+			RepositoryMock.Setup(x => x.Query(It.IsAny<PersistenceAwareSpecification<ComponentInterface>>()))
+				.Returns(new List<ComponentInterface>().AsAsyncQueryable());
+
+			//Assert
+			UtilsAssert.AssertThrowsAggregateException<NotFoundException, ComponentInterfaceVO>(
+				() => Service.GetComponentInterface(Guid.NewGuid()).Result);
 		}
 	}
 }

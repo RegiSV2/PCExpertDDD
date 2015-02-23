@@ -136,6 +136,7 @@
     <Compile Include="Exceptions\DuplicateElementException.cs" />
     <Compile Include="Exceptions\EmptyCollectionException.cs" />
     <Compile Include="Exceptions\InvalidInputException.cs" />
+    <Compile Include="Exceptions\NotFoundException.cs" />
     <Compile Include="Exceptions\PersistenceException.cs" />
     <Compile Include="Exceptions\ValidationException.cs" />
     <Compile Include="IUnitOfWork.cs" />

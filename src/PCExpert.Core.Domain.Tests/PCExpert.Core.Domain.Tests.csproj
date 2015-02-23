@@ -69,6 +69,7 @@
     <Compile Include="Specifications\ComponentInterfaceNameContainsSpecificationTests.cs" />
     <Compile Include="Specifications\ConfigurationNameMaxLengthSpecificationTests.cs" />
     <Compile Include="Specifications\ConfigurationNameNotEmptySpecificationTests.cs" />
+    <Compile Include="Specifications\EntityHasIdSpecificationTests.cs" />
     <Compile Include="Specifications\PCConfigurationSpecificationsTests.cs" />
     <Compile Include="Specifications\PublishedPCConfigurationSpecificationTests.cs" />
     <Compile Include="StringCharacteristicTests.cs" />

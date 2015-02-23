@@ -24,7 +24,6 @@ namespace PCExpert.Web.Api.Controllers
 	    // GET: api/ComponentInterface
 		public async Task<PagedResult<ComponentInterfaceModel>> Get(TableParameters parameters)
 		{
-			parameters = new TableParameters(new PagingParameters(0, 5), new OrderingParameters("Name", SortDirection.Ascending));
 			var results = await _componentInterfaceService.GetComponentInterfaces(parameters);
 			return new PagedResult<ComponentInterfaceModel>(
 				results.PagingParameters, results.CountTotal,
