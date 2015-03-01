@@ -23,8 +23,9 @@ namespace PCExpert.Core.Application.Tests
 		protected FakeUnitOfWork UnitOfWork;
 
 		[SetUp]
-		public void EstablishContext()
+		public override void EstablishContext()
 		{
+			base.EstablishContext();
 			RepositoryMock = new Mock<IComponentInterfaceRepository>();
 			UnitOfWork = new FakeUnitOfWork();
 			Service = new ComponentInterfaceService(UnitOfWork, RepositoryMock.Object);
@@ -77,7 +78,7 @@ namespace PCExpert.Core.Application.Tests
 
 		private static ComponentInterfaceVO CreateInterfaceVO()
 		{
-			return new ComponentInterfaceVO { Name = NamesGenerator.ComponentInterfaceName() };
+			return new ComponentInterfaceVO {Name = NamesGenerator.ComponentInterfaceName()};
 		}
 	}
 
@@ -130,7 +131,8 @@ namespace PCExpert.Core.Application.Tests
 			//Arrange
 			FillRepositoryWithFakes(0);
 			var requestParameters = CreateRequestForPage(5);
-			var expectedResult = new PagedResult<ComponentInterface>(new PagingParameters(0, 0), 0, new List<ComponentInterface>());
+			var expectedResult = new PagedResult<ComponentInterface>(new PagingParameters(0, 0), 0,
+				new List<ComponentInterface>());
 
 			//Act
 			var actualResult = Service.GetComponentInterfaces(requestParameters).Result;
@@ -155,7 +157,7 @@ namespace PCExpert.Core.Application.Tests
 		private static PagedResult<T> CreatePagedResult<T>(int pageNumber, IEnumerable<T> intsList)
 		{
 			return new PagedResult<T>(new PagingParameters(pageNumber, PageSize), ListSize,
-				intsList.Skip(pageNumber * PageSize).Take(PageSize).ToList());
+				intsList.Skip(pageNumber*PageSize).Take(PageSize).ToList());
 		}
 
 		private static void AssertResultsEqual(PagedResult<ComponentInterface> expectedResult,

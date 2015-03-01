@@ -18,6 +18,7 @@ using PCExpert.DomainFramework.DataAccess;
 using PCExpert.DomainFramework.EF;
 using PCExpert.DomainFramework.Utils;
 using PCExpert.DomainFramework.Validation;
+using PCExpert.Web.Api.Common.Impl;
 using PCExpert.Web.Api.Common.WebModel;
 using PCExpert.Web.Api.LinkSetters;
 
@@ -30,7 +31,6 @@ namespace PCExpert.Web.Api
 			Argument.NotNull(configuration);
 			var builder = new ContainerBuilder();
 
-
 			ConfigureValidators(builder);
 			ConfigureDbInfrastructure(builder);
 			ConfigureDomainModel(builder);
@@ -40,6 +40,7 @@ namespace PCExpert.Web.Api
 
 			var container = builder.Build();
 			ConfigureMappers(container);
+
 			configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
 		}
 
@@ -90,7 +91,6 @@ namespace PCExpert.Web.Api
 
 		private static void ConfigureApplicationServices(ContainerBuilder container)
 		{
-			//Services
 			container.RegisterType<ComponentInterfaceService>().As<IComponentInterfaceService>().SingleInstance();
 		}
 
@@ -100,7 +100,7 @@ namespace PCExpert.Web.Api
 			builder.Register(c => c.Resolve<IEnumerable<ILinkSetter>>().ToDictionary(x => x.ModelType))
 				.As<IDictionary<Type, ILinkSetter>>()
 				.SingleInstance();
-			builder.RegisterType<LinkSettingEngine>().InstancePerLifetimeScope();
+			builder.RegisterType<LinkSetterEngine>().As<ILinkSetterEngine>().InstancePerLifetimeScope();
 		}
 
 		private static void ConfigureWebApiInfrastructure(ContainerBuilder builder, HttpConfiguration configuration)
@@ -112,7 +112,7 @@ namespace PCExpert.Web.Api
 		private static void ConfigureMappers(IContainer container)
 		{
 			MappersConfig.Configure();
-			Model.Core.MappersConfig.Configure(container.Resolve<LinkSettingEngine>);
+			Model.Core.MappersConfig.Configure(container.Resolve<ILinkSetterEngine>);
 		}
 	}
 }

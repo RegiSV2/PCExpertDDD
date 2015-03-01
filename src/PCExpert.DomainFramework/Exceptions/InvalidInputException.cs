@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace PCExpert.DomainFramework.Exceptions
 {
 	/// <summary>
-	/// Thrown when the end-user specifies invalid parameters
+	///     Thrown when the end-user specifies invalid parameters
 	/// </summary>
 	public class InvalidInputException : Exception
 	{

@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using PCExpert.Core.Domain.Repositories;
 using PCExpert.DomainFramework.Specifications;
 
 namespace PCExpert.Core.Domain.Specifications

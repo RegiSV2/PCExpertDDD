@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace PCExpert.DomainFramework.Exceptions
 {
 	/// <summary>
-	/// Represents entity validation exception
+	///     Represents entity validation exception
 	/// </summary>
 	public class ValidationException : Exception
 	{

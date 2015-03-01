@@ -1,12 +1,12 @@
 using NUnit.Framework;
+using PCExpert.Core.Application.Impl;
 
 namespace PCExpert.Core.Application.Tests
 {
-	[SetUpFixture]
 	public class BaseServiceTests
 	{
 		[SetUp]
-		public void SetUp()
+		public virtual void EstablishContext()
 		{
 			MappersConfig.Configure();
 		}

@@ -132,7 +132,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MappersConfig.cs" />
     <Compile Include="OrderingParameters.cs" />
     <Compile Include="PagingParameters.cs" />
     <Compile Include="IComponentInterfaceService.cs" />
@@ -143,10 +142,6 @@
     <Compile Include="ViewObjects\PagedResult.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PCExpert.Core.Domain\PCExpert.Core.Domain.csproj">
-      <Project>{8CB3EFF3-9938-4443-9287-184A7E0364A8}</Project>
-      <Name>PCExpert.Core.Domain</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PCExpert.DomainFramework\PCExpert.DomainFramework.csproj">
       <Project>{E3F85B03-73D8-460D-B380-38036836B295}</Project>
       <Name>PCExpert.DomainFramework</Name>

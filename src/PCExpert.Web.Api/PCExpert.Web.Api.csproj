@@ -201,7 +201,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PCExpert.Core.Application.Impl\PCExpert.Core.Application.Impl.csproj">
@@ -227,6 +226,10 @@
     <ProjectReference Include="..\PCExpert.DomainFramework\PCExpert.DomainFramework.csproj">
       <Project>{E3F85B03-73D8-460D-B380-38036836B295}</Project>
       <Name>PCExpert.DomainFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PCExpert.Web.Api.Common.Impl\PCExpert.Web.Api.Common.Impl.csproj">
+      <Project>{CFB5373A-D938-441E-8FFE-D41C2D76E2C9}</Project>
+      <Name>PCExpert.Web.Api.Common.Impl</Name>
     </ProjectReference>
     <ProjectReference Include="..\PCExpert.Web.Api.Common\PCExpert.Web.Api.Common.csproj">
       <Project>{9D777133-E389-4D6B-9C0A-F763A69F3D86}</Project>

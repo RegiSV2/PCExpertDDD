@@ -19,22 +19,6 @@ namespace PCExpert.Core.Application.Impl
 {
 	public class ComponentInterfaceService : IComponentInterfaceService
 	{
-		#region System messages
-
-		private const string InterfaceNotFoundMsg = "Interface with id = {0} not found";
-
-		private const string InterfaceWithNameAlreadyExistsMsg = "Interface with the name \"{0}\" already exists";
-
-		#endregion
-
-		#region Dependencies
-
-		private readonly IComponentInterfaceRepository _repository;
-
-		private readonly IUnitOfWork _unitOfWork;
-
-		#endregion
-
 		private static readonly PagedResult<ComponentInterfaceVO> EmptyResult =
 			new PagedResult<ComponentInterfaceVO>(new PagingParameters(0, 0), 0, new List<ComponentInterfaceVO>());
 
@@ -63,7 +47,7 @@ namespace PCExpert.Core.Application.Impl
 
 			if (countTotal == 0)
 				return EmptyResult;
-			
+
 			var pagingParameters = CorrectPagingParameters(parameters.PagingParameters, countTotal);
 			var results = await SublistInterfaces(parameters.OrderingParameters, pagingParameters);
 			return new PagedResult<ComponentInterfaceVO>(pagingParameters, countTotal, results);
@@ -74,7 +58,7 @@ namespace PCExpert.Core.Application.Impl
 			var query = _repository.Query(new EntityHasIdSpecification<ComponentInterface>(id))
 				.Project().To<ComponentInterfaceVO>();
 			var result = await query.FirstOrDefaultAsync();
-			if(result == null)
+			if (result == null)
 				throw new NotFoundException(string.Format(InterfaceNotFoundMsg, id));
 			return result;
 		}
@@ -113,7 +97,7 @@ namespace PCExpert.Core.Application.Impl
 			OrderingParameters parameters)
 		{
 			var orderExpression = ParseOrderByParameter(parameters.OrderBy);
-			
+
 			if (parameters.Direction == SortDirection.Ascending)
 				query = query.OrderBy(orderExpression);
 			else if (parameters.Direction == SortDirection.Descending)
@@ -146,5 +130,21 @@ namespace PCExpert.Core.Application.Impl
 				.Project().To<ComponentInterfaceVO>()
 				.ToListAsync();
 		}
+
+		#region System messages
+
+		private const string InterfaceNotFoundMsg = "Interface with id = {0} not found";
+
+		private const string InterfaceWithNameAlreadyExistsMsg = "Interface with the name \"{0}\" already exists";
+
+		#endregion
+
+		#region Dependencies
+
+		private readonly IComponentInterfaceRepository _repository;
+
+		private readonly IUnitOfWork _unitOfWork;
+
+		#endregion
 	}
 }

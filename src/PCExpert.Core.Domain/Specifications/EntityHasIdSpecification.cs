@@ -6,7 +6,7 @@ using PCExpert.DomainFramework.Specifications;
 namespace PCExpert.Core.Domain.Specifications
 {
 	/// <summary>
-	/// Specifies that entity should have specified id
+	///     Specifies that entity should have specified id
 	/// </summary>
 	public class EntityHasIdSpecification<TEntity> : PersistenceAwareSpecification<TEntity>
 		where TEntity : Entity

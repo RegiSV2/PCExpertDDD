@@ -3,18 +3,17 @@ using System.Data.Entity;
 using PCExpert.Core.DataAccess;
 using PCExpert.Core.DataAccess.Tests;
 using PCExpert.Core.Tests.Utils;
-using PCExpert.DomainFramework.DataAccess;
 using PCExpert.DomainFramework.EF;
 using PCExpert.DomainFramework.Validation;
 
 namespace PCExpert.TestDBCreator
 {
-	class Program
+	internal class Program
 	{
-		static void Main(string[] args)
+		private static void Main(string[] args)
 		{
 			Console.WriteLine("Initializing DB structure...");
-			using (var context = new PCExpertContext("dbToFill", 
+			using (var context = new PCExpertContext("dbToFill",
 				new DropCreateDatabaseAlways<PCExpertContext>(),
 				new DomainValidatorFactory()))
 			{

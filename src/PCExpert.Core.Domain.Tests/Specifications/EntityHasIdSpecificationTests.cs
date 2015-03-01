@@ -1,6 +1,4 @@
 using System;
-using System.Diagnostics;
-using System.Reflection;
 using NUnit.Framework;
 using PCExpert.Core.Domain.Specifications;
 using PCExpert.DomainFramework;
@@ -10,14 +8,6 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 	[TestFixture]
 	public class EntityHasIdSpecificationTests
 	{
-		private class EntityStub : Entity
-		{
-			public EntityStub(Guid id)
-				:base(id)
-			{
-			}
-		}
-
 		[Test]
 		public void IsSatisfiedBy_EntityHasSpecifiedId_ShouldPass()
 		{
@@ -39,6 +29,14 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 
 			//Assert
 			Assert.That(!specification.IsSatisfiedBy(entity));
+		}
+
+		private class EntityStub : Entity
+		{
+			public EntityStub(Guid id)
+				: base(id)
+			{
+			}
 		}
 	}
 }

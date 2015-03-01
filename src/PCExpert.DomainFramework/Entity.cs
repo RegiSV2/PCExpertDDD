@@ -5,7 +5,8 @@ namespace PCExpert.DomainFramework
 	public abstract class Entity
 	{
 		protected Entity()
-		{ }
+		{
+		}
 
 		protected Entity(Guid id)
 		{

@@ -10,7 +10,7 @@ using PCExpert.DomainFramework.DataAccess;
 namespace PCExpert.Core.DataAccess.Tests
 {
 	/// <summary>
-	/// Populates persistence workplace with test data
+	///     Populates persistence workplace with test data
 	/// </summary>
 	public sealed class TestDataGenerator
 	{
@@ -118,7 +118,7 @@ namespace PCExpert.Core.DataAccess.Tests
 					.WithComponent(componentsToInsert.RandomElementExcept(configuration.Components.ToList()))
 					.WithComponent(componentsToInsert.RandomElementExcept(configuration.Components.ToList()));
 				configurations.Add(configuration);
-				if(_random.NextDouble() > 0.5)
+				if (_random.NextDouble() > 0.5)
 					configuration.MoveToStatus(PCConfigurationStatus.Published);
 			}
 

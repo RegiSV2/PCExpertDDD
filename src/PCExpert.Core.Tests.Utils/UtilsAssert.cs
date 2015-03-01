@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using PCExpert.DomainFramework;
-using PCExpert.DomainFramework.Exceptions;
 using PCExpert.DomainFramework.Utils;
 
 namespace PCExpert.Core.Tests.Utils

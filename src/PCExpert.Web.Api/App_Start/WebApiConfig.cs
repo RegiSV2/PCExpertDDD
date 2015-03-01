@@ -1,6 +1,5 @@
 ﻿using System.Web.Http;
 using PCExpert.DomainFramework.Utils;
-using PCExpert.Web.Model.Core;
 
 namespace PCExpert.Web.Api
 {
@@ -14,7 +13,7 @@ namespace PCExpert.Web.Api
 			// Web API routes
 			config.MapHttpAttributeRoutes();
 
-			config.Routes.MapHttpRoute(WebApiRouteNames.DefaultApi, "api/{controller}/{id}", new { id = RouteParameter.Optional });
+			config.Routes.MapHttpRoute(WebApiRouteNames.DefaultApi, "api/{controller}/{id}", new {id = RouteParameter.Optional});
 		}
 	}
 }

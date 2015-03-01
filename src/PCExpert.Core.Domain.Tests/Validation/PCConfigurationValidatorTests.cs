@@ -1,7 +1,6 @@
 using FluentValidation.Results;
 using Moq;
 using NUnit.Framework;
-using PCExpert.Core.Domain.Repositories;
 using PCExpert.Core.Domain.Specifications;
 using PCExpert.Core.Domain.Validation;
 using PCExpert.DomainFramework.Specifications;

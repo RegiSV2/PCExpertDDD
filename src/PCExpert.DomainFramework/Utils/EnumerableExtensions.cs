@@ -3,7 +3,6 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using PCExpert.DomainFramework.Exceptions;
 
 namespace PCExpert.DomainFramework.Utils
 {

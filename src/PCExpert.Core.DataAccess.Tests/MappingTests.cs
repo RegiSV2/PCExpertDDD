@@ -12,14 +12,14 @@ namespace PCExpert.Core.DataAccess.Tests
 	[TestFixture, Category("IntegrationTests")]
 	public class MappingTests
 	{
-		private readonly TestDataGenerator _testDataGenerator = new TestDataGenerator();
-
 		private readonly CharacteristicHandler[] _characteristicHandlers =
 		{
 			new BoolCharacteristicHandler(),
 			new NumericCharacteristicHandler(),
 			new StringCharacteristicHandler()
 		};
+
+		private readonly TestDataGenerator _testDataGenerator = new TestDataGenerator();
 
 		[Test]
 		public void DbOperationsTest()

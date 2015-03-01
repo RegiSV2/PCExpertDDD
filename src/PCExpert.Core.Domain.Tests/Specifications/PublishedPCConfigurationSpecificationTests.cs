@@ -11,8 +11,6 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 	public class PublishedPCConfigurationSpecificationTests
 		: PCConfigurationSpecificationsTests<PublishedPCConfigurationSpecification>
 	{
-		private IDetailedSpecification<PCConfiguration, IPublishedPCConfigurationCheckDetails> _detailedSpecification;
-
 		private readonly ComponentType[] _exactlyOneComponentTypes =
 		{
 			ComponentType.Motherboard,
@@ -26,6 +24,8 @@ namespace PCExpert.Core.Domain.Tests.Specifications
 			ComponentType.RandomAccessMemory,
 			ComponentType.VideoCard
 		};
+
+		private IDetailedSpecification<PCConfiguration, IPublishedPCConfigurationCheckDetails> _detailedSpecification;
 
 		[SetUp]
 		public override void EstablishContext()

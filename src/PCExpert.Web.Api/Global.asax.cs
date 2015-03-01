@@ -1,6 +1,5 @@
 ﻿using System.Web;
 using System.Web.Http;
-using PCExpert.Web.Api.Common;
 using PCExpert.Web.Api.Filters;
 
 namespace PCExpert.Web.Api

@@ -4,7 +4,6 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
 using FluentValidation;
-using FluentValidation.Validators;
 using PCExpert.Core.DataAccess.Mappings;
 using PCExpert.Core.Domain;
 
