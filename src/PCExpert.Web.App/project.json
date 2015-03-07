@@ -1,0 +1,38 @@
+﻿{
+	"webroot": "wwwroot",
+	"version": "1.0.0-*",
+	"dependencies": {
+		"Microsoft.AspNet.Server.IIS": "1.0.0-beta3",
+		"Microsoft.AspNet.Diagnostics": "1.0.0-beta3",
+		"Microsoft.AspNet.Mvc": "6.0.0-beta3",
+		"Microsoft.AspNet.Routing": "1.0.0-beta3",
+		"Autofac": "3.5.2",
+		"EntityFramework.SqlServer": "7.0.0-beta2",
+		"EntityFramework.Commands": "7.0.0-beta2",
+		"PCExpert.Core.Application": "1.0.0-*",
+		"PCExpert.Web.Api.Common.Impl": "1.0.0-*",
+		"PCExpert.Core.Application.Impl": "1.0.0-*",
+		"PCExpert.Web.Model.Core": "1.0.0-*",
+		"PCExpert.Core.DataAccess": "1.0.0-*",
+		"PCExpert.DomainFramework.EF": "1.0.0-*"
+	},
+	"frameworks": {
+		"aspnet50": {
+			"dependencies": {
+				
+			}
+		}
+	},
+	"bundleExclude": [
+		"node_modules",
+		"bower_components",
+		"**.kproj",
+		"**.user",
+		"**.vspscc"
+	],
+	"exclude": [
+		"wwwroot",
+		"node_modules",
+		"bower_components"
+	]
+}

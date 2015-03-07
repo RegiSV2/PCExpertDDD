@@ -4,7 +4,6 @@ using System.Data.Entity;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Monads;
 using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions;
 using PCExpert.Core.Application.ViewObjects;
@@ -82,10 +81,10 @@ namespace PCExpert.Core.Application.Impl
 
 		private Task<List<ComponentInterfaceVO>> SublistInterfaces(OrderingParameters ordering, PagingParameters paging)
 		{
-			return QueryInterfaces()
-				.With(x => OrderQuery(x, ordering))
-				.With(x => SelectPage(x, paging))
-				.With(ListQuery);
+			var query = QueryInterfaces();
+			query = OrderQuery(query, ordering);
+			query = SelectPage(query, paging);
+			return ListQuery(query);
 		}
 
 		private IQueryable<ComponentInterface> QueryInterfaces()

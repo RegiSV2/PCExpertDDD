@@ -1,4 +1,5 @@
 ﻿using System.Web.Http;
+using System.Web.Http.Routing;
 using PCExpert.DomainFramework.Utils;
 
 namespace PCExpert.Web.Api
@@ -14,6 +15,7 @@ namespace PCExpert.Web.Api
 			config.MapHttpAttributeRoutes();
 
 			config.Routes.MapHttpRoute(WebApiRouteNames.DefaultApi, "api/{controller}/{id}", new {id = RouteParameter.Optional});
+			config.Routes.IgnoreRoute("dfsfds", "Files/Html/*");
 		}
 	}
 }

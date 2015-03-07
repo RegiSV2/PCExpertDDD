@@ -175,6 +175,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Files\Html\master.html" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
