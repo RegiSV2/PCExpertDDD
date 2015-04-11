@@ -138,8 +138,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComponentInterfaceModel.cs" />
+    <Compile Include="MainMenuModel.cs" />
     <Compile Include="MappersConfig.cs" />
+    <Compile Include="MenuItemModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReferenceMenuItemModel.cs" />
+    <Compile Include="SeparatorItemModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PCExpert.Core.Application\PCExpert.Core.Application.csproj">
